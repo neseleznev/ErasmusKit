@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ErasmusKit</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <string name="header_text">Welcome to ErasmusKit</string>
+    <string name="welcome_text">Thanks for logging in, %1$s</string>
+    <string name="action_logout">Logout</string>
+
+</resources>

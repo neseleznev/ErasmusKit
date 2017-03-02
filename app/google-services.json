@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "470901195673",
+    "firebase_url": "https://erasmuskit-f3db2.firebaseio.com",
+    "project_id": "erasmuskit-f3db2",
+    "storage_bucket": "erasmuskit-f3db2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470901195673:android:99c6aab08e36e897",
+        "android_client_info": {
+          "package_name": "com.cooldevs.erasmuskit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470901195673-om9u4dqttnkplnrmchhk8b9hpp23ij3t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cooldevs.erasmuskit",
+            "certificate_hash": "d5d518ff975415fe5cadac0a9a5e559c92d4608e"
+          }
+        },
+        {
+          "client_id": "470901195673-at83p96vvv1sijmku700sd232akevdep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDANHq8MNqAe15NIHwwoCSjk_gTmKHtAo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470901195673-at83p96vvv1sijmku700sd232akevdep.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
