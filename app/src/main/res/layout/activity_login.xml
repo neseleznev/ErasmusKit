@@ -12,22 +12,48 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.cooldevs.erasmuskit.LoginActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/header_text"
-        android:textSize="18sp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/header_text"
-        android:layout_centerHorizontal="true"/>
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/google_sign_in_button"
-        app:buttonSize="wide"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/header_text"
-        android:layout_marginBottom="15dp"/>
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            style="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="20sp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/header_text"/>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="50dp"
+            app:srcCompat="@drawable/ic_people_black_24dp"/>
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_sign_in_button"
+            app:buttonSize="wide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/register_button_text"/>
+
+    </LinearLayout>
+
 
 </RelativeLayout>
