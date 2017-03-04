@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             style="@style/TextAppearance.AppCompat.Body2"
+            android:fontFamily="sans-serif-black"
             android:textSize="20sp"
             android:layout_marginBottom="20dp"
             android:text="@string/header_text"/>

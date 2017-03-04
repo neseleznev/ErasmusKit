@@ -3,7 +3,7 @@
     <string name="title_activity_login">LoginActivity</string>
 
     <string name="header_text">Connect with the Erasmus World</string>
-    <string name="welcome_text">Thanks for logging in, %1$s</string>
+    <string name="cities_list_text">Select a city</string>
     <string name="action_logout">Logout</string>
     <string name="register_button_text">Register as an organizator</string>
 
