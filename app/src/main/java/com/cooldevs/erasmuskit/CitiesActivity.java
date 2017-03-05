@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,7 +20,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -27,10 +27,6 @@ public class CitiesActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
-    private DatabaseReference citiesRef;
-
-    private CitiesAdapter adapter;
 
     private static final String TAG = "CitiesActivity";
 
@@ -54,13 +50,21 @@ public class CitiesActivity extends AppCompatActivity {
             }
         };
 
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
+        recyclerView.setHasFixedSize(false);
+
         final ArrayList<City> cities = new ArrayList<>();
+        final CitiesAdapter adapter = new CitiesAdapter(cities);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
 
-        citiesRef = FirebaseDatabase.getInstance().getReference("cities");
-        citiesRef.addChildEventListener(new ChildEventListener() {
+        DatabaseReference citiesRef = FirebaseDatabase.getInstance().getReference("cities");
+        ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "childEventListener:onChildAdded, key: " + dataSnapshot.getKey());
                 City city = dataSnapshot.getValue(City.class);
                 city.setKey(dataSnapshot.getKey());
 
@@ -76,11 +80,12 @@ public class CitiesActivity extends AppCompatActivity {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "childEventListener:onChildRemoved");
-                String key = dataSnapshot.getValue(City.class).getKey();
+                String key = dataSnapshot.getKey();
 
-                for(int i = 0; i < cities.size(); i++) {
+                for (int i = 0; i < cities.size(); i++) {
                     City city = cities.get(i);
                     if (city.getKey().equals(key)) {
+                        Log.d(TAG, "Removed city found!");
                         int pos = cities.indexOf(city);
                         cities.remove(city);
                         adapter.notifyItemRemoved(pos);
@@ -99,17 +104,9 @@ public class CitiesActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
 
-
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
-        recyclerView.setHasFixedSize(false);
-
-        adapter = new CitiesAdapter(cities);
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        citiesRef.addChildEventListener(childEventListener);
 
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.add_city_fab);
@@ -135,6 +132,7 @@ public class CitiesActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

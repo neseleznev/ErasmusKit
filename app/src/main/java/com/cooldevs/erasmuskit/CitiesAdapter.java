@@ -1,12 +1,14 @@
 package com.cooldevs.erasmuskit;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHolder> {
 
     private ArrayList<City> citiesList;
+
+    private static final String TAG = "CitiesAdapter";
 
     public CitiesAdapter(ArrayList<City> cities) {
         this.citiesList = cities;
@@ -42,7 +46,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         return citiesList.size();
     }
 
-    static class CityViewHolder extends RecyclerView.ViewHolder {
+    class CityViewHolder extends RecyclerView.ViewHolder {
 
         private TextView cityName;
         private TextView cityCountry;
@@ -63,10 +67,24 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
             deleteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    removeAt(getAdapterPosition());
+
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("cities").child(c.getKey());
-                    ref.removeValue();
+                    ref.removeValue(new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError != null)
+                                Log.d(TAG, "removeValue:onComplete, " + databaseError.getDetails());
+                        }
+                    });
                 }
             });
         }
+    }
+
+    private void removeAt(int position) {
+        citiesList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, citiesList.size());
     }
 }
