@@ -1,5 +1,6 @@
 package com.cooldevs.erasmuskit;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,11 +23,13 @@ import java.util.ArrayList;
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHolder> {
 
     private ArrayList<City> citiesList;
+    private Context mContext;
 
     private static final String TAG = "CitiesAdapter";
 
-    public CitiesAdapter(ArrayList<City> cities) {
+    public CitiesAdapter(ArrayList<City> cities, Context context) {
         this.citiesList = cities;
+        this.mContext = context;
     }
 
     @Override
@@ -62,7 +66,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
 
         void bindCity(final City c) {
             cityName.setText(c.getName());
-            cityCountry.setText("Country: " + c.getCountry());
+            cityCountry.setText(mContext.getString(R.string.country_city_content, c.getCountry()));
 
             deleteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,5 +90,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         citiesList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, citiesList.size());
+
+        Toast.makeText(mContext, R.string.delete_city_toast, Toast.LENGTH_SHORT).show();
     }
 }

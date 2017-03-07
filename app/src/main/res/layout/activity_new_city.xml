@@ -16,19 +16,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/newcity_name"
         android:layout_marginBottom="15dp"
-        android:hint="New city name"/>
+        android:hint="@string/new_city_name_hint"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/newcity_country"
         android:layout_marginBottom="15dp"
-        android:hint="New city country"/>
+        android:hint="@string/new_city_country_hint"/>
 
     <Button
         android:id="@+id/newcity_save_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"/>
+        android:text="@string/new_city_btn_text"/>
 
 </LinearLayout>

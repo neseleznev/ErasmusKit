@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="20dp"
+        app:borderWidth="0dp"
         app:srcCompat="@drawable/ic_add_black_24dp"
-        android:tint="@android:color/white"
-        app:borderWidth="0dp"/>
+        android:tint="@android:color/white"/>
 
 </android.support.design.widget.CoordinatorLayout>

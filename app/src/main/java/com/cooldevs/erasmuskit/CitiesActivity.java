@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,7 +53,7 @@ public class CitiesActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(false);
 
         final ArrayList<City> cities = new ArrayList<>();
-        final CitiesAdapter adapter = new CitiesAdapter(cities);
+        final CitiesAdapter adapter = new CitiesAdapter(cities, this);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
