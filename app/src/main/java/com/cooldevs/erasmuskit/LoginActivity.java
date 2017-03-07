@@ -77,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        // We could also add a Facebook login button
     }
 
     @Override
