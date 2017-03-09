@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } else {
                 // Google Sign In failed, update UI appropriately
-                Log.d(TAG, "Google Sign In failed");
+                Log.d(TAG, "Google sign in failed");
             }
         }
     }
@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, R.string.auth_failed_toast, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

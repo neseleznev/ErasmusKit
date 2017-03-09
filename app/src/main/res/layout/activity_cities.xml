@@ -9,10 +9,9 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cities_recView"
-        android:paddingBottom="70dp"
-        android:clipToPadding="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layout_behavior="com.cooldevs.erasmuskit.ScrollBehavior"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_city_fab"
@@ -20,8 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="20dp"
+        app:borderWidth="0dp"
         app:srcCompat="@drawable/ic_add_black_24dp"
-        android:tint="@android:color/white"
-        app:borderWidth="0dp"/>
+        android:tint="@android:color/white"/>
 
 </android.support.design.widget.CoordinatorLayout>

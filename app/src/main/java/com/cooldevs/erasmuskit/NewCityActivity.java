@@ -34,7 +34,7 @@ public class NewCityActivity extends AppCompatActivity {
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("cities");
                     ref.push().setValue(new City(newCityName, newCityCountry));
 
-                    Toast.makeText(NewCityActivity.this, "City successfully added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewCityActivity.this, R.string.add_city_toast, Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
