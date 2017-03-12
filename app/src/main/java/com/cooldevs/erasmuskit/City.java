@@ -8,14 +8,16 @@ public class City {
     private String key;
     private String name;
     private String country;
+    private long timestamp;
 
     public City() {
-
+        this.timestamp = System.currentTimeMillis();
     }
 
     public City(String name, String country) {
         this.name = name;
         this.country = country;
+        this.timestamp = System.currentTimeMillis();
     }
 
     public void setKey(String key) {
@@ -32,5 +34,9 @@ public class City {
 
     public String getCountry() {
         return country;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 }
