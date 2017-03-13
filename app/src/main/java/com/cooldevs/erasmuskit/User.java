@@ -7,13 +7,21 @@ package com.cooldevs.erasmuskit;
 public class User {
     private String key;
     private String userName;
-    private String surname;
     private String nationality;
     private String studyField;
     private String hostCity;
+    private String userType;
 
     public User(){
 
+    }
+
+    public User(String hostCity, String userName, String nationality, String studyField, String userType){
+        this.hostCity=hostCity;
+        this.userName=userName;
+        this.nationality=nationality;
+        this.studyField=studyField;
+        this.userType=userType;
     }
 
     public String getKey() {
@@ -33,14 +41,6 @@ public class User {
         this.userName = userName;
     }
 
-    public String getSurname() {
-
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
 
     public String getNationality() {
 
@@ -68,5 +68,11 @@ public class User {
     }
 
 
+    public String getUserType() {
+        return userType;
+    }
 
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 }

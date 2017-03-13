@@ -14,6 +14,39 @@
 
     <string name="new_city_name_hint">New city name</string>
     <string name="new_city_country_hint">New city country</string>
-    <string name="new_city_btn_text">Save</string>
+    <string name="save_btn_text">Save</string>
 
+    <string name="configure_profile_btn_text">Configure profile</string>
+
+    <string name="host_city_hint">Host city</string>
+    <string name="nationality_hint">Nationality</string>
+
+
+    <string name="user_type_spinner_title">Choose user type</string>
+    <string-array name="user_type_spinner">
+        <item>Student</item>
+        <item>Organizator</item>
+        <item>Administrator</item>
+    </string-array>
+
+    <string-array name="study_field_spinner">
+        <item>Architecture</item>
+        <item>Art</item>
+        <item>Business Management</item>
+        <item>Communication</item>
+        <item>Criminology</item>
+        <item>Economics</item>
+        <item>Education</item>
+        <item>Engineering</item>
+        <item>History</item>
+        <item>Languages</item>
+        <item>Law</item>
+        <item>Medical Sciences</item>
+        <item>Philosophy</item>
+        <item>Political Sciences</item>
+        <item>Psychology</item>
+        <item>Sciences</item>
+    </string-array>
+
+    <string name="profile_saved_toast">Profile correctly saved</string>
 </resources>

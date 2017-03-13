@@ -151,6 +151,12 @@ public class CitiesActivity extends AppCompatActivity {
             case R.id.action_logout:
                 FirebaseAuth.getInstance().signOut();
                 return true;
+            case R.id.my_profile:
+
+                Intent intent = new Intent(this, UsersActivity.class);
+                startActivity(intent);
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
