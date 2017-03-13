@@ -2,8 +2,10 @@ package com.cooldevs.erasmuskit;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
@@ -49,6 +51,25 @@ public class CitiesActivity extends AppCompatActivity {
             }
         };
 
+        // Initial loading with SwipeRefreshLayout (should do a more complex logic)
+        final SwipeRefreshLayout refLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_ref_layout);
+        refLayout.setRefreshing(true);
+        refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refLayout.setRefreshing(false);
+            }
+        });
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refLayout.setRefreshing(false);
+            }
+        }, 5000);
+
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
         recyclerView.setHasFixedSize(false);
 
@@ -58,8 +79,7 @@ public class CitiesActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-
-        DatabaseReference citiesRef = FirebaseDatabase.getInstance().getReference("cities");
+        Query citiesRef = FirebaseDatabase.getInstance().getReference("cities").orderByChild("name");
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -84,10 +104,8 @@ public class CitiesActivity extends AppCompatActivity {
                 for (int i = 0; i < cities.size(); i++) {
                     City city = cities.get(i);
                     if (city.getKey().equals(key)) {
-                        Log.d(TAG, "Removed city found!");
-                        int pos = cities.indexOf(city);
                         cities.remove(city);
-                        adapter.notifyItemRemoved(pos);
+                        adapter.notifyItemRemoved(i);
 
                         break;
                     }
