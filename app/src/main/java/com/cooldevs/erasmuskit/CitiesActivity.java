@@ -36,7 +36,7 @@ public class CitiesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cities);
 
-        // Login / logout session flow
+        // Login / logout session flow (if user is null we go back to LoginActivity)
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -69,16 +69,21 @@ public class CitiesActivity extends AppCompatActivity {
             }
         }, 5000);
 
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
-        recyclerView.setHasFixedSize(false);
-
+        // Initialize the views: recyclerView and its adapter for managing the list of cities
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
         final ArrayList<City> cities = new ArrayList<>();
         final CitiesAdapter adapter = new CitiesAdapter(cities, this);
+        adapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
+            }
+        });
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
+        // Get the array of cities from Firebase Database (and sort them by name)
         Query citiesRef = FirebaseDatabase.getInstance().getReference("cities").orderByChild("name");
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -106,10 +111,13 @@ public class CitiesActivity extends AppCompatActivity {
                     if (city.getKey().equals(key)) {
                         cities.remove(city);
                         adapter.notifyItemRemoved(i);
+                        adapter.notifyItemRangeChanged(i, cities.size());
 
-                        break;
+                        return;
                     }
                 }
+
+                throw new IllegalStateException("Removed child not found in local array.");
             }
 
             @Override
@@ -122,10 +130,9 @@ public class CitiesActivity extends AppCompatActivity {
 
             }
         };
-
         citiesRef.addChildEventListener(childEventListener);
 
-
+        // Floating Action Button onClick listener
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.add_city_fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,9 +152,8 @@ public class CitiesActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
+        if (mAuthListener != null)
             mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 
 

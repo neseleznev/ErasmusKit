@@ -5,12 +5,13 @@
     <string name="header_text">Connect with the Erasmus World</string>
     <string name="cities_list_text">Select a city</string>
     <string name="action_logout">Logout</string>
-    <string name="register_button_text">Register as an organizator</string>
+    <string name="register_button_text">Register with email</string>
     <string name="auth_failed_toast">Authentication failed</string>
 
     <string name="country_city_content">Country: %1$s</string>
-    <string name="delete_city_toast">City successfully deleted</string>
-    <string name="add_city_toast">City successfully added</string>
+    <string name="delete_city_toast">City deleted from database</string>
+    <string name="add_city_toast">City added to database</string>
+    <string name="error_toast">Oops! There was an error</string>
 
     <string name="new_city_name_hint">New city name</string>
     <string name="new_city_country_hint">New city country</string>
