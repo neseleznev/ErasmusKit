@@ -2,7 +2,6 @@ package com.cooldevs.erasmuskit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -51,8 +50,10 @@ public class CitiesActivity extends AppCompatActivity {
             }
         };
 
-        // Initial loading with SwipeRefreshLayout (should do a more complex logic)
+        // Initial loading with SwipeRefreshLayout
         final SwipeRefreshLayout refLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_ref_layout);
+        refLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light);
         refLayout.setRefreshing(true);
         refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -61,14 +62,6 @@ public class CitiesActivity extends AppCompatActivity {
             }
         });
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refLayout.setRefreshing(false);
-            }
-        }, 5000);
-
         // Initialize the views: recyclerView and its adapter for managing the list of cities
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
         final ArrayList<City> cities = new ArrayList<>();
@@ -76,7 +69,10 @@ public class CitiesActivity extends AppCompatActivity {
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
+                //Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
+                Intent intent = new Intent(CitiesActivity.this, CityActivity.class);
+                intent.putExtra("city_name", cities.get(recyclerView.getChildAdapterPosition(view)).getName());
+                startActivity(intent);
             }
         });
 
@@ -94,6 +90,8 @@ public class CitiesActivity extends AppCompatActivity {
 
                 cities.add(city);
                 adapter.notifyDataSetChanged();
+
+                refLayout.setRefreshing(false);
             }
 
             @Override
