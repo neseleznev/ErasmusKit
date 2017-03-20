@@ -1,22 +1,33 @@
 <resources>
     <string name="app_name">ErasmusKit</string>
-    <string name="title_activity_login">LoginActivity</string>
 
+    <!-- LoginActivity.java -->
+    <string name="title_activity_login">LoginActivity</string>
     <string name="header_text">Connect with the Erasmus World</string>
-    <string name="cities_list_text">Select a city</string>
-    <string name="action_logout">Logout</string>
     <string name="register_button_text">Register with email</string>
     <string name="auth_failed_toast">Authentication failed</string>
 
+    <!-- CityActivity.java -->
+    <string name="city_section_1">People</string>
+    <string name="city_section_2">Events</string>
+    <string name="city_section_3">Tips</string>
+    <string name="city_section_4">Places</string>
+
+    <!-- NewCityActivity.java -->
+    <string name="new_city_toolbar">Add new city</string>
+    <string name="new_city_name_hint">City name</string>
+    <string name="new_city_country_hint">City country</string>
+    <string name="new_city_btn_text">Save</string>
+
+    <!-- Menu -->
+    <string name="action_logout">Logout</string>
+
+    <!-- Toasts and Snacks -->
     <string name="country_city_content">Country: %1$s</string>
     <string name="delete_city_toast">City deleted from database</string>
     <string name="add_city_toast">City added to database</string>
     <string name="error_toast">Oops! There was an error</string>
     <string name="fav_city_add_snack">Added to favorites!</string>
     <string name="fav_city_remove_snack">Removed from favorites</string>
-
-    <string name="new_city_name_hint">New city name</string>
-    <string name="new_city_country_hint">New city country</string>
-    <string name="new_city_btn_text">Save</string>
 
 </resources>

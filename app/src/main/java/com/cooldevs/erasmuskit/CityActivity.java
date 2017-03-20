@@ -1,12 +1,12 @@
 package com.cooldevs.erasmuskit;
 
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class CityActivity extends AppCompatActivity {
 
-    private boolean isFavourite = false;
+    private boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,23 +37,30 @@ public class CityActivity extends AppCompatActivity {
         CollapsingToolbarLayout ctLayout = (CollapsingToolbarLayout) findViewById(R.id.city_ctlayout);
         ctLayout.setTitle(getIntent().getStringExtra("city_name"));
 
-        // Initializing an empty recyclerView
+        // Initializing recyclerView
+        ArrayList<CitySection> sections = new ArrayList<>();
+        sections.add(new CitySection(R.drawable.ic_people_black_24dp, getString(R.string.city_section_1)));
+        sections.add(new CitySection(R.drawable.ic_event_black_24dp, getString(R.string.city_section_2)));
+        sections.add(new CitySection(R.drawable.ic_lightbulb_outline_black_24dp, getString(R.string.city_section_3)));
+        sections.add(new CitySection(R.drawable.ic_place_black_24dp, getString(R.string.city_section_4)));
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.city_recView);
-        CitiesAdapter adapter = new CitiesAdapter(new ArrayList<City>(), this);
+        recyclerView.setHasFixedSize(true);
+        CitySectionsAdapter adapter = new CitySectionsAdapter(sections);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(CityActivity.this, 2));
 
         // Floating Action Button
         final FloatingActionButton button = (FloatingActionButton) findViewById(R.id.star_city_fab);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int drawableIcon = isFavourite ? R.drawable.ic_star_border_black_24dp : R.drawable.ic_star_black_24dp;
-                int message = isFavourite ? R.string.fav_city_remove_snack : R.string.fav_city_add_snack;
+                int drawableIcon = isFavorite ? R.drawable.ic_star_border_black_24dp : R.drawable.ic_star_black_24dp;
+                int message = isFavorite ? R.string.fav_city_remove_snack : R.string.fav_city_add_snack;
 
                 button.setImageDrawable(ContextCompat.getDrawable(CityActivity.this, drawableIcon));
                 Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
-                isFavourite = !isFavourite;
+                isFavorite = !isFavorite;
             }
         });
     }
