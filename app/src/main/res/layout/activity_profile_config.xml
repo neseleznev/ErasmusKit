@@ -34,18 +34,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/user_type_spinner"
         android:entries="@array/user_type_spinner"
-        android:prompt="@string/user_type_spinner_title"
         android:layout_weight="0.00" />
 
-
-    <EditText
+    <TextView
+        android:text="Nationality:"
+        android:layout_width="371dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/nationality"
+        android:layout_weight="0.00"
+        android:layout_gravity="top"
+        android:textSize="14sp" />
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/nationality_text"
-        android:hint="@string/nationality_hint"
+        android:id="@+id/nationality_spinner"
+        android:entries="@array/nationality_spinner"
         android:layout_weight="0.00" />
+
 
     <TextView
         android:text="Study field:"

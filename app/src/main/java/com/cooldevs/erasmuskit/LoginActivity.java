@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
+                    // User is signed in, we go to CitiesActivity
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     startActivity(new Intent(LoginActivity.this, CitiesActivity.class));
                     finish();
@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        // We could also add a Facebook login button
     }
 
     @Override
@@ -90,9 +89,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
+        if (mAuthListener != null)
             mAuth.removeAuthStateListener(mAuthListener);
-        }
+
     }
 
     @Override
@@ -108,7 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } else {
                 // Google Sign In failed, update UI appropriately
-                Log.d(TAG, "Google sign in failed");
+                Log.d(TAG, "Google sign in failed, " + result.getStatus().getStatusMessage());
+                Toast.makeText(this, R.string.auth_failed_toast, Toast.LENGTH_SHORT).show();
             }
         }
     }

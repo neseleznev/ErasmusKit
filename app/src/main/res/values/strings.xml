@@ -1,29 +1,100 @@
 <resources>
     <string name="app_name">ErasmusKit</string>
-    <string name="title_activity_login">LoginActivity</string>
 
+    <!-- LoginActivity.java -->
+    <string name="title_activity_login">LoginActivity</string>
     <string name="header_text">Connect with the Erasmus World</string>
-    <string name="cities_list_text">Select a city</string>
-    <string name="action_logout">Logout</string>
-    <string name="action_my_profile">My profile</string>
-    <string name="register_button_text">Register as an organizator</string>
+    <string name="register_button_text">Register with email</string>
     <string name="auth_failed_toast">Authentication failed</string>
 
-    <string name="country_city_content">Country: %1$s</string>
-    <string name="delete_city_toast">City successfully deleted</string>
-    <string name="add_city_toast">City successfully added</string>
+    <!-- CityActivity.java -->
+    <string name="city_section_1">People</string>
+    <string name="city_section_2">Events</string>
+    <string name="city_section_3">Tips</string>
+    <string name="city_section_4">Places</string>
 
-    <string name="new_city_name_hint">New city name</string>
-    <string name="new_city_country_hint">New city country</string>
+    <!-- NewCityActivity.java -->
+    <string name="new_city_toolbar">Add new city</string>
+    <string name="new_city_name_hint">City name</string>
+    <string name="new_city_country_hint">City country</string>
     <string name="save_btn_text">Save</string>
 
-    <string name="configure_profile_btn_text">Configure profile</string>
+    <!-- Menu -->
+    <string name="action_logout">Logout</string>
 
+    <!-- Toasts and Snacks -->
+    <string name="country_city_content">Country: %1$s</string>
+    <string name="delete_city_toast">City deleted from database</string>
+    <string name="add_city_toast">City added to database</string>
+    <string name="error_toast">Oops! There was an error</string>
+    <string name="fav_city_add_snack">Added to favorites!</string>
+    <string name="fav_city_remove_snack">Removed from favorites</string>
+
+
+    <!--User Profile-->
+
+    <string name="configure_profile_btn_text">Configure profile</string>
     <string name="host_city_hint">Host city</string>
     <string name="nationality_hint">Nationality</string>
 
+    <string-array name="nationality_spinner">
+        <item>Albania</item>
+        <item>Algeria</item>
+        <item>Austria</item>
+        <item>Armenia</item>
+        <item>Azerbaijan</item>
+        <item>Belarus</item>
+        <item>Belgium</item>
+        <item>Bosnia and Herzegovina</item>
+        <item>Bulgaria</item>
+        <item>Croatia</item>
+        <item>Cyprus</item>
+        <item>Czech Republic</item>
+        <item>Denmark</item>
+        <item>Egypt</item>
+        <item>Estonia</item>
+        <item>Finland</item>
+        <item>France</item>
+        <item>Georgia</item>
+        <item>Germany</item>
+        <item>Greece</item>
+        <item>Hungary</item>
+        <item>Iceland</item>
+        <item>Ireland</item>
+        <item>Israel</item>
+        <item>Italy</item>
+        <item>Jordan</item>
+        <item>Kosovo</item>
+        <item>Latvia</item>
+        <item>Lebanon</item>
+        <item>Lybia</item>
+        <item>Lienchtenstein</item>
+        <item>Lithuania</item>
+        <item>Luxemburg</item>
+        <item>Macedonia</item>
+        <item>Malta</item>
+        <item>Montenegro</item>
+        <item>Moldova</item>
+        <item>Morocco</item>
+        <item>Netherlands</item>
+        <item>Norway</item>
+        <item>Palestine</item>
+        <item>Poland</item>
+        <item>Portugal</item>
+        <item>Romania</item>
+        <item>Russia</item>
+        <item>Serbia</item>
+        <item>Slovenia</item>
+        <item>Slovakia</item>
+        <item>Spain</item>
+        <item>Sweden</item>
+        <item>Syria</item>
+        <item>Tunisia</item>
+        <item>Turkey</item>
+        <item>Ukaine</item>
+        <item>United Kingdom</item>
+    </string-array>
 
-    <string name="user_type_spinner_title">Choose user type</string>
     <string-array name="user_type_spinner">
         <item>Student</item>
         <item>Organizator</item>
@@ -50,4 +121,6 @@
     </string-array>
 
     <string name="profile_saved_toast">Profile correctly saved</string>
+    <string name="action_my_profile">My profile</string>
+
 </resources>

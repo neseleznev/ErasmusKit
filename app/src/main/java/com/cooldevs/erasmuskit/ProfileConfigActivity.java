@@ -2,6 +2,7 @@ package com.cooldevs.erasmuskit;
 
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -49,7 +50,7 @@ public class ProfileConfigActivity extends AppCompatActivity {
         TextView user_name_tv=(TextView)findViewById(R.id.user_name);
         user_name_tv.setText(userName);
 
-        final EditText nationalityEditText = (EditText) findViewById(R.id.nationality_text);
+        final Spinner nationalitySpinner = (Spinner) findViewById(R.id.nationality_spinner);
         final Spinner studiesSpinner= (Spinner) findViewById(R.id.study_field_spinner);
         final Spinner userTypeSpinner= (Spinner) findViewById(R.id.user_type_spinner);
 
@@ -88,33 +89,39 @@ public class ProfileConfigActivity extends AppCompatActivity {
                 String newHostCity= citySpinner.getSelectedItem().toString();
                 String newUserName=userName;
                 String newUserEmail=userEmail;
-                String newNationality=nationalityEditText.getText().toString();//nationality should be a spinner as well?
+                String newNationality=nationalitySpinner.getSelectedItem().toString();
                 String newStudies=studiesSpinner.getSelectedItem().toString();
                 String newUserType=userTypeSpinner.getSelectedItem().toString();
 
                 String key = null;
                 //for shared preferences
+                //SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref",0);//0: MODE_PRIVATE
-                SharedPreferences.Editor editor=pref.edit();
+                //SharedPreferences.Editor editor=pref.edit();
 
-                pref.getString("userKey",key);
+                pref.getString("userKey: ",key);
 
-                if(key.isEmpty()){
+                Log.d(TAG,"userKey: "+key);
+
+                if(key == null){
                     if (!TextUtils.isEmpty(newNationality)) {
 
-                        // Add user to Firebase
+                        Log.d(TAG,"Add user to Firebase");
+
                         DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).push();
                         key = mUserRef.getKey();
                         mUserRef.setValue(new User(newHostCity, newUserName, newUserEmail, newNationality, newStudies, newUserType));
 
-                        editor.putString("userKey",key);
-                        editor.commit();
+                        pref.edit().putString("userKey",key).apply();;
+                        //editor.putString("userKey",key);
+                        //editor.commit();
 
                         Toast.makeText(ProfileConfigActivity.this, R.string.profile_saved_toast, Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }else{
-                    //modify the users parameters
+                    Log.d(TAG,"modify the users profile");
+
                     DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(key);
                     mUserRef.setValue(new User(newHostCity, newUserName, newUserEmail, newNationality, newStudies, newUserType));
 

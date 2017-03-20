@@ -20,10 +20,11 @@ import java.util.ArrayList;
  * Created by mario on 04/03/2017
  */
 
-public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHolder> {
+public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHolder> implements View.OnClickListener {
 
     private ArrayList<City> citiesList;
     private Context mContext;
+    private View.OnClickListener listener;
 
     private static final String TAG = "CitiesAdapter";
 
@@ -35,6 +36,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
     @Override
     public CityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.city_list_item, parent, false);
+        itemView.setOnClickListener(this);
 
         return new CityViewHolder(itemView);
     }
@@ -48,6 +50,32 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
     @Override
     public int getItemCount() {
         return citiesList.size();
+    }
+
+    private void removeAt(City city, final int position) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("cities").child(city.getKey());
+        ref.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError == null)
+                    Toast.makeText(mContext, R.string.delete_city_toast, Toast.LENGTH_SHORT).show();
+                else {
+                    Log.d(TAG, "removeValue:onComplete, " + databaseError.getDetails());
+                    Toast.makeText(mContext, R.string.error_toast, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
+    public void setOnClickListener(View.OnClickListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (listener != null)
+            listener.onClick(view);
     }
 
     class CityViewHolder extends RecyclerView.ViewHolder {
@@ -64,33 +92,15 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
             deleteIcon = (ImageView) itemView.findViewById(R.id.city_delete_icon);
         }
 
-        void bindCity(final City c) {
-            cityName.setText(c.getName());
-            cityCountry.setText(mContext.getString(R.string.country_city_content, c.getCountry()));
-
+        void bindCity(final City city) {
+            cityName.setText(city.getName());
+            cityCountry.setText(mContext.getString(R.string.country_city_content, city.getCountry()));
             deleteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    removeAt(getAdapterPosition());
-
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("cities").child(c.getKey());
-                    ref.removeValue(new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                            if (databaseError != null)
-                                Log.d(TAG, "removeValue:onComplete, " + databaseError.getDetails());
-                        }
-                    });
+                    removeAt(city, getAdapterPosition());
                 }
             });
         }
-    }
-
-    private void removeAt(int position) {
-        citiesList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, citiesList.size());
-
-        Toast.makeText(mContext, R.string.delete_city_toast, Toast.LENGTH_SHORT).show();
     }
 }
