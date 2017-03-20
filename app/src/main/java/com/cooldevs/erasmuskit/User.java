@@ -7,6 +7,7 @@ package com.cooldevs.erasmuskit;
 public class User {
     private String key;
     private String userName;
+    private String userEmail;
     private String nationality;
     private String studyField;
     private String hostCity;
@@ -16,9 +17,10 @@ public class User {
 
     }
 
-    public User(String hostCity, String userName, String nationality, String studyField, String userType){
+    public User(String hostCity, String userName, String userEmail, String nationality, String studyField, String userType){
         this.hostCity=hostCity;
         this.userName=userName;
+        this.userEmail=userEmail;
         this.nationality=nationality;
         this.studyField=studyField;
         this.userType=userType;

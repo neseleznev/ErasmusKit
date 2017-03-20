@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -42,6 +43,10 @@ public class UsersActivity extends AppCompatActivity {
 
         TextView user_email_tv=(TextView)findViewById(R.id.user_email);
         user_email_tv.setText(email);
+
+        //ImageView imgView = (ImageView) findViewById(R.id.image3);
+
+        //imgView.setImageURI(Uri.parse(photoUrl.toString()));
 
         config_btn=(Button)findViewById(R.id.configue_profile_btn);
         config_btn.setOnClickListener(new View.OnClickListener(){

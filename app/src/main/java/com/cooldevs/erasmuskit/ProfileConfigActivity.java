@@ -1,5 +1,6 @@
 package com.cooldevs.erasmuskit;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -30,10 +32,11 @@ public class ProfileConfigActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileConfigActivity";
 
+
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     // Name, email address, and profile photo Url
     String userName = user.getDisplayName();
-
+    String userEmail = user.getEmail();
     Spinner citySpinner;
 
 
@@ -51,7 +54,7 @@ public class ProfileConfigActivity extends AppCompatActivity {
         final Spinner userTypeSpinner= (Spinner) findViewById(R.id.user_type_spinner);
 
         //Filling the spinner with the cities
-        DatabaseReference citiesRef = FirebaseDatabase.getInstance().getReference("cities");
+        Query citiesRef = FirebaseDatabase.getInstance().getReference("cities").orderByChild("name");
         citiesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -84,20 +87,42 @@ public class ProfileConfigActivity extends AppCompatActivity {
 
                 String newHostCity= citySpinner.getSelectedItem().toString();
                 String newUserName=userName;
-                String newNationality=nationalityEditText.getText().toString();
+                String newUserEmail=userEmail;
+                String newNationality=nationalityEditText.getText().toString();//nationality should be a spinner as well?
                 String newStudies=studiesSpinner.getSelectedItem().toString();
                 String newUserType=userTypeSpinner.getSelectedItem().toString();
 
+                String key = null;
+                //for shared preferences
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref",0);//0: MODE_PRIVATE
+                SharedPreferences.Editor editor=pref.edit();
 
-                if (!TextUtils.isEmpty(newNationality)) {
+                pref.getString("userKey",key);
 
-                    // Add city to Firebase
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
-                    ref.push().setValue(new User(newHostCity, newUserName, newNationality, newStudies, newUserType));
+                if(key.isEmpty()){
+                    if (!TextUtils.isEmpty(newNationality)) {
+
+                        // Add user to Firebase
+                        DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).push();
+                        key = mUserRef.getKey();
+                        mUserRef.setValue(new User(newHostCity, newUserName, newUserEmail, newNationality, newStudies, newUserType));
+
+                        editor.putString("userKey",key);
+                        editor.commit();
+
+                        Toast.makeText(ProfileConfigActivity.this, R.string.profile_saved_toast, Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }else{
+                    //modify the users parameters
+                    DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(key);
+                    mUserRef.setValue(new User(newHostCity, newUserName, newUserEmail, newNationality, newStudies, newUserType));
 
                     Toast.makeText(ProfileConfigActivity.this, R.string.profile_saved_toast, Toast.LENGTH_SHORT).show();
                     finish();
                 }
+
+
             }
         });
 
