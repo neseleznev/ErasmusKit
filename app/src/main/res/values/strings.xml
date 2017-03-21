@@ -17,19 +17,7 @@
     <string name="new_city_toolbar">Add new city</string>
     <string name="new_city_name_hint">City name</string>
     <string name="new_city_country_hint">City country</string>
-    <string name="save_btn_text">Save</string>
-
-    <!-- Menu -->
-    <string name="action_logout">Logout</string>
-
-    <!-- Toasts and Snacks -->
-    <string name="country_city_content">Country: %1$s</string>
-    <string name="delete_city_toast">City deleted from database</string>
-    <string name="add_city_toast">City added to database</string>
-    <string name="error_toast">Oops! There was an error</string>
-    <string name="fav_city_add_snack">Added to favorites!</string>
-    <string name="fav_city_remove_snack">Removed from favorites</string>
-
+    <string name="new_city_btn_text">Save</string>
 
     <!--User Profile-->
 
@@ -122,5 +110,16 @@
 
     <string name="profile_saved_toast">Profile correctly saved</string>
     <string name="action_my_profile">My profile</string>
+
+    <!-- Menu -->
+    <string name="action_logout">Logout</string>
+
+    <!-- Toasts and Snacks -->
+    <string name="country_city_content">Country: %1$s</string>
+    <string name="delete_city_toast">City deleted from database</string>
+    <string name="add_city_toast">City added to database</string>
+    <string name="error_toast">Oops! There was an error</string>
+    <string name="fav_city_add_snack">Added to favorites!</string>
+    <string name="fav_city_remove_snack">Removed from favorites</string>
 
 </resources>

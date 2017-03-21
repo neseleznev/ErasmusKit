@@ -2,7 +2,6 @@ package com.cooldevs.erasmuskit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -36,7 +35,7 @@ public class CitiesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cities);
 
-        // Login / logout session flow
+        // Login / logout session flow (if user is null we go back to LoginActivity)
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -51,8 +50,10 @@ public class CitiesActivity extends AppCompatActivity {
             }
         };
 
-        // Initial loading with SwipeRefreshLayout (should do a more complex logic)
+        // Initial loading with SwipeRefreshLayout
         final SwipeRefreshLayout refLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_ref_layout);
+        refLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light);
         refLayout.setRefreshing(true);
         refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -61,24 +62,24 @@ public class CitiesActivity extends AppCompatActivity {
             }
         });
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refLayout.setRefreshing(false);
-            }
-        }, 5000);
-
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
-        recyclerView.setHasFixedSize(false);
-
+        // Initialize the views: recyclerView and its adapter for managing the list of cities
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
         final ArrayList<City> cities = new ArrayList<>();
         final CitiesAdapter adapter = new CitiesAdapter(cities, this);
+        adapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
+                Intent intent = new Intent(CitiesActivity.this, CityActivity.class);
+                intent.putExtra("city_name", cities.get(recyclerView.getChildAdapterPosition(view)).getName());
+                startActivity(intent);
+            }
+        });
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
+        // Get the array of cities from Firebase Database (and sort them by name)
         Query citiesRef = FirebaseDatabase.getInstance().getReference("cities").orderByChild("name");
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -89,6 +90,8 @@ public class CitiesActivity extends AppCompatActivity {
 
                 cities.add(city);
                 adapter.notifyDataSetChanged();
+
+                refLayout.setRefreshing(false);
             }
 
             @Override
@@ -106,10 +109,13 @@ public class CitiesActivity extends AppCompatActivity {
                     if (city.getKey().equals(key)) {
                         cities.remove(city);
                         adapter.notifyItemRemoved(i);
+                        adapter.notifyItemRangeChanged(i, cities.size());
 
-                        break;
+                        return;
                     }
                 }
+
+                throw new IllegalStateException("Removed child not found in local array.");
             }
 
             @Override
@@ -122,10 +128,9 @@ public class CitiesActivity extends AppCompatActivity {
 
             }
         };
-
         citiesRef.addChildEventListener(childEventListener);
 
-
+        // Floating Action Button onClick listener
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.add_city_fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,9 +150,8 @@ public class CitiesActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
+        if (mAuthListener != null)
             mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 
 

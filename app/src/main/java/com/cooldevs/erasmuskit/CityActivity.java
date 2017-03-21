@@ -9,15 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -38,28 +31,36 @@ public class CityActivity extends AppCompatActivity {
         if(getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(R.string.new_city_toolbar);
         }
 
-        final EditText cityNameEditText = (EditText) findViewById(R.id.newcity_name);
-        final EditText cityCountryEditText = (EditText) findViewById(R.id.newcity_country);
+        // Setting the title in the toolbar (actually in the "collapsing toolbar layout")
+        CollapsingToolbarLayout ctLayout = (CollapsingToolbarLayout) findViewById(R.id.city_ctlayout);
+        ctLayout.setTitle(getIntent().getStringExtra("city_name"));
 
-        Button saveCityBtn = (Button) findViewById(R.id.newcity_save_btn);
-        saveCityBtn.setOnClickListener(new View.OnClickListener() {
+        // Initializing recyclerView
+        ArrayList<CitySection> sections = new ArrayList<>();
+        sections.add(new CitySection(R.drawable.ic_people_black_24dp, getString(R.string.city_section_1)));
+        sections.add(new CitySection(R.drawable.ic_event_black_24dp, getString(R.string.city_section_2)));
+        sections.add(new CitySection(R.drawable.ic_lightbulb_outline_black_24dp, getString(R.string.city_section_3)));
+        sections.add(new CitySection(R.drawable.ic_place_black_24dp, getString(R.string.city_section_4)));
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.city_recView);
+        recyclerView.setHasFixedSize(true);
+        CitySectionsAdapter adapter = new CitySectionsAdapter(sections);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(CityActivity.this, 2));
+
+        // Floating Action Button
+        final FloatingActionButton button = (FloatingActionButton) findViewById(R.id.star_city_fab);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String newCityName = cityNameEditText.getText().toString();
-                String newCityCountry = cityCountryEditText.getText().toString();
+                int drawableIcon = isFavorite ? R.drawable.ic_star_border_black_24dp : R.drawable.ic_star_black_24dp;
+                int message = isFavorite ? R.string.fav_city_remove_snack : R.string.fav_city_add_snack;
 
-                if (!TextUtils.isEmpty(newCityName) && !TextUtils.isEmpty(newCityCountry)) {
-
-                    // Add city to Firebase
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("cities");
-                    ref.push().setValue(new City(newCityName, newCityCountry));
-
-                    Toast.makeText(NewCityActivity.this, R.string.add_city_toast, Toast.LENGTH_SHORT).show();
-                    finish();
-                }
+                button.setImageDrawable(ContextCompat.getDrawable(CityActivity.this, drawableIcon));
+                Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+                isFavorite = !isFavorite;
             }
         });
     }
