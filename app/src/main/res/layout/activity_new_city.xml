@@ -29,6 +29,6 @@
         android:id="@+id/newcity_save_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save_btn_text"/>
+        android:text="@string/new_city_btn_text"/>
 
 </LinearLayout>

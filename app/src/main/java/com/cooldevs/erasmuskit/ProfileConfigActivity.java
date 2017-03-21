@@ -93,17 +93,13 @@ public class ProfileConfigActivity extends AppCompatActivity {
                 String newStudies=studiesSpinner.getSelectedItem().toString();
                 String newUserType=userTypeSpinner.getSelectedItem().toString();
 
-                String key = null;
+                String key;
                 //for shared preferences
-                //SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref",0);//0: MODE_PRIVATE
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ProfileConfigActivity.this);
+                //SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref",0);//0: MODE_PRIVATE
                 //SharedPreferences.Editor editor=pref.edit();
 
-                pref.getString("userKey: ",key);
-
-                Log.d(TAG,"userKey: "+key);
-
-                if(key == null){
+                if(!pref.contains("userKey")){
                     if (!TextUtils.isEmpty(newNationality)) {
 
                         Log.d(TAG,"Add user to Firebase");
@@ -112,7 +108,7 @@ public class ProfileConfigActivity extends AppCompatActivity {
                         key = mUserRef.getKey();
                         mUserRef.setValue(new User(newHostCity, newUserName, newUserEmail, newNationality, newStudies, newUserType));
 
-                        pref.edit().putString("userKey",key).apply();;
+                        pref.edit().putString("userKey",key).apply();
                         //editor.putString("userKey",key);
                         //editor.commit();
 
@@ -121,6 +117,8 @@ public class ProfileConfigActivity extends AppCompatActivity {
                     }
                 }else{
                     Log.d(TAG,"modify the users profile");
+
+                    key = pref.getString("userKey", "");
 
                     DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(key);
                     mUserRef.setValue(new User(newHostCity, newUserName, newUserEmail, newNationality, newStudies, newUserType));
