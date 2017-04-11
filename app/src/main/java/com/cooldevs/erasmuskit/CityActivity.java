@@ -1,5 +1,6 @@
 package com.cooldevs.erasmuskit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 public class CityActivity extends AppCompatActivity {
 
     private boolean isFavorite = false;
+    String city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,8 @@ public class CityActivity extends AppCompatActivity {
 
         // Setting the title in the toolbar (actually in the "collapsing toolbar layout")
         CollapsingToolbarLayout ctLayout = (CollapsingToolbarLayout) findViewById(R.id.city_ctlayout);
-        ctLayout.setTitle(getIntent().getStringExtra("city_name"));
+        city=getIntent().getStringExtra("city_name");
+        ctLayout.setTitle(city);
 
         // Initializing recyclerView
         ArrayList<CitySection> sections = new ArrayList<>();
@@ -47,8 +50,21 @@ public class CityActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.city_recView);
         recyclerView.setHasFixedSize(true);
         CitySectionsAdapter adapter = new CitySectionsAdapter(sections);
+        adapter.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                //Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
+
+                Intent intent = new Intent(CityActivity.this, PeopleActivity.class);
+                intent.putExtra("city",city);
+                //Sintent.putExtra("city", cities.get(recyclerView.getChildAdapterPosition(view)).getName());
+                startActivity(intent);
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(CityActivity.this, 2));
+
+
 
         // Floating Action Button
         final FloatingActionButton button = (FloatingActionButton) findViewById(R.id.star_city_fab);

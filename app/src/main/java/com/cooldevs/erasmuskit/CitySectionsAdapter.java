@@ -13,9 +13,10 @@ import java.util.ArrayList;
  * Created by mario on 19/03/2017
  */
 
-public class CitySectionsAdapter extends RecyclerView.Adapter<CitySectionsAdapter.CitySectionViewHolder> {
+public class CitySectionsAdapter extends RecyclerView.Adapter<CitySectionsAdapter.CitySectionViewHolder> implements View.OnClickListener {
 
     private ArrayList<CitySection> citySections;
+    private View.OnClickListener listener;
 
     public CitySectionsAdapter(ArrayList<CitySection> citySections) {
         this.citySections = citySections;
@@ -38,6 +39,18 @@ public class CitySectionsAdapter extends RecyclerView.Adapter<CitySectionsAdapte
     public int getItemCount() {
         return citySections.size();
     }
+
+    public void setOnClickListener(View.OnClickListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (listener != null)
+            listener.onClick(view);
+    }
+
+
 
     class CitySectionViewHolder extends RecyclerView.ViewHolder {
 
