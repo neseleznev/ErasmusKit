@@ -175,10 +175,16 @@ public class CitiesActivity extends AppCompatActivity {
                 return true;
 
             case R.id.my_profile:
-                Intent intent = new Intent(this, UsersActivity.class);
+                Intent intent = new Intent(this, UserProfileActivity.class);
                 startActivity(intent);
                 return true;
+
+            case android.R.id.home:
+                finish();
+                return true;
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }

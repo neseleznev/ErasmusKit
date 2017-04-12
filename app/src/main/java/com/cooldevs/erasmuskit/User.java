@@ -19,11 +19,11 @@ public class User {
 
     public User(String hostCity, String userName, String userEmail, String nationality, String studyField, String userType){
         this.hostCity=hostCity;
-        this.userName=userName;
-        this.userEmail=userEmail;
         this.nationality=nationality;
         this.studyField=studyField;
+        this.userName=userName;
         this.userType=userType;
+        this.userEmail=userEmail;
     }
 
     public String getKey() {
@@ -76,5 +76,13 @@ public class User {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

@@ -1,10 +1,13 @@
 package com.cooldevs.erasmuskit;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -33,11 +36,16 @@ public class ProfileConfigActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileConfigActivity";
 
-
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     // Name, email address, and profile photo Url
-    String userName = user.getDisplayName();
     String userEmail = user.getEmail();
+
+    private String userName;
+    private String userNationality;
+    private String userStudyField;
+    private String userHostCity;
+    private String userType;
+
     Spinner citySpinner;
 
 
@@ -47,8 +55,27 @@ public class ProfileConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_config);
 
-        TextView user_name_tv=(TextView)findViewById(R.id.user_name);
-        user_name_tv.setText(userName);
+        userName=getIntent().getStringExtra("userName");
+        userNationality=getIntent().getStringExtra("userNationality");
+        userStudyField=getIntent().getStringExtra("userStudyField");
+        userHostCity=getIntent().getStringExtra("userHostCity");
+        userType=getIntent().getStringExtra("userType");
+
+        // Set toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.profile_config_activity_toolbar);
+        setSupportActionBar(toolbar);
+
+        // Finish activity from status bar
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+
+        // Setting the title in the toolbar (actually in the "collapsing toolbar layout")
+        CollapsingToolbarLayout ctLayout = (CollapsingToolbarLayout) findViewById(R.id.profile_config_ctlayout);
+        ctLayout.setTitle(userName.toString());
+
 
         final Spinner nationalitySpinner = (Spinner) findViewById(R.id.nationality_spinner);
         final Spinner studiesSpinner= (Spinner) findViewById(R.id.study_field_spinner);
@@ -88,7 +115,7 @@ public class ProfileConfigActivity extends AppCompatActivity {
 
                 String newHostCity= citySpinner.getSelectedItem().toString();
                 String newUserName=userName;
-                String newUserEmail=userEmail;
+                String newUserEmail=userEmail;//I want to use this as user key
                 String newNationality=nationalitySpinner.getSelectedItem().toString();
                 String newStudies=studiesSpinner.getSelectedItem().toString();
                 String newUserType=userTypeSpinner.getSelectedItem().toString();
@@ -104,8 +131,10 @@ public class ProfileConfigActivity extends AppCompatActivity {
 
                         Log.d(TAG,"Add user to Firebase");
 
-                        DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).push();
-                        key = mUserRef.getKey();
+                        DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(newUserEmail).push();
+                        key=newUserEmail.replace(".","");
+                        Log.d(TAG,"new key"+key);
+                        //key = mUserRef.getKey();
                         mUserRef.setValue(new User(newHostCity, newUserName, newUserEmail, newNationality, newStudies, newUserType));
 
                         pref.edit().putString("userKey",key).apply();
@@ -118,15 +147,18 @@ public class ProfileConfigActivity extends AppCompatActivity {
                 }else{
                     Log.d(TAG,"modify the users profile");
 
-                    key = pref.getString("userKey", "");
-
-                    DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(key);
+                    //key = pref.getString("userKey", "");
+                    String key1=newUserEmail.replace(".","");
+                    Log.d(TAG,"new key"+key1);
+                    DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(key1);
                     mUserRef.setValue(new User(newHostCity, newUserName, newUserEmail, newNationality, newStudies, newUserType));
 
                     Toast.makeText(ProfileConfigActivity.this, R.string.profile_saved_toast, Toast.LENGTH_SHORT).show();
                     finish();
                 }
 
+                Intent intent = new Intent(ProfileConfigActivity.this, UserProfileActivity.class);
+                startActivity(intent);
 
             }
         });

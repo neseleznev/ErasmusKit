@@ -15,14 +15,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".NewCityActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".NewCityActivity" />
         <activity
             android:name=".CityActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".UsersActivity" />
-        <activity android:name=".ProfileConfigActivity" />
-        <activity android:name=".PeopleActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UserProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ProfileConfigActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".CityObjectsListActivity" />
+        <activity
+            android:name=".ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

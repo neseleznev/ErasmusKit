@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -19,6 +20,8 @@ public class CityActivity extends AppCompatActivity {
 
     private boolean isFavorite = false;
     String city;
+
+    private static final String TAG = "CityActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +50,25 @@ public class CityActivity extends AppCompatActivity {
         sections.add(new CitySection(R.drawable.ic_lightbulb_outline_black_24dp, getString(R.string.city_section_3)));
         sections.add(new CitySection(R.drawable.ic_place_black_24dp, getString(R.string.city_section_4)));
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.city_recView);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.city_recView);
         recyclerView.setHasFixedSize(true);
         CitySectionsAdapter adapter = new CitySectionsAdapter(sections);
         adapter.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                //Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
 
-                Intent intent = new Intent(CityActivity.this, PeopleActivity.class);
+                Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
+
+                Intent intent = new Intent(CityActivity.this, CityObjectsListActivity.class);
                 intent.putExtra("city",city);
-                //Sintent.putExtra("city", cities.get(recyclerView.getChildAdapterPosition(view)).getName());
+                intent.putExtra("id",recyclerView.getChildAdapterPosition(view));
                 startActivity(intent);
+
+
             }
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(CityActivity.this, 2));
-
 
 
         // Floating Action Button

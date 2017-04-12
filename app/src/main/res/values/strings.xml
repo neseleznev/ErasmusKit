@@ -122,4 +122,10 @@
     <string name="fav_city_add_snack">Added to favorites!</string>
     <string name="fav_city_remove_snack">Removed from favorites</string>
 
+    <!-- ProfileActivity.java -->
+    <string name="profile_section_1">Nationality</string>
+    <string name="profile_section_2">Study field</string>
+    <string name="profile_section_3">Host city</string>
+    <string name="profile_section_4">User type</string>
+
 </resources>
