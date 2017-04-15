@@ -19,6 +19,9 @@
     <string name="new_city_country_hint">City country</string>
     <string name="new_city_btn_text">Save</string>
 
+    <!-- PostActivity.java -->
+    <string name="empty_list_text">No content yet</string>
+
     <!--User Profile-->
     <string name="user_field_default_text">Not specified</string>
     <string name="configure_profile_btn_text">Configure profile</string>

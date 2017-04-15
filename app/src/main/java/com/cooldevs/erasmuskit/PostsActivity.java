@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -19,19 +20,26 @@ import java.util.ArrayList;
 
 public class PostsActivity extends AppCompatActivity {
 
+    private static final String TAG = "PostsActivity";
+
     private String city;
     private RecyclerView recyclerView;
 
-    private static final String TAG = "PostsActivity";
+    private Query usersRef;
+    private ChildEventListener usersEventListener;
+
+    private TextView emptyListText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
 
+        emptyListText = (TextView) findViewById(R.id.empty_list_text);
+
         city = getIntent().getStringExtra("city");
-        int id = getIntent().getIntExtra("id", 0);
         String toolbarTitle = city;
+        int id = getIntent().getIntExtra("id", 0);
 
         switch (id) {
             case 0:
@@ -82,9 +90,8 @@ public class PostsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         // Get the array of users from Firebase Database (and sort them by name)
-        Query usersRef = FirebaseDatabase.getInstance().getReference("users").orderByChild("userName");
-        ChildEventListener childEventListener = new ChildEventListener() {
-
+        usersRef = FirebaseDatabase.getInstance().getReference("users").orderByChild("userName");
+        usersEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(TAG, "childEventListener:onChildAdded, key: " + dataSnapshot.getKey());
@@ -95,6 +102,9 @@ public class PostsActivity extends AppCompatActivity {
                 if (city.equalsIgnoreCase(user.getHostCity())) {
                     users.add(user);
                     adapter.notifyDataSetChanged();
+
+                    if (emptyListText.getVisibility() != View.GONE)
+                        emptyListText.setVisibility(View.GONE);
                 }
 
             }
@@ -131,8 +141,21 @@ public class PostsActivity extends AppCompatActivity {
             }
         };
 
-        usersRef.addChildEventListener(childEventListener);
+    }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (usersRef != null)
+            usersRef.addChildEventListener(usersEventListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (usersRef != null && usersEventListener != null)
+            usersRef.removeEventListener(usersEventListener);
     }
 
     @Override

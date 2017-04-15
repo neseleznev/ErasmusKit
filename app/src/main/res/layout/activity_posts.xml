@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.cooldevs.erasmuskit.PostsActivity">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/empty_list_text"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:text="@string/empty_list_text"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/objects_recView"
             android:layout_width="match_parent"
