@@ -20,12 +20,20 @@
     <string name="new_city_btn_text">Save</string>
 
     <!--User Profile-->
-
+    <string name="user_field_default_text">Not specified</string>
     <string name="configure_profile_btn_text">Configure profile</string>
     <string name="host_city_hint">Host city</string>
     <string name="nationality_hint">Nationality</string>
+    <string name="city_spinner_default">Select your host city</string>
 
-    <string-array name="nationality_spinner">
+    <string-array name="dialog_titles">
+        <item>Select your nationality</item>
+        <item>Select your study field</item>
+        <item>Select your host city</item>
+        <item>Select your user type</item>
+    </string-array>
+
+    <string-array name="nationalities">
         <item>Albania</item>
         <item>Algeria</item>
         <item>Austria</item>
@@ -55,7 +63,7 @@
         <item>Kosovo</item>
         <item>Latvia</item>
         <item>Lebanon</item>
-        <item>Lybia</item>
+        <item>Libya</item>
         <item>Lienchtenstein</item>
         <item>Lithuania</item>
         <item>Luxemburg</item>
@@ -83,13 +91,13 @@
         <item>United Kingdom</item>
     </string-array>
 
-    <string-array name="user_type_spinner">
+    <string-array name="user_types">
         <item>Student</item>
         <item>Organizator</item>
         <item>Administrator</item>
     </string-array>
 
-    <string-array name="study_field_spinner">
+    <string-array name="study_fields">
         <item>Architecture</item>
         <item>Art</item>
         <item>Business Management</item>
@@ -121,11 +129,5 @@
     <string name="error_toast">Oops! There was an error</string>
     <string name="fav_city_add_snack">Added to favorites!</string>
     <string name="fav_city_remove_snack">Removed from favorites</string>
-
-    <!-- ProfileActivity.java -->
-    <string name="profile_section_1">Nationality</string>
-    <string name="profile_section_2">Study field</string>
-    <string name="profile_section_3">Host city</string>
-    <string name="profile_section_4">User type</string>
 
 </resources>

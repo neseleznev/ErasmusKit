@@ -13,21 +13,25 @@ public class User {
     private String hostCity;
     private String userType;
 
-    public User(){
+    public User() {
 
     }
 
-    public User(String hostCity, String userName, String userEmail, String nationality, String studyField, String userType){
-        this.hostCity=hostCity;
-        this.nationality=nationality;
-        this.studyField=studyField;
-        this.userName=userName;
-        this.userType=userType;
-        this.userEmail=userEmail;
+    public User(String userName, String userEmail) {
+        this.userName = userName;
+        this.userEmail = userEmail;
+    }
+
+    public User(String hostCity, String userName, String userEmail, String nationality, String studyField, String userType) {
+        this.hostCity = hostCity;
+        this.nationality = nationality;
+        this.studyField = studyField;
+        this.userName = userName;
+        this.userType = userType;
+        this.userEmail = userEmail;
     }
 
     public String getKey() {
-
         return key;
     }
 
@@ -39,26 +43,17 @@ public class User {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public String getUserEmail() {
+        return userEmail;
     }
-
 
     public String getNationality() {
 
         return nationality;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
     public String getStudyField() {
         return studyField;
-    }
-
-    public void setStudyField(String studyField) {
-        this.studyField = studyField;
     }
 
     public String getHostCity() {
@@ -69,20 +64,7 @@ public class User {
         this.hostCity = hostCity;
     }
 
-
     public String getUserType() {
         return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
     }
 }

@@ -6,8 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -35,13 +37,18 @@ public class CitiesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cities);
 
+        // Get screen dimensions (width) for the RecyclerView arrangement
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int numRows = ((int) dpWidth) / 520 + 1;
+
         // Login / logout session flow (if user is null we go back to LoginActivity)
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null)  {
+                if (user == null) {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                     startActivity(new Intent(CitiesActivity.this, LoginActivity.class));
@@ -77,7 +84,7 @@ public class CitiesActivity extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numRows));
 
         // Get the array of cities from Firebase Database (and sort them by name)
         Query citiesRef = FirebaseDatabase.getInstance().getReference("cities").orderByChild("name");
@@ -171,11 +178,16 @@ public class CitiesActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_logout:
+                String key = mAuth.getCurrentUser().getEmail().replace(".", "");
+                DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(key);
+                mUserRef.removeValue();
+
                 FirebaseAuth.getInstance().signOut();
                 return true;
 
             case R.id.my_profile:
-                Intent intent = new Intent(this, UserProfileActivity.class);
+                Intent intent = new Intent(this, ProfileActivity.class);
+                intent.putExtra("userName", mAuth.getCurrentUser().getDisplayName());
                 startActivity(intent);
                 return true;
 
@@ -183,8 +195,6 @@ public class CitiesActivity extends AppCompatActivity {
                 finish();
                 return true;
         }
-
-
 
         return super.onOptionsItemSelected(item);
     }

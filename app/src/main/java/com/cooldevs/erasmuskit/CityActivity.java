@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class CityActivity extends AppCompatActivity {
 
     private boolean isFavorite = false;
-    String city;
 
     private static final String TAG = "CityActivity";
 
@@ -33,14 +32,14 @@ public class CityActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Finish activity from status bar
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         // Setting the title in the toolbar (actually in the "collapsing toolbar layout")
         CollapsingToolbarLayout ctLayout = (CollapsingToolbarLayout) findViewById(R.id.city_ctlayout);
-        city=getIntent().getStringExtra("city_name");
+        final String city = getIntent().getStringExtra("city_name");
         ctLayout.setTitle(city);
 
         // Initializing recyclerView
@@ -53,17 +52,16 @@ public class CityActivity extends AppCompatActivity {
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.city_recView);
         recyclerView.setHasFixedSize(true);
         CitySectionsAdapter adapter = new CitySectionsAdapter(sections);
-        adapter.setOnClickListener(new View.OnClickListener(){
+        adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
 
-                Intent intent = new Intent(CityActivity.this, CityObjectsListActivity.class);
-                intent.putExtra("city",city);
-                intent.putExtra("id",recyclerView.getChildAdapterPosition(view));
+                Intent intent = new Intent(CityActivity.this, PostsActivity.class);
+                intent.putExtra("city", city);
+                intent.putExtra("id", recyclerView.getChildAdapterPosition(view));
                 startActivity(intent);
-
 
             }
         });

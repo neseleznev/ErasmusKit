@@ -1,12 +1,10 @@
 package com.cooldevs.erasmuskit;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,49 +17,44 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class CityObjectsListActivity extends AppCompatActivity {
+public class PostsActivity extends AppCompatActivity {
 
-    String city;
-    RecyclerView recyclerView;
-    private FirebaseAuth mAuth;
+    private String city;
+    private RecyclerView recyclerView;
 
-    private static final String TAG = "CityObjectsListActivity";
+    private static final String TAG = "PostsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_city_objects_list);
+        setContentView(R.layout.activity_posts);
 
-        mAuth = FirebaseAuth.getInstance();
+        city = getIntent().getStringExtra("city");
+        int id = getIntent().getIntExtra("id", 0);
 
-
-        city=getIntent().getStringExtra("city");
-        int id =getIntent().getIntExtra("id",0);
-
-        switch (id){
+        switch (id) {
             case 0:
                 peopleList();
                 break;
 
             case 1:
-                Toast.makeText(getApplicationContext(),"Events List",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Events List", Toast.LENGTH_SHORT).show();
                 break;
 
             case 2:
-                Toast.makeText(getApplicationContext(),"Tips List",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Tips List", Toast.LENGTH_SHORT).show();
                 break;
 
             case 3:
-                Toast.makeText(getApplicationContext(),"Places List",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Places List", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
-    void peopleList(){
+    void peopleList() {
 
         recyclerView = (RecyclerView) findViewById(R.id.objects_recView);
         final ArrayList<User> users = new ArrayList<>();
@@ -70,14 +63,13 @@ public class CityObjectsListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
-                Intent intent = new Intent(CityObjectsListActivity.this,ProfileActivity.class);
-                intent.putExtra("userName",users.get(recyclerView.getChildAdapterPosition(view)).getUserName());
-                intent.putExtra("userNationality",users.get(recyclerView.getChildAdapterPosition(view)).getNationality());
-                intent.putExtra("userStudyField",users.get(recyclerView.getChildAdapterPosition(view)).getStudyField());
-                intent.putExtra("userHostCity",users.get(recyclerView.getChildAdapterPosition(view)).getHostCity());
-                intent.putExtra("userType",users.get(recyclerView.getChildAdapterPosition(view)).getUserType());
+                Intent intent = new Intent(PostsActivity.this, ProfileActivity.class);
+                intent.putExtra("userName", users.get(recyclerView.getChildAdapterPosition(view)).getUserName());
+                intent.putExtra("userNationality", users.get(recyclerView.getChildAdapterPosition(view)).getNationality());
+                intent.putExtra("userStudyField", users.get(recyclerView.getChildAdapterPosition(view)).getStudyField());
+                intent.putExtra("userHostCity", users.get(recyclerView.getChildAdapterPosition(view)).getHostCity());
+                intent.putExtra("userType", users.get(recyclerView.getChildAdapterPosition(view)).getUserType());
                 startActivity(intent);
-
 
             }
         });
@@ -97,20 +89,19 @@ public class CityObjectsListActivity extends AppCompatActivity {
                 user.setKey(dataSnapshot.getKey());
 
 
-                if(city.equalsIgnoreCase(user.getHostCity())){
-
+                if (city.equalsIgnoreCase(user.getHostCity())) {
                     users.add(user);
                     adapter.notifyDataSetChanged();
                 }
 
-                if(users.isEmpty()){
-                    Toast.makeText(getApplicationContext(),"There's no one in "+city ,Toast.LENGTH_SHORT).show();
-                }
+                if (users.isEmpty())
+                    Toast.makeText(PostsActivity.this, "There's no one in " + city, Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {  }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
@@ -132,13 +123,15 @@ public class CityObjectsListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {  }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {  }
+            public void onCancelled(DatabaseError databaseError) {
+            }
         };
-        usersRef.addChildEventListener(childEventListener);
 
+        usersRef.addChildEventListener(childEventListener);
 
     }
 
@@ -162,7 +155,7 @@ public class CityObjectsListActivity extends AppCompatActivity {
                 return true;
 
             case R.id.my_profile:
-                Intent intent = new Intent(this, UserProfileActivity.class);
+                Intent intent = new Intent(this, ProfileActivity.class);
                 startActivity(intent);
                 return true;
         }
