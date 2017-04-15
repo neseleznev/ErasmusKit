@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.cooldevs.erasmuskit.PostsActivity">
 
-
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/objects_recView"
             android:layout_width="match_parent"

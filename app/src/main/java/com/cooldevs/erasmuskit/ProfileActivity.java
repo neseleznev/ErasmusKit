@@ -1,8 +1,8 @@
 package com.cooldevs.erasmuskit;
 
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,13 +29,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileActivity";
 
-    private User mUser;
-
-    private ArrayList<ProfileSection> sections;
     private ProfileSectionAdapter adapter;
     private RecyclerView recyclerView;
-
-    private List<String> citiesList;
+    private ArrayList<ProfileSection> sections;
+    private ArrayList<String> citiesList;
 
     private DatabaseReference usersRef;
     private ValueEventListener usersEventListener;
@@ -55,22 +52,22 @@ public class ProfileActivity extends AppCompatActivity {
         if (firebaseUser == null)
             throw new IllegalStateException("User should not be null in this activity!");
 
-        // IMPORTANT: We are using the email of the user (deleting the ".") as the user KEY
         final String userKey = firebaseUser.getEmail().replace(".", "");
         boolean mProfile = getIntent().getStringExtra("userName").equals(firebaseUser.getDisplayName());
         final String toolbarTitle;
+
+        // Initialize sections
+        sections = new ArrayList<>();
 
 
         // -------------THIS IS OUR PROFILE ---------------
         if (mProfile) {
             toolbarTitle = firebaseUser.getDisplayName();
 
-            sections = new ArrayList<>();
-            citiesList = new ArrayList<>();
-
+            // Get user information from Firebase Database
             getUserInformation(userKey);
 
-            // Get the list of available cities
+            // Get the list of available cities from Firebase Database
             getCitiesList();
         }
 
@@ -84,7 +81,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             toolbarTitle = userName;
 
-            sections = new ArrayList<>();
             sections.add(new ProfileSection(R.drawable.nationality_black_24dp, userNationality));
             sections.add(new ProfileSection(R.drawable.ic_school_black_24dp, userStudyField));
             sections.add(new ProfileSection(R.drawable.ic_location_city_black_24dp, userHostCity));
@@ -92,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         // Set toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.user_profile_activity_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.profile_activity_toolbar);
         setSupportActionBar(toolbar);
 
         // Finish activity from status bar
@@ -105,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity {
         CollapsingToolbarLayout ctLayout = (CollapsingToolbarLayout) findViewById(R.id.profile_ctlayout);
         ctLayout.setTitle(toolbarTitle);
 
-        recyclerView = (RecyclerView) findViewById(R.id.user_profile_recView);
+        recyclerView = (RecyclerView) findViewById(R.id.profile_recView);
         adapter = new ProfileSectionAdapter(sections);
         if (mProfile)
             setAdapterListener(userKey);
@@ -159,7 +155,7 @@ public class ProfileActivity extends AppCompatActivity {
         usersEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mUser = dataSnapshot.getValue(User.class);
+                User mUser = dataSnapshot.getValue(User.class);
 
                 // Initializing recyclerView
                 sections.clear();
@@ -183,6 +179,8 @@ public class ProfileActivity extends AppCompatActivity {
         citiesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                citiesList = new ArrayList<>();
+
                 for (DataSnapshot citySnapshot : dataSnapshot.getChildren()) {
                     String cityName = citySnapshot.child("name").getValue(String.class);
                     citiesList.add(cityName);

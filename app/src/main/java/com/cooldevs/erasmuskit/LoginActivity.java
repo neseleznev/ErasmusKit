@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             String email = mAuth.getCurrentUser().getEmail();
                             String name = mAuth.getCurrentUser().getDisplayName();
-                            String key = email.replace(".", "");
+                            String key = email.replace(".", ""); // IMPORTANT: We are using the email of the user (deleting the ".") as the user KEY
 
                             DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(key);
                             mUserRef.setValue(new User(name, email));

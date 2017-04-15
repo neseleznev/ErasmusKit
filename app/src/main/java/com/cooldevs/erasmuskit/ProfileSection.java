@@ -17,7 +17,6 @@ public class ProfileSection {
         return icon;
     }
 
-
     public String getValue() {
         return value;
     }

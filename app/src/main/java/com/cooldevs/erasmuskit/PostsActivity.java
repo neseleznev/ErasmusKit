@@ -6,12 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,28 +31,36 @@ public class PostsActivity extends AppCompatActivity {
 
         city = getIntent().getStringExtra("city");
         int id = getIntent().getIntExtra("id", 0);
+        String toolbarTitle = city;
 
         switch (id) {
             case 0:
+                toolbarTitle = city + "'s People";
                 peopleList();
                 break;
 
             case 1:
-                Toast.makeText(this, "Events List", Toast.LENGTH_SHORT).show();
+                toolbarTitle = city + "'s Events";
                 break;
 
             case 2:
-                Toast.makeText(this, "Tips List", Toast.LENGTH_SHORT).show();
+                toolbarTitle = city + "'s Tips";
                 break;
 
             case 3:
-                Toast.makeText(this, "Places List", Toast.LENGTH_SHORT).show();
+                toolbarTitle = city + "'s Places";
                 break;
+        }
+
+        // Finish activity from status bar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(toolbarTitle);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
     void peopleList() {
-
         recyclerView = (RecyclerView) findViewById(R.id.objects_recView);
         final ArrayList<User> users = new ArrayList<>();
         final UsersAdapter adapter = new UsersAdapter(users);
@@ -70,7 +75,6 @@ public class PostsActivity extends AppCompatActivity {
                 intent.putExtra("userHostCity", users.get(recyclerView.getChildAdapterPosition(view)).getHostCity());
                 intent.putExtra("userType", users.get(recyclerView.getChildAdapterPosition(view)).getUserType());
                 startActivity(intent);
-
             }
         });
 
@@ -88,14 +92,10 @@ public class PostsActivity extends AppCompatActivity {
 
                 user.setKey(dataSnapshot.getKey());
 
-
                 if (city.equalsIgnoreCase(user.getHostCity())) {
                     users.add(user);
                     adapter.notifyDataSetChanged();
                 }
-
-                if (users.isEmpty())
-                    Toast.makeText(PostsActivity.this, "There's no one in " + city, Toast.LENGTH_SHORT).show();
 
             }
 
@@ -136,13 +136,6 @@ public class PostsActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -150,13 +143,8 @@ public class PostsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_logout:
-                FirebaseAuth.getInstance().signOut();
-                return true;
-
-            case R.id.my_profile:
-                Intent intent = new Intent(this, ProfileActivity.class);
-                startActivity(intent);
+            case android.R.id.home:
+                finish();
                 return true;
         }
 

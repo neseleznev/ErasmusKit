@@ -21,7 +21,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/imgToolbar_user"
+                android:id="@+id/profile_toolbar_wp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -31,7 +31,7 @@
             <android.support.v7.widget.Toolbar
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/user_profile_activity_toolbar"
+                android:id="@+id/profile_activity_toolbar"
                 android:layout_height="56dp"
                 android:layout_width="match_parent"
                 android:minHeight="?attr/actionBarSize"
@@ -44,7 +44,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/user_profile_recView"
+        android:id="@+id/profile_recView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
