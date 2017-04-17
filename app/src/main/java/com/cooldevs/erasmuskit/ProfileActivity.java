@@ -168,7 +168,7 @@ public class ProfileActivity extends AppCompatActivity {
                 sections.add(new ProfileSection(R.drawable.nationality_black_24dp, mUser.getNationality() == null ? getString(R.string.user_field_default_text) : mUser.getNationality()));
                 sections.add(new ProfileSection(R.drawable.ic_school_black_24dp, mUser.getStudyField() == null ? getString(R.string.user_field_default_text) : mUser.getStudyField()));
                 sections.add(new ProfileSection(R.drawable.ic_location_city_black_24dp, mUser.getHostCity() == null ? getString(R.string.user_field_default_text) : mUser.getHostCity()));
-                sections.add(new ProfileSection(R.drawable.ic_people_black_24dp, mUser.getUserType() == null ? getString(R.string.user_field_default_text) : mUser.getUserType()));
+                sections.add(new ProfileSection(R.drawable.ic_account_settings, mUser.getUserType() == null ? getString(R.string.user_field_default_text) : mUser.getUserType()));
 
                 adapter.notifyDataSetChanged();
             }

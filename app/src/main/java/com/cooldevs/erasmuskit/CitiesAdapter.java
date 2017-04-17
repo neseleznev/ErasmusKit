@@ -25,14 +25,13 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
     private ArrayList<City> citiesList;
     private Context mContext;
     private View.OnClickListener listener;
-    private ArrayList<CityViewHolder> cityViewHolders;
+    private int visibility;
 
     private static final String TAG = "CitiesAdapter";
 
     public CitiesAdapter(ArrayList<City> cities, Context context) {
         this.citiesList = cities;
         this.mContext = context;
-        this.cityViewHolders = new ArrayList<>();
     }
 
     @Override
@@ -40,10 +39,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.city_list_item, parent, false);
         itemView.setOnClickListener(this);
 
-        CityViewHolder cityViewHolder = new CityViewHolder(itemView);
-        cityViewHolders.add(cityViewHolder);
-
-        return cityViewHolder;
+        return new CityViewHolder(itemView);
     }
 
     @Override
@@ -83,14 +79,8 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
             listener.onClick(view);
     }
 
-    public void enableDeleteIcon() {
-        for (CityViewHolder cityViewHolder : cityViewHolders)
-            cityViewHolder.showIcon();
-    }
-
-    public void hideDeleteIcon() {
-        for (CityViewHolder cityViewHolder : cityViewHolders)
-            cityViewHolder.hideIcon();
+    public void setIconVisibility(int visibility) {
+        this.visibility = visibility;
     }
 
     class CityViewHolder extends RecyclerView.ViewHolder {
@@ -110,20 +100,13 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         void bindCity(final City city) {
             cityName.setText(city.getName());
             cityCountry.setText(mContext.getString(R.string.country_city_content, city.getCountry()));
+            deleteIcon.setVisibility(visibility);
             deleteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     removeAt(city);
                 }
             });
-        }
-
-        public void showIcon() {
-            deleteIcon.setVisibility(View.VISIBLE);
-        }
-
-        public void hideIcon() {
-            deleteIcon.setVisibility(View.GONE);
         }
     }
 }

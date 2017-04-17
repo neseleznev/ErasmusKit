@@ -36,6 +36,10 @@ public class CitiesActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private ArrayList<City> cities;
+    private Query citiesRef;
+    private ChildEventListener childEventListener;
+
     private CitiesAdapter adapter;
     private FloatingActionButton floatingActionButton;
 
@@ -80,7 +84,7 @@ public class CitiesActivity extends AppCompatActivity {
 
         // Initialize the views: recyclerView and its adapter for managing the list of cities
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
-        final ArrayList<City> cities = new ArrayList<>();
+        cities = new ArrayList<>();
         adapter = new CitiesAdapter(cities, this);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,8 +100,8 @@ public class CitiesActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, numRows));
 
         // Get the array of cities from Firebase Database (and sort them by name)
-        Query citiesRef = FirebaseDatabase.getInstance().getReference("cities").orderByChild("name");
-        ChildEventListener childEventListener = new ChildEventListener() {
+        citiesRef = FirebaseDatabase.getInstance().getReference("cities").orderByChild("name");
+        childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(TAG, "childEventListener:onChildAdded, key: " + dataSnapshot.getKey());
@@ -142,10 +146,10 @@ public class CitiesActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.d(TAG, "ChildEventListener:onCancelled");
             }
         };
-        citiesRef.addChildEventListener(childEventListener);
+
 
         // Floating Action Button onClick listener
         floatingActionButton = (FloatingActionButton) findViewById(R.id.add_city_fab);
@@ -190,15 +194,13 @@ public class CitiesActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
-                    if (user.getUserType().equals(UserType.ADMINISTRATOR.getUserType())) {
-                        floatingActionButton.setVisibility(View.VISIBLE);
-                        adapter.enableDeleteIcon();
-                    } else {
-                        floatingActionButton.setVisibility(View.GONE);
-                        adapter.hideDeleteIcon();
-                    }
+                    int visibility = user.getUserType().equals(UserType.ADMINISTRATOR.getUserType()) ? View.VISIBLE : View.GONE;
 
-                    adapter.notifyDataSetChanged();
+                    setViewsVisibility(visibility);
+
+                    cities.clear();
+                    citiesRef.addChildEventListener(childEventListener);
+
                 }
 
                 @Override
@@ -209,10 +211,17 @@ public class CitiesActivity extends AppCompatActivity {
         }
     }
 
+    private void setViewsVisibility(int visibility) {
+        floatingActionButton.setVisibility(visibility);
+        adapter.setIconVisibility(visibility);
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
+        setUserPermissions();
     }
 
     @Override
@@ -220,6 +229,9 @@ public class CitiesActivity extends AppCompatActivity {
         super.onStop();
         if (mAuthListener != null)
             mAuth.removeAuthStateListener(mAuthListener);
+
+        if (citiesRef != null && childEventListener != null)
+            citiesRef.removeEventListener(childEventListener);
     }
 
 
