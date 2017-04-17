@@ -1,11 +1,27 @@
 <resources>
     <string name="app_name">ErasmusKit</string>
 
-    <!-- LoginActivity.java -->
-    <string name="title_activity_login">LoginActivity</string>
+    <!-- WelcomeActivity.java -->
     <string name="header_text">Connect with the Erasmus World</string>
     <string name="register_button_text">Register with email</string>
     <string name="auth_failed_toast">Authentication failed</string>
+    <string name="final_text">Already have an account?\u0020</string>
+    <string name="login_link"><a href="">Login here</a></string>
+
+    <!-- RegistrationActivity.java -->
+    <string name="register_toolbar_title">Register</string>
+    <string name="register_name_hint">Name</string>
+    <string name="register_email_hint">Email</string>
+    <string name="register_pwd_hint">Set a password</string>
+    <string name="register_verification_state">Email verified: %1$s</string>
+    <string name="verification_email_error">There was a problem sending the verification email</string>
+    <string name="uncomplete_data">Please, fill all the required data</string>
+
+    <!-- LoginActivity.java -->
+    <string name="login_toolbar_title">Sign in</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_pwd_hint">Password</string>
+    <string name="login_btn_text">Sign in</string>
 
     <!-- CityActivity.java -->
     <string name="city_section_1">People</string>
@@ -132,5 +148,19 @@
     <string name="error_toast">Oops! There was an error</string>
     <string name="fav_city_add_snack">Added to favorites!</string>
     <string name="fav_city_remove_snack">Removed from favorites</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 
 </resources>

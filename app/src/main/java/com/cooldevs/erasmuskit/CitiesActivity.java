@@ -41,7 +41,7 @@ public class CitiesActivity extends AppCompatActivity {
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         int numRows = ((int) dpWidth) / 520 + 1;
 
-        // Login / logout session flow (if user is null we go back to LoginActivity)
+        // Login / logout session flow (if user is null we go back to WelcomeActivity)
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -50,7 +50,7 @@ public class CitiesActivity extends AppCompatActivity {
                 if (user == null) {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-                    startActivity(new Intent(CitiesActivity.this, LoginActivity.class));
+                    startActivity(new Intent(CitiesActivity.this, WelcomeActivity.class));
                     finish();
                 }
             }

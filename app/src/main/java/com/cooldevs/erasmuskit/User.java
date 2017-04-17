@@ -48,7 +48,6 @@ public class User {
     }
 
     public String getNationality() {
-
         return nationality;
     }
 
@@ -58,10 +57,6 @@ public class User {
 
     public String getHostCity() {
         return hostCity;
-    }
-
-    public void setHostCity(String hostCity) {
-        this.hostCity = hostCity;
     }
 
     public String getUserType() {

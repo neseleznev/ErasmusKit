@@ -60,7 +60,7 @@ public class PostsActivity extends AppCompatActivity {
                 break;
         }
 
-        // Finish activity from status bar
+        // Finish activity from toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(toolbarTitle);
             getSupportActionBar().setHomeButtonEnabled(true);
