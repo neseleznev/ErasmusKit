@@ -25,12 +25,14 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
     private ArrayList<City> citiesList;
     private Context mContext;
     private View.OnClickListener listener;
+    private ArrayList<CityViewHolder> cityViewHolders;
 
     private static final String TAG = "CitiesAdapter";
 
     public CitiesAdapter(ArrayList<City> cities, Context context) {
         this.citiesList = cities;
         this.mContext = context;
+        this.cityViewHolders = new ArrayList<>();
     }
 
     @Override
@@ -38,7 +40,10 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.city_list_item, parent, false);
         itemView.setOnClickListener(this);
 
-        return new CityViewHolder(itemView);
+        CityViewHolder cityViewHolder = new CityViewHolder(itemView);
+        cityViewHolders.add(cityViewHolder);
+
+        return cityViewHolder;
     }
 
     @Override
@@ -52,7 +57,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         return citiesList.size();
     }
 
-    private void removeAt(City city, final int position) {
+    private void removeAt(City city) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("cities").child(city.getKey());
         ref.removeValue(new DatabaseReference.CompletionListener() {
             @Override
@@ -78,6 +83,16 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
             listener.onClick(view);
     }
 
+    public void enableDeleteIcon() {
+        for (CityViewHolder cityViewHolder : cityViewHolders)
+            cityViewHolder.showIcon();
+    }
+
+    public void hideDeleteIcon() {
+        for (CityViewHolder cityViewHolder : cityViewHolders)
+            cityViewHolder.hideIcon();
+    }
+
     class CityViewHolder extends RecyclerView.ViewHolder {
 
         private TextView cityName;
@@ -98,9 +113,17 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
             deleteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    removeAt(city, getAdapterPosition());
+                    removeAt(city);
                 }
             });
+        }
+
+        public void showIcon() {
+            deleteIcon.setVisibility(View.VISIBLE);
+        }
+
+        public void hideIcon() {
+            deleteIcon.setVisibility(View.GONE);
         }
     }
 }

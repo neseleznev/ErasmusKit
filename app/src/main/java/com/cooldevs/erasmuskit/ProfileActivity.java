@@ -118,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 List<String> items;
                 final int clickedElement = recyclerView.getChildAdapterPosition(view);
-                int[] strId = new int[]{R.array.nationalities, R.array.study_fields, 0, R.array.user_types};
+                int[] strId = new int[]{R.array.nationalities, R.array.study_fields};
                 final String[] userParameter = new String[]{"nationality", "studyField", "hostCity", "userType"};
 
                 String dialogTitle = getResources().getStringArray(R.array.dialog_titles)[recyclerView.getChildAdapterPosition(view)];
@@ -126,6 +126,12 @@ public class ProfileActivity extends AppCompatActivity {
                 switch (clickedElement) {
                     case 2:
                         items = citiesList;
+                        break;
+                    case 3:
+                        items = new ArrayList<>();
+                        for (UserType userType : UserType.values())
+                            items.add(userType.getUserType());
+
                         break;
                     default:
                         items = Arrays.asList(getResources().getStringArray(strId[clickedElement]));

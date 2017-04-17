@@ -19,8 +19,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -28,6 +30,9 @@ public class CitiesActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private CitiesAdapter adapter;
+    private FloatingActionButton floatingActionButton;
 
     private static final String TAG = "CitiesActivity";
 
@@ -71,7 +76,7 @@ public class CitiesActivity extends AppCompatActivity {
         // Initialize the views: recyclerView and its adapter for managing the list of cities
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
         final ArrayList<City> cities = new ArrayList<>();
-        final CitiesAdapter adapter = new CitiesAdapter(cities, this);
+        adapter = new CitiesAdapter(cities, this);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,7 +142,7 @@ public class CitiesActivity extends AppCompatActivity {
         citiesRef.addChildEventListener(childEventListener);
 
         // Floating Action Button onClick listener
-        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.add_city_fab);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.add_city_fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,10 +152,37 @@ public class CitiesActivity extends AppCompatActivity {
 
     }
 
+    private void setUserPermissions() {
+        if (mAuth.getCurrentUser() != null) {
+            String userKey = mAuth.getCurrentUser().getEmail().replace(".", "");
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userKey);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    if (user.getUserType().equals(UserType.ADMINISTRATOR.getUserType())) {
+                        floatingActionButton.setVisibility(View.VISIBLE);
+                        adapter.enableDeleteIcon();
+                    } else {
+                        floatingActionButton.setVisibility(View.GONE);
+                        adapter.hideDeleteIcon();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d(TAG, "userRef onCancelled");
+                }
+            });
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
+        setUserPermissions();
     }
 
     @Override

@@ -20,15 +20,7 @@ public class User {
     public User(String userName, String userEmail) {
         this.userName = userName;
         this.userEmail = userEmail;
-    }
-
-    public User(String hostCity, String userName, String userEmail, String nationality, String studyField, String userType) {
-        this.hostCity = hostCity;
-        this.nationality = nationality;
-        this.studyField = studyField;
-        this.userName = userName;
-        this.userType = userType;
-        this.userEmail = userEmail;
+        this.userType = UserType.STUDENT.getUserType();
     }
 
     public String getKey() {
