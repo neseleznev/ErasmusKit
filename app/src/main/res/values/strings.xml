@@ -29,12 +29,6 @@
     <string name="city_section_3">Tips</string>
     <string name="city_section_4">Places</string>
 
-    <!-- NewCityActivity.java -->
-    <string name="new_city_toolbar">Add new city</string>
-    <string name="new_city_name_hint">City name</string>
-    <string name="new_city_country_hint">City country</string>
-    <string name="new_city_btn_text">Save</string>
-
     <!-- PostActivity.java -->
     <string name="empty_list_text">No content yet</string>
 
@@ -130,10 +124,16 @@
     </string-array>
 
     <string name="profile_saved_toast">Profile correctly saved</string>
-    <string name="action_my_profile">My profile</string>
 
     <!-- Menu -->
+    <string name="action_profile">My profile</string>
     <string name="action_logout">Logout</string>
+
+    <!-- Dialogs -->
+    <string name="new_city_dialog_title">New city</string>
+    <string name="new_city_name_hint">City name</string>
+    <string name="new_city_country_hint">City country</string>
+    <string name="new_city_positive_btn">Add</string>
 
     <!-- Toasts and Snacks -->
     <string name="country_city_content">Country: %1$s</string>

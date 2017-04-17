@@ -8,12 +8,17 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -96,6 +101,7 @@ public class CitiesActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(TAG, "childEventListener:onChildAdded, key: " + dataSnapshot.getKey());
+
                 City city = dataSnapshot.getValue(City.class);
                 city.setKey(dataSnapshot.getKey());
 
@@ -146,7 +152,31 @@ public class CitiesActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CitiesActivity.this, NewCityActivity.class));
+                new MaterialDialog.Builder(CitiesActivity.this)
+                        .title(R.string.new_city_dialog_title)
+                        .customView(R.layout.dialog_new_city, false)
+                        .positiveText(R.string.new_city_positive_btn)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                View view = dialog.getCustomView();
+
+                                final EditText cityNameEditText = (EditText) view.findViewById(R.id.newcity_name);
+                                final EditText cityCountryEditText = (EditText) view.findViewById(R.id.newcity_country);
+                                String newCityName = cityNameEditText.getText().toString();
+                                String newCityCountry = cityCountryEditText.getText().toString();
+
+                                if (!TextUtils.isEmpty(newCityName) && !TextUtils.isEmpty(newCityCountry)) {
+
+                                    // Add city to Firebase Database
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("cities");
+                                    ref.push().setValue(new City(newCityName, newCityCountry));
+
+                                    Toast.makeText(CitiesActivity.this, R.string.add_city_toast, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -167,6 +197,8 @@ public class CitiesActivity extends AppCompatActivity {
                         floatingActionButton.setVisibility(View.GONE);
                         adapter.hideDeleteIcon();
                     }
+
+                    adapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -181,8 +213,6 @@ public class CitiesActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-
-        setUserPermissions();
     }
 
     @Override

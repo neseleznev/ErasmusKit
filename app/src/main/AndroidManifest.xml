@@ -21,7 +21,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".WelcomeActivity" />
-        <activity android:name=".NewCityActivity" />
         <activity
             android:name=".CityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
