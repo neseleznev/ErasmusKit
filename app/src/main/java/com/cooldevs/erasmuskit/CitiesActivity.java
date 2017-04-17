@@ -109,6 +109,19 @@ public class CitiesActivity extends AppCompatActivity {
                 City city = dataSnapshot.getValue(City.class);
                 city.setKey(dataSnapshot.getKey());
 
+                /*
+                // Add to the right position (alphabetical order). OPTIMIZATION PROBLEM!!!
+                int pos = 0;
+                for (City listedCity : cities) {
+                    if (city.getName().compareToIgnoreCase(listedCity.getName()) < 0)
+                        break;
+
+                    pos++;
+                }
+
+                cities.add(pos, city);
+                */
+
                 cities.add(city);
                 adapter.notifyDataSetChanged();
 
