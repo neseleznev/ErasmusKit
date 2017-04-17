@@ -48,7 +48,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in, we go to CitiesActivity
+                    // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
                     user.sendEmailVerification()
@@ -57,10 +57,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         Log.d(TAG, "Email sent.");
-                                        progressBar.setVisibility(View.GONE);
 
                                         startActivityForResult(new Intent(RegistrationActivity.this, VerificationActivity.class), RC_ACCOUNT_VERIFIED);
                                     }
+
+                                    progressBar.setVisibility(View.GONE);
                                 }
                             });
                 }

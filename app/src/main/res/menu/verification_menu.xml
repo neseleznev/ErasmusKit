@@ -8,4 +8,9 @@
         android:orderInCategory="3"
         app:showAsAction="ifRoom" />
 
+    <item android:id="@+id/action_email"
+        android:title="@string/action_email"
+        android:orderInCategory="3"
+        app:showAsAction="never" />
+
 </menu>

@@ -1,5 +1,6 @@
 package com.cooldevs.erasmuskit;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
+    private static final int RC_ACCOUNT_VERIFIED = 0;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -42,17 +44,31 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in, we go to CitiesActivity
+                    // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+                    progressBar.setVisibility(View.GONE);
 
                     if (user.isEmailVerified()) {
                         startActivity(new Intent(LoginActivity.this, CitiesActivity.class));
                         setResult(RESULT_OK, new Intent());
                         finish();
                     } else {
-                        FirebaseAuth.getInstance().signOut();
-                        Toast.makeText(LoginActivity.this, R.string.login_account_not_verified, Toast.LENGTH_LONG).show();
+                        user.sendEmailVerification()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "Email sent.");
+
+                                            startActivityForResult(new Intent(LoginActivity.this, VerificationActivity.class), RC_ACCOUNT_VERIFIED);
+                                        }
+
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
                     }
+
                 }
             }
         };
@@ -90,14 +106,27 @@ public class LoginActivity extends AppCompatActivity {
                                         Log.w(TAG, "signInWithEmail:failed", task.getException());
                                         Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
-
-                                    progressBar.setVisibility(View.GONE);
                                 }
                             });
                 }
 
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_ACCOUNT_VERIFIED) {
+            if(resultCode == Activity.RESULT_OK){
+                setResult(RESULT_OK, new Intent());
+                finish();
+            } else if(resultCode == RESULT_CANCELED) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+            }
+        }
     }
 
     @Override

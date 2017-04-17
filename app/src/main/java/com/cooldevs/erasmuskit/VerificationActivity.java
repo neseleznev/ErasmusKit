@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -88,6 +89,21 @@ public class VerificationActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                     }
                 });
+                break;
+
+            case R.id.action_email:
+                progressBar.setVisibility(View.VISIBLE);
+
+                user.sendEmailVerification()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful())
+                                    Toast.makeText(VerificationActivity.this, R.string.email_sent, Toast.LENGTH_LONG).show();
+
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
                 break;
 
             case android.R.id.home:

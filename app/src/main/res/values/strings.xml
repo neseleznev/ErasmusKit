@@ -136,6 +136,7 @@
     <string name="action_profile">My profile</string>
     <string name="action_logout">Logout</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_email">Resend email</string>
 
     <!-- Dialogs -->
     <string name="new_city_dialog_title">New city</string>
@@ -151,6 +152,7 @@
     <string name="fav_city_add_snack">Added to favorites!</string>
     <string name="fav_city_remove_snack">Removed from favorites</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="email_sent">Email sent</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
