@@ -22,6 +22,12 @@
     <string name="login_email_hint">Email</string>
     <string name="login_pwd_hint">Password</string>
     <string name="login_btn_text">Sign in</string>
+    <string name="login_account_not_verified">Your account is not verified. Do it and try again</string>
+
+    <!-- VerificationActivity.java -->
+    <string name="not_verified_account">Verify your account in the email that has been sent to you and refresh</string>
+    <string name="verified_account">Your account is now verified</string>
+    <string name="verify_button">Continue</string>
 
     <!-- CityActivity.java -->
     <string name="city_section_1">People</string>
@@ -128,6 +134,7 @@
     <!-- Menu -->
     <string name="action_profile">My profile</string>
     <string name="action_logout">Logout</string>
+    <string name="action_refresh">Refresh</string>
 
     <!-- Dialogs -->
     <string name="new_city_dialog_title">New city</string>

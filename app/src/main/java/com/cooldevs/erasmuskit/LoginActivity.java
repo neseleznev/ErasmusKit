@@ -45,9 +45,14 @@ public class LoginActivity extends AppCompatActivity {
                     // User is signed in, we go to CitiesActivity
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
-                    startActivity(new Intent(LoginActivity.this, CitiesActivity.class));
-                    setResult(RESULT_OK, new Intent());
-                    finish();
+                    if (user.isEmailVerified()) {
+                        startActivity(new Intent(LoginActivity.this, CitiesActivity.class));
+                        setResult(RESULT_OK, new Intent());
+                        finish();
+                    } else {
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(LoginActivity.this, R.string.login_account_not_verified, Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         };

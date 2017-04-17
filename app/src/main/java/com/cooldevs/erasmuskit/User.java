@@ -17,12 +17,6 @@ public class User {
 
     }
 
-    public User(String userName, String userEmail) {
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.userType = UserType.STUDENT.getUserType();
-    }
-
     public String getKey() {
         return key;
     }

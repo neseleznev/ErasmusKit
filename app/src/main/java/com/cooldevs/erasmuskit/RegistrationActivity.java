@@ -1,5 +1,6 @@
 package com.cooldevs.erasmuskit;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class RegistrationActivity extends AppCompatActivity {
 
     private static final String TAG = "RegistrationActivity";
+    private static final int RC_ACCOUNT_VERIFIED = 0;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -49,10 +51,18 @@ public class RegistrationActivity extends AppCompatActivity {
                     // User is signed in, we go to CitiesActivity
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
-                    startActivity(new Intent(RegistrationActivity.this, CitiesActivity.class));
-                    setResult(RESULT_OK, new Intent());
-                    finish();
+                    user.sendEmailVerification()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG, "Email sent.");
+                                        progressBar.setVisibility(View.GONE);
 
+                                        startActivityForResult(new Intent(RegistrationActivity.this, VerificationActivity.class), RC_ACCOUNT_VERIFIED);
+                                    }
+                                }
+                            });
                 }
             }
         };
@@ -97,6 +107,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                         DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(key);
                                         mUserRef.child("userName").setValue(name);
                                         mUserRef.child("userEmail").setValue(email);
+                                        mUserRef.child("userType").setValue(UserType.STUDENT.getUserType());
 
                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                                 .setDisplayName(name)
@@ -104,14 +115,27 @@ public class RegistrationActivity extends AppCompatActivity {
 
                                         mAuth.getCurrentUser().updateProfile(profileUpdates);
                                     }
-
-                                    progressBar.setVisibility(View.GONE);
                                 }
                             });
                 } else
                     Toast.makeText(RegistrationActivity.this, R.string.uncomplete_data, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_ACCOUNT_VERIFIED) {
+            if(resultCode == Activity.RESULT_OK){
+                setResult(RESULT_OK, new Intent());
+                finish();
+            } else if(resultCode == RESULT_CANCELED) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+            }
+        }
     }
 
     @Override
