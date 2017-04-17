@@ -25,8 +25,9 @@
     <string name="login_account_not_verified">Your account is not verified. Do it and try again</string>
 
     <!-- VerificationActivity.java -->
-    <string name="not_verified_account">Verify your account in the email that has been sent to you and refresh</string>
-    <string name="verified_account">Your account is now verified</string>
+    <string name="verification_toolbar_title">Email verification</string>
+    <string name="not_verified_account">Check your email and verify your account. Then, tap the refresh icon</string>
+    <string name="verified_account">Your account is now verified!</string>
     <string name="verify_button">Continue</string>
 
     <!-- CityActivity.java -->

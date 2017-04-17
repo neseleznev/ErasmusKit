@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +25,7 @@ public class VerificationActivity extends AppCompatActivity {
     private ImageView verifyImage;
     private TextView verifyText;
     private Button verifyButton;
+    private ProgressBar progressBar;
 
     private FirebaseUser user;
 
@@ -38,10 +40,12 @@ public class VerificationActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         verifyImage = (ImageView) findViewById(R.id.verification_state_image);
         verifyText = (TextView) findViewById(R.id.verification_state_text);
         verifyButton = (Button) findViewById(R.id.verification_button);
-        verifyButton.setEnabled(false);
+        progressBar = (ProgressBar) findViewById(R.id.verification_progress_bar);
 
         verifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +73,8 @@ public class VerificationActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_refresh:
-                user = FirebaseAuth.getInstance().getCurrentUser();
+                progressBar.setVisibility(View.VISIBLE);
+
                 user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -79,6 +84,8 @@ public class VerificationActivity extends AppCompatActivity {
                             verifyText.setText(getString(R.string.verified_account));
                             verifyButton.setEnabled(true);
                         }
+
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
                 break;

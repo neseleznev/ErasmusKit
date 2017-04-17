@@ -3,6 +3,7 @@ package com.cooldevs.erasmuskit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +42,10 @@ public class CitiesActivity extends AppCompatActivity {
     private ChildEventListener childEventListener;
 
     private CitiesAdapter adapter;
+    private CoordinatorLayout.LayoutParams params;
+    private SwipeRefreshLayout refLayout;
     private FloatingActionButton floatingActionButton;
+    private CoordinatorLayout.Behavior behavior;
 
     private static final String TAG = "CitiesActivity";
 
@@ -71,7 +75,7 @@ public class CitiesActivity extends AppCompatActivity {
         };
 
         // Initial loading with SwipeRefreshLayout
-        final SwipeRefreshLayout refLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_ref_layout);
+        refLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_ref_layout);
         refLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
         refLayout.setRefreshing(true);
@@ -81,6 +85,11 @@ public class CitiesActivity extends AppCompatActivity {
                 refLayout.setRefreshing(false);
             }
         });
+
+        // Get behavior
+        params = (CoordinatorLayout.LayoutParams) refLayout.getLayoutParams();
+        behavior = params.getBehavior();
+
 
         // Initialize the views: recyclerView and its adapter for managing the list of cities
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cities_recView);
@@ -225,8 +234,15 @@ public class CitiesActivity extends AppCompatActivity {
     }
 
     private void setViewsVisibility(int visibility) {
-        floatingActionButton.setVisibility(visibility);
         adapter.setIconVisibility(visibility);
+        floatingActionButton.setVisibility(visibility);
+
+        if (visibility == View.VISIBLE)
+            params.setBehavior(behavior);
+        else
+            params.setBehavior(null);
+
+        refLayout.requestLayout();
     }
 
     @Override
