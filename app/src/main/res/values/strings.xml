@@ -26,7 +26,7 @@
 
     <!-- VerificationActivity.java -->
     <string name="verification_toolbar_title">Email verification</string>
-    <string name="not_verified_account">Check your email and verify your account. Then, tap the refresh icon</string>
+    <string name="not_verified_account">Check your inbox and activate your account. Then, tap the refresh icon</string>
     <string name="verified_account">Your account is now verified!</string>
     <string name="verify_button">Continue</string>
 
