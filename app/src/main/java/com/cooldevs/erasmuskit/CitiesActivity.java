@@ -14,8 +14,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -28,9 +31,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static com.cooldevs.erasmuskit.Utils.hideSoftKeyboard;
 
 public class CitiesActivity extends AppCompatActivity {
 
@@ -57,7 +63,7 @@ public class CitiesActivity extends AppCompatActivity {
         // Get screen dimensions (width) for the RecyclerView arrangement
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int numRows = ((int) dpWidth) / 520 + 1;
+        int numRows = (int) Math.ceil(dpWidth / 520f); // FIXME 520? Maybe 420 or 666?
 
         // Login / logout session flow (if user is null we go back to WelcomeActivity)
         mAuth = FirebaseAuth.getInstance();
@@ -76,8 +82,11 @@ public class CitiesActivity extends AppCompatActivity {
 
         // Initial loading with SwipeRefreshLayout
         refLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_ref_layout);
-        refLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
-                android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        refLayout.setColorSchemeResources(
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         refLayout.setRefreshing(true);
         refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -100,10 +109,12 @@ public class CitiesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
                 Intent intent = new Intent(CitiesActivity.this, CityActivity.class);
-                intent.putExtra("city_name", cities.get(recyclerView.getChildAdapterPosition(view)).getName());
+                intent.putExtra("city_name",
+                        cities.get(recyclerView.getChildAdapterPosition(view)).getName());
                 startActivity(intent);
             }
         });
+
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, numRows));
@@ -124,10 +135,8 @@ public class CitiesActivity extends AppCompatActivity {
                 for (City listedCity : cities) {
                     if (city.getName().compareToIgnoreCase(listedCity.getName()) < 0)
                         break;
-
                     pos++;
                 }
-
                 cities.add(pos, city);
                 */
 
@@ -172,7 +181,6 @@ public class CitiesActivity extends AppCompatActivity {
             }
         };
 
-
         // Floating Action Button onClick listener
         floatingActionButton = (FloatingActionButton) findViewById(R.id.add_city_fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -187,42 +195,50 @@ public class CitiesActivity extends AppCompatActivity {
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 View view = dialog.getCustomView();
 
-                                final EditText cityNameEditText = (EditText) view.findViewById(R.id.newcity_name);
-                                final EditText cityCountryEditText = (EditText) view.findViewById(R.id.newcity_country);
+                                final EditText cityNameEditText =
+                                        (EditText) view.findViewById(R.id.newcity_name);
+                                final EditText cityCountryEditText =
+                                        (EditText) view.findViewById(R.id.newcity_country);
                                 String newCityName = cityNameEditText.getText().toString();
                                 String newCityCountry = cityCountryEditText.getText().toString();
 
-                                if (!TextUtils.isEmpty(newCityName) && !TextUtils.isEmpty(newCityCountry)) {
+                                if (!TextUtils.isEmpty(newCityName)
+                                        && !TextUtils.isEmpty(newCityCountry)) {
 
                                     // Add city to Firebase Database
-                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("cities");
+                                    DatabaseReference ref = FirebaseDatabase.getInstance()
+                                            .getReference("cities");
                                     ref.push().setValue(new City(newCityName, newCityCountry));
 
-                                    Toast.makeText(CitiesActivity.this, R.string.add_city_toast, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(
+                                            CitiesActivity.this,
+                                            R.string.add_city_toast,
+                                            Toast.LENGTH_SHORT).show();
                                 }
                             }
                         })
                         .show();
             }
         });
-
+        setupUI(findViewById(R.id.cities_parent));
     }
 
     private void setUserPermissions() {
-        if (mAuth.getCurrentUser() != null) {
+        if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getEmail() != null) {
             String userKey = mAuth.getCurrentUser().getEmail().replace(".", "");
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userKey);
+            DatabaseReference userRef = FirebaseDatabase.getInstance()
+                    .getReference("users").child(userKey);
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
-                    int visibility = user.getUserType().equals(UserType.ADMINISTRATOR.getUserType()) ? View.VISIBLE : View.GONE;
-
+                    int visibility = user.getUserType().equals(UserType.ADMINISTRATOR.getUserType())
+                            ? View.VISIBLE
+                            : View.GONE;
                     setViewsVisibility(visibility);
 
                     cities.clear();
                     citiesRef.addChildEventListener(childEventListener);
-
                 }
 
                 @Override
@@ -237,14 +253,9 @@ public class CitiesActivity extends AppCompatActivity {
         adapter.setIconVisibility(visibility);
         floatingActionButton.setVisibility(visibility);
 
-        if (visibility == View.VISIBLE)
-            params.setBehavior(behavior);
-        else
-            params.setBehavior(null);
-
+        params.setBehavior(visibility == View.VISIBLE ? behavior : null);
         refLayout.requestLayout();
     }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -263,12 +274,86 @@ public class CitiesActivity extends AppCompatActivity {
             citiesRef.removeEventListener(childEventListener);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.cities_menu, menu);
+        MenuItem searchMenuItem = menu.findItem(R.id.menuSearchCities);
+        final SearchView searchView = (SearchView) searchMenuItem.getActionView();
+
+        final ArrayList<City> _cities = new ArrayList<>();
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _cities.clear();
+                for (City city: cities) {
+                    _cities.add(city);
+                }
+            }
+        });
+
+        searchView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewDetachedFromWindow(View arg0) {
+                // search was detached/closed
+                cities.clear();
+                for (City city: _cities) {
+                    cities.add(city);
+                }
+            }
+
+            @Override
+            public void onViewAttachedToWindow(View arg0) {
+                // search was opened
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String substring) {
+                cities.clear();
+
+                // Fill with saved values
+                for (City city : _cities) {
+                    if (city.getName().toLowerCase().contains(substring.toLowerCase())
+                            || city.getCountry().toLowerCase().contains(substring.toLowerCase())) {
+                        cities.add(city);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+                return false;
+            }
+        });
         return true;
+    }
+
+    /**
+     * http://stackoverflow.com/a/11656129/820410
+     */
+    public void setupUI(View view) {
+        if(!(view instanceof SearchView)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(CitiesActivity.this);
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
     }
 
     @Override
