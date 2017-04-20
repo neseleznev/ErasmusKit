@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by mario on 04/03/2017
  */
 
-public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHolder> implements View.OnClickListener {
+class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHolder> implements View.OnClickListener {
 
     private ArrayList<City> citiesList;
     private Context mContext;
@@ -29,14 +29,15 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
 
     private static final String TAG = "CitiesAdapter";
 
-    public CitiesAdapter(ArrayList<City> cities, Context context) {
+    CitiesAdapter(ArrayList<City> cities, Context context) {
         this.citiesList = cities;
         this.mContext = context;
     }
 
     @Override
     public CityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.city_list_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.city_list_item, parent, false);
         itemView.setOnClickListener(this);
 
         return new CityViewHolder(itemView);
@@ -54,10 +55,12 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
     }
 
     private void removeAt(City city) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("cities").child(city.getKey());
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("cities").child(city.getKey());
         ref.removeValue(new DatabaseReference.CompletionListener() {
             @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+            public void onComplete(DatabaseError databaseError,
+                                   DatabaseReference databaseReference) {
                 if (databaseError == null)
                     Toast.makeText(mContext, R.string.delete_city_toast, Toast.LENGTH_SHORT).show();
                 else {
@@ -75,11 +78,12 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
 
     @Override
     public void onClick(View view) {
-        if (listener != null)
+        if (listener != null) {
             listener.onClick(view);
+        }
     }
 
-    public void setIconVisibility(int visibility) {
+    void setIconVisibility(int visibility) {
         this.visibility = visibility;
     }
 
