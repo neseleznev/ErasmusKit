@@ -22,7 +22,6 @@
     <string name="login_email_hint">Email</string>
     <string name="login_pwd_hint">Password</string>
     <string name="login_btn_text">Sign in</string>
-    <string name="login_account_not_verified">Your account is not verified. Do it and try again</string>
 
     <!-- VerificationActivity.java -->
     <string name="verification_toolbar_title">Email verification</string>

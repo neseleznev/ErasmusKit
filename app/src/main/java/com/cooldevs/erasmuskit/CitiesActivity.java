@@ -31,7 +31,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -220,7 +219,9 @@ public class CitiesActivity extends AppCompatActivity {
                         .show();
             }
         });
-        setupUI(findViewById(R.id.cities_parent));
+
+        View parentView = findViewById(R.id.cities_parent);
+        setupUI(parentView);
     }
 
     private void setUserPermissions() {
@@ -256,6 +257,7 @@ public class CitiesActivity extends AppCompatActivity {
         params.setBehavior(visibility == View.VISIBLE ? behavior : null);
         refLayout.requestLayout();
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -278,7 +280,7 @@ public class CitiesActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.cities_menu, menu);
-        MenuItem searchMenuItem = menu.findItem(R.id.menuSearchCities);
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) searchMenuItem.getActionView();
 
         final ArrayList<City> _cities = new ArrayList<>();
@@ -368,7 +370,7 @@ public class CitiesActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 return true;
 
-            case R.id.my_profile:
+            case R.id.action_profile:
                 Intent intent = new Intent(this, ProfileActivity.class);
                 intent.putExtra("userName", mAuth.getCurrentUser().getDisplayName());
                 startActivity(intent);
