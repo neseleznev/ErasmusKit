@@ -2,6 +2,7 @@ package com.cooldevs.erasmuskit;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ public class PostsActivity extends AppCompatActivity {
 
     private Query usersRef;
     private ChildEventListener usersEventListener;
+    private ArrayList<User> users;
 
     private TextView emptyListText;
 
@@ -41,24 +43,35 @@ public class PostsActivity extends AppCompatActivity {
         String toolbarTitle = city;
         int id = getIntent().getIntExtra("id", 0);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_post_fab);
+        View.OnClickListener listener = null;
+
         switch (id) {
             case 0:
-                toolbarTitle = city + "'s People";
+                toolbarTitle = city + "'s " + getString(R.string.city_section_1);
                 peopleList();
                 break;
 
             case 1:
-                toolbarTitle = city + "'s Events";
+                toolbarTitle = city + "'s " + getString(R.string.city_section_2);
+                listener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(PostsActivity.this, NewEventActivity.class));
+                    }
+                };
                 break;
 
             case 2:
-                toolbarTitle = city + "'s Tips";
+                toolbarTitle = city + "'s " + getString(R.string.city_section_3);
                 break;
 
             case 3:
-                toolbarTitle = city + "'s Places";
+                toolbarTitle = city + "'s " + getString(R.string.city_section_4);
                 break;
         }
+
+        fab.setOnClickListener(listener);
 
         // Finish activity from toolbar
         if (getSupportActionBar() != null) {
@@ -70,7 +83,7 @@ public class PostsActivity extends AppCompatActivity {
 
     void peopleList() {
         recyclerView = (RecyclerView) findViewById(R.id.objects_recView);
-        final ArrayList<User> users = new ArrayList<>();
+        users = new ArrayList<>();
         final UsersAdapter adapter = new UsersAdapter(users);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,8 +160,10 @@ public class PostsActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (usersRef != null)
+        if (usersRef != null) {
+            users.clear();
             usersRef.addChildEventListener(usersEventListener);
+        }
     }
 
     @Override

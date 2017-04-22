@@ -30,7 +30,8 @@
         <activity android:name=".PostsActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".VerificationActivity"></activity>
+        <activity android:name=".VerificationActivity" />
+        <activity android:name=".NewEventActivity"></activity>
     </application>
 
 </manifest>

@@ -58,7 +58,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         Log.d(TAG, "Email sent.");
 
-                                        startActivityForResult(new Intent(RegistrationActivity.this, VerificationActivity.class), RC_ACCOUNT_VERIFIED);
+                                        startActivityForResult(new Intent(RegistrationActivity.this,
+                                                VerificationActivity.class), RC_ACCOUNT_VERIFIED);
                                     }
 
                                     progressBar.setVisibility(View.GONE);
@@ -102,6 +103,9 @@ public class RegistrationActivity extends AppCompatActivity {
                                     if (!task.isSuccessful()) {
                                         Log.w(TAG, "createUserWithEmailAndPassword:failed", task.getException());
                                         Toast.makeText(RegistrationActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+                                        progressBar.setVisibility(View.GONE);
+
                                     } else {
                                         String key = email.replace(".", ""); // IMPORTANT: We are using the email of the user (deleting the ".") as the user KEY
 
@@ -114,7 +118,10 @@ public class RegistrationActivity extends AppCompatActivity {
                                                 .setDisplayName(name)
                                                 .build();
 
-                                        mAuth.getCurrentUser().updateProfile(profileUpdates);
+                                        if (mAuth.getCurrentUser() != null)
+                                            mAuth.getCurrentUser().updateProfile(profileUpdates);
+                                        else
+                                            throw new IllegalStateException("Current user is null. Cannot update profile");
                                     }
                                 }
                             });

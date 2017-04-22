@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.cooldevs.erasmuskit.PostsActivity">
 
         <TextView
@@ -18,6 +18,16 @@
             android:id="@+id/objects_recView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_post_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="20dp"
+            app:borderWidth="0dp"
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            android:tint="@android:color/white" />
 
 
 </android.support.design.widget.CoordinatorLayout>

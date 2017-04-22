@@ -47,9 +47,9 @@ public class LoginActivity extends AppCompatActivity {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
-                    progressBar.setVisibility(View.GONE);
-
                     if (user.isEmailVerified()) {
+                        progressBar.setVisibility(View.GONE);
+
                         startActivity(new Intent(LoginActivity.this, CitiesActivity.class));
                         setResult(RESULT_OK, new Intent());
                         finish();
@@ -61,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             Log.d(TAG, "Email sent.");
 
-                                            startActivityForResult(new Intent(LoginActivity.this, VerificationActivity.class), RC_ACCOUNT_VERIFIED);
+                                            startActivityForResult(new Intent(LoginActivity.this,
+                                                    VerificationActivity.class), RC_ACCOUNT_VERIFIED);
                                         }
 
                                         progressBar.setVisibility(View.GONE);
@@ -105,6 +106,8 @@ public class LoginActivity extends AppCompatActivity {
                                     if (!task.isSuccessful()) {
                                         Log.w(TAG, "signInWithEmail:failed", task.getException());
                                         Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 }
                             });
