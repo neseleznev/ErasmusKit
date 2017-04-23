@@ -23,18 +23,30 @@ public class Post {
     }
 
     public enum PostType {
-        EVENT("Event"),
-        TIP("Tip"),
-        PLACE("Place");
+        EVENT("Event", "events", Event.class),
+        TIP("Tip", "tips", Event.class), //TODO: Create Tip Class and change this!!!
+        PLACE("Place", "places", Event.class); //TODO: Create Place Class and change this!!!
 
         private String postType;
+        private String dbRef;
+        private Class<Post> mClass;
 
-        PostType(String postType) {
+        PostType(String postType, String dbRef, Class mClass) {
             this.postType = postType;
+            this.dbRef = dbRef;
+            this.mClass = mClass;
         }
 
         public String getPostType() {
             return postType;
+        }
+
+        public String getDbRef() {
+            return dbRef;
+        }
+
+        public Class<Post> getmClass() {
+            return mClass;
         }
     }
 

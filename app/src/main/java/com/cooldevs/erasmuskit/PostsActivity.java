@@ -74,15 +74,19 @@ public class PostsActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 };
-                getEventsList();
+                getPostsList(Post.PostType.EVENT);
                 break;
 
             case 2:
                 toolbarTitle = cityName + "'s " + getString(R.string.city_section_3);
+
+                getPostsList(Post.PostType.TIP);
                 break;
 
             case 3:
                 toolbarTitle = cityName + "'s " + getString(R.string.city_section_4);
+
+                getPostsList(Post.PostType.PLACE);
                 break;
         }
 
@@ -170,22 +174,27 @@ public class PostsActivity extends AppCompatActivity {
 
     }
 
-    private void getEventsList() {
+    private void getPostsList(final Post.PostType postType) {
         posts = new ArrayList<>();
-        final PostsAdapter adapter = new PostsAdapter(posts, Post.PostType.EVENT);
+        final PostsAdapter adapter = new PostsAdapter(posts, postType);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         // Get the array of posts from Firebase Database
-        postsRef = FirebaseDatabase.getInstance().getReference("posts").child("events");
+        postsRef = FirebaseDatabase.getInstance().getReference("posts").child(postType.getDbRef());
         postsEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(TAG, "childEventListener:onChildAdded, key: " + dataSnapshot.getKey());
-                Post post = dataSnapshot.getValue(Post.class);
+                Post post = dataSnapshot.getValue(postType.getmClass());
 
                 post.setKey(dataSnapshot.getKey());
+
+                //-------------------------------------------------------------
+                // Way to access children fields...
+                Log.d(TAG, "Event place ID is " + ((Event) post).getPlaceID());
+                //-------------------------------------------------------------
 
                 if (cityKey.equals(post.getCity())) {
                     posts.add(post);
