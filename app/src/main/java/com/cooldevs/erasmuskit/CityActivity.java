@@ -39,8 +39,9 @@ public class CityActivity extends AppCompatActivity {
 
         // Setting the title in the toolbar (actually in the "collapsing toolbar layout")
         CollapsingToolbarLayout ctLayout = (CollapsingToolbarLayout) findViewById(R.id.city_ctlayout);
-        final String city = getIntent().getStringExtra("city_name");
-        ctLayout.setTitle(city);
+        final String cityName = getIntent().getStringExtra("cityName");
+        final String cityKey = getIntent().getStringExtra("cityKey");
+        ctLayout.setTitle(cityName);
 
         // Initializing recyclerView
         ArrayList<CitySection> sections = new ArrayList<>();
@@ -59,7 +60,8 @@ public class CityActivity extends AppCompatActivity {
                 Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
 
                 Intent intent = new Intent(CityActivity.this, PostsActivity.class);
-                intent.putExtra("city", city);
+                intent.putExtra("cityName", cityName);
+                intent.putExtra("cityKey", cityKey);
                 intent.putExtra("id", recyclerView.getChildAdapterPosition(view));
                 startActivity(intent);
 

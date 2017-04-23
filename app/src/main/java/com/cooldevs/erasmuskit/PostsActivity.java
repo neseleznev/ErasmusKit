@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -23,12 +24,17 @@ public class PostsActivity extends AppCompatActivity {
 
     private static final String TAG = "PostsActivity";
 
-    private String city;
+    private String cityName;
+    private String cityKey;
     private RecyclerView recyclerView;
 
     private Query usersRef;
     private ChildEventListener usersEventListener;
     private ArrayList<User> users;
+
+    private DatabaseReference postsRef;
+    private ChildEventListener postsEventListener;
+    private ArrayList<Post> posts;
 
     private TextView emptyListText;
 
@@ -37,37 +43,46 @@ public class PostsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
 
+        // Initialize views
+        recyclerView = (RecyclerView) findViewById(R.id.posts_recView);
         emptyListText = (TextView) findViewById(R.id.empty_list_text);
 
-        city = getIntent().getStringExtra("city");
-        String toolbarTitle = city;
+        // Get intent extras
+        cityName = getIntent().getStringExtra("cityName");
+        cityKey = getIntent().getStringExtra("cityKey");
         int id = getIntent().getIntExtra("id", 0);
 
+        String toolbarTitle = cityName;
+
+        // FAB functionality
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_post_fab);
         View.OnClickListener listener = null;
 
         switch (id) {
             case 0:
-                toolbarTitle = city + "'s " + getString(R.string.city_section_1);
-                peopleList();
+                toolbarTitle = cityName + "'s " + getString(R.string.city_section_1);
+                getPeopleList();
                 break;
 
             case 1:
-                toolbarTitle = city + "'s " + getString(R.string.city_section_2);
+                toolbarTitle = cityName + "'s " + getString(R.string.city_section_2);
                 listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(PostsActivity.this, NewEventActivity.class));
+                        Intent intent = new Intent(PostsActivity.this, NewEventActivity.class);
+                        intent.putExtra("cityKey", cityKey);
+                        startActivity(intent);
                     }
                 };
+                getEventsList();
                 break;
 
             case 2:
-                toolbarTitle = city + "'s " + getString(R.string.city_section_3);
+                toolbarTitle = cityName + "'s " + getString(R.string.city_section_3);
                 break;
 
             case 3:
-                toolbarTitle = city + "'s " + getString(R.string.city_section_4);
+                toolbarTitle = cityName + "'s " + getString(R.string.city_section_4);
                 break;
         }
 
@@ -81,8 +96,7 @@ public class PostsActivity extends AppCompatActivity {
         }
     }
 
-    void peopleList() {
-        recyclerView = (RecyclerView) findViewById(R.id.objects_recView);
+    private void getPeopleList() {
         users = new ArrayList<>();
         final UsersAdapter adapter = new UsersAdapter(users);
         adapter.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +126,7 @@ public class PostsActivity extends AppCompatActivity {
 
                 user.setKey(dataSnapshot.getKey());
 
-                if (city.equalsIgnoreCase(user.getHostCity())) {
+                if (cityName.equalsIgnoreCase(user.getHostCity())) {
                     users.add(user);
                     adapter.notifyDataSetChanged();
 
@@ -156,6 +170,68 @@ public class PostsActivity extends AppCompatActivity {
 
     }
 
+    private void getEventsList() {
+        posts = new ArrayList<>();
+        final PostsAdapter adapter = new PostsAdapter(posts, Post.PostType.EVENT);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        // Get the array of posts from Firebase Database
+        postsRef = FirebaseDatabase.getInstance().getReference("posts").child("events");
+        postsEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "childEventListener:onChildAdded, key: " + dataSnapshot.getKey());
+                Post post = dataSnapshot.getValue(Post.class);
+
+                post.setKey(dataSnapshot.getKey());
+
+                if (cityKey.equals(post.getCity())) {
+                    posts.add(post);
+                    adapter.notifyDataSetChanged();
+
+                    if (emptyListText.getVisibility() != View.GONE)
+                        emptyListText.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "childEventListener:onChildRemoved");
+                String key = dataSnapshot.getKey();
+
+                for (int i = 0; i < posts.size(); i++) {
+                    Post post = posts.get(i);
+                    if (post.getKey().equals(key)) {
+                        posts.remove(post);
+                        adapter.notifyItemRemoved(i);
+                        adapter.notifyItemRangeChanged(i, posts.size());
+
+                        return;
+                    }
+
+                }
+                throw new IllegalStateException("Removed child not found in local array.");
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
+
 
     @Override
     public void onStart() {
@@ -164,6 +240,11 @@ public class PostsActivity extends AppCompatActivity {
             users.clear();
             usersRef.addChildEventListener(usersEventListener);
         }
+
+        if (postsRef != null) {
+            posts.clear();
+            postsRef.addChildEventListener(postsEventListener);
+        }
     }
 
     @Override
@@ -171,6 +252,9 @@ public class PostsActivity extends AppCompatActivity {
         super.onStop();
         if (usersRef != null && usersEventListener != null)
             usersRef.removeEventListener(usersEventListener);
+
+        if (postsRef != null && postsEventListener != null)
+            postsRef.removeEventListener(postsEventListener);
     }
 
     @Override

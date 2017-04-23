@@ -9,12 +9,14 @@
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_logout"
+    <item
+        android:id="@+id/action_logout"
         android:title="@string/action_logout"
         android:orderInCategory="3"
         app:showAsAction="never" />
 
-    <item android:id="@+id/action_profile"
+    <item
+        android:id="@+id/action_profile"
         android:title="@string/action_profile"
         android:orderInCategory="2"
         app:showAsAction="never"/>

@@ -108,8 +108,10 @@ public class CitiesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Log.d(TAG, "Click on the element " + recyclerView.getChildAdapterPosition(view));
                 Intent intent = new Intent(CitiesActivity.this, CityActivity.class);
-                intent.putExtra("city_name",
+                intent.putExtra("cityName",
                         cities.get(recyclerView.getChildAdapterPosition(view)).getName());
+                intent.putExtra("cityKey",
+                        cities.get(recyclerView.getChildAdapterPosition(view)).getKey());
                 startActivity(intent);
             }
         });
@@ -233,7 +235,7 @@ public class CitiesActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
-                    int visibility = user.getUserType().equals(UserType.ADMINISTRATOR.getUserType())
+                    int visibility = user.getUserType().equals(User.UserType.ADMINISTRATOR.getUserType())
                             ? View.VISIBLE
                             : View.GONE;
                     setViewsVisibility(visibility);

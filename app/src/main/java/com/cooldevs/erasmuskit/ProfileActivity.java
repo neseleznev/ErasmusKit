@@ -129,7 +129,7 @@ public class ProfileActivity extends AppCompatActivity {
                         break;
                     case 3:
                         items = new ArrayList<>();
-                        for (UserType userType : UserType.values())
+                        for (User.UserType userType : User.UserType.values())
                             items.add(userType.getUserType());
 
                         break;

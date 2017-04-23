@@ -17,6 +17,22 @@ public class User {
 
     }
 
+    public enum UserType {
+        STUDENT("Student"),
+        ORGANIZATOR("Organizator"),
+        ADMINISTRATOR("Administrator");
+
+        private String userType;
+
+        UserType(String userType) {
+            this.userType = userType;
+        }
+
+        public String getUserType() {
+            return userType;
+        }
+    }
+
     public String getKey() {
         return key;
     }

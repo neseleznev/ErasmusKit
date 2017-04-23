@@ -112,7 +112,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                         DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(key);
                                         mUserRef.child("userName").setValue(name);
                                         mUserRef.child("userEmail").setValue(email);
-                                        mUserRef.child("userType").setValue(UserType.STUDENT.getUserType());
+                                        mUserRef.child("userType").setValue(User.UserType.STUDENT.getUserType());
 
                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                                 .setDisplayName(name)
