@@ -62,7 +62,7 @@ public class CityActivity extends AppCompatActivity {
                 Intent intent = new Intent(CityActivity.this, PostsActivity.class);
                 intent.putExtra("cityName", cityName);
                 intent.putExtra("cityKey", cityKey);
-                intent.putExtra("id", recyclerView.getChildAdapterPosition(view));
+                intent.putExtra("citySection", recyclerView.getChildAdapterPosition(view));
                 startActivity(intent);
 
             }

@@ -50,7 +50,14 @@ public class PostsActivity extends AppCompatActivity {
         // Get intent extras
         cityName = getIntent().getStringExtra("cityName");
         cityKey = getIntent().getStringExtra("cityKey");
-        int id = getIntent().getIntExtra("id", 0);
+        int citySection = getIntent().getIntExtra("citySection", -1);
+        /*
+        -------POSSIBLE VALUES-------
+        citySection = 0 -> PEOPLE SECTION
+        citySection = 1 -> EVENTS SECTION
+        citySection = 2 -> TIPS SECTION
+        citySection = 3 -> PLACES SECTION
+        */
 
         String toolbarTitle = cityName;
 
@@ -58,7 +65,7 @@ public class PostsActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_post_fab);
         View.OnClickListener listener = null;
 
-        switch (id) {
+        switch (citySection) {
             case 0:
                 toolbarTitle = cityName + "'s " + getString(R.string.city_section_1);
                 getPeopleList();
