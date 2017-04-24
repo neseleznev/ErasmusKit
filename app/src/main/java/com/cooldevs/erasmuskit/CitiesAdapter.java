@@ -37,7 +37,7 @@ class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHolder> i
     @Override
     public CityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.city_list_item, parent, false);
+                .inflate(R.layout.list_item, parent, false);
         itemView.setOnClickListener(this);
 
         return new CityViewHolder(itemView);
@@ -89,6 +89,7 @@ class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHolder> i
 
     class CityViewHolder extends RecyclerView.ViewHolder {
 
+        private ImageView cityIcon;
         private TextView cityName;
         private TextView cityCountry;
         private ImageView deleteIcon;
@@ -96,12 +97,14 @@ class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHolder> i
         CityViewHolder(View itemView) {
             super(itemView);
 
-            cityName = (TextView) itemView.findViewById(R.id.city_name);
-            cityCountry = (TextView) itemView.findViewById(R.id.city_country);
-            deleteIcon = (ImageView) itemView.findViewById(R.id.city_delete_icon);
+            cityIcon = (ImageView) itemView.findViewById(R.id.list_item_icon);
+            cityName = (TextView) itemView.findViewById(R.id.list_item_title);
+            cityCountry = (TextView) itemView.findViewById(R.id.list_item_subtitle);
+            deleteIcon = (ImageView) itemView.findViewById(R.id.list_item_secondary_icon);
         }
 
         void bindCity(final City city) {
+            cityIcon.setImageResource(R.drawable.ic_location_city_black_24dp);
             cityName.setText(city.getName());
             cityCountry.setText(mContext.getString(R.string.country_city_content, city.getCountry()));
             deleteIcon.setVisibility(visibility);

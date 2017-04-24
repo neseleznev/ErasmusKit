@@ -1,7 +1,7 @@
 package com.cooldevs.erasmuskit;
 
 /**
- * Created by maite on 7/03/17.
+ * Created by maite on 7/03/17
  */
 
 public class User {

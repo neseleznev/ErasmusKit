@@ -4,26 +4,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 /**
- * Created by maite on 11/04/17.
+ * Created by maite on 11/04/17
  */
 
-public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> implements View.OnClickListener {
+class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> implements View.OnClickListener {
 
     private ArrayList<User> usersList;
     private View.OnClickListener listener;
 
-    public UsersAdapter(ArrayList<User> users) {
+    UsersAdapter(ArrayList<User> users) {
         this.usersList = users;
     }
 
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_list_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
         itemView.setOnClickListener(this);
 
         return new UserViewHolder(itemView);
@@ -53,17 +54,20 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
     class UserViewHolder extends RecyclerView.ViewHolder {
 
+        private ImageView userIcon;
         private TextView userName;
         private TextView userNationality;
 
         UserViewHolder(View itemView) {
             super(itemView);
 
-            userName = (TextView) itemView.findViewById(R.id.user_list_name);
-            userNationality = (TextView) itemView.findViewById(R.id.user_list_nationality);
+            userIcon = (ImageView) itemView.findViewById(R.id.list_item_icon);
+            userName = (TextView) itemView.findViewById(R.id.list_item_title);
+            userNationality = (TextView) itemView.findViewById(R.id.list_item_subtitle);
         }
 
         void bindUser(final User user) {
+            userIcon.setImageResource(R.drawable.ic_person_black_24dp);
             userName.setText(user.getUserName());
             userNationality.setText(user.getNationality());
         }

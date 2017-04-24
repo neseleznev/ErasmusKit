@@ -29,9 +29,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileActivity";
 
-    private ProfileSectionAdapter adapter;
+    private SectionsAdapter adapter;
     private RecyclerView recyclerView;
-    private ArrayList<ProfileSection> sections;
+    private ArrayList<Section> sections;
     private ArrayList<String> citiesList;
 
     private DatabaseReference usersRef;
@@ -81,10 +81,10 @@ public class ProfileActivity extends AppCompatActivity {
 
             toolbarTitle = userName;
 
-            sections.add(new ProfileSection(R.drawable.nationality_black_24dp, userNationality));
-            sections.add(new ProfileSection(R.drawable.ic_school_black_24dp, userStudyField));
-            sections.add(new ProfileSection(R.drawable.ic_location_city_black_24dp, userHostCity));
-            sections.add(new ProfileSection(R.drawable.ic_people_black_24dp, userType));
+            sections.add(new Section(R.drawable.nationality_black_24dp, userNationality));
+            sections.add(new Section(R.drawable.ic_school_black_24dp, userStudyField));
+            sections.add(new Section(R.drawable.ic_location_city_black_24dp, userHostCity));
+            sections.add(new Section(R.drawable.ic_people_black_24dp, userType));
         }
 
         // Set toolbar
@@ -102,7 +102,7 @@ public class ProfileActivity extends AppCompatActivity {
         ctLayout.setTitle(toolbarTitle);
 
         recyclerView = (RecyclerView) findViewById(R.id.profile_recView);
-        adapter = new ProfileSectionAdapter(sections);
+        adapter = new SectionsAdapter(sections);
         if (mProfile)
             setAdapterListener(userKey);
 
@@ -146,7 +146,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userKey);
                                 userRef.child(userParameter[clickedElement]).setValue(text.toString());
 
-                                sections.get(clickedElement).setValue(text.toString());
+                                sections.get(clickedElement).setTitle(text.toString());
                                 adapter.notifyItemChanged(clickedElement);
                             }
                         })
@@ -165,10 +165,10 @@ public class ProfileActivity extends AppCompatActivity {
 
                 // Initializing recyclerView
                 sections.clear();
-                sections.add(new ProfileSection(R.drawable.nationality_black_24dp, mUser.getNationality() == null ? getString(R.string.user_field_default_text) : mUser.getNationality()));
-                sections.add(new ProfileSection(R.drawable.ic_school_black_24dp, mUser.getStudyField() == null ? getString(R.string.user_field_default_text) : mUser.getStudyField()));
-                sections.add(new ProfileSection(R.drawable.ic_location_city_black_24dp, mUser.getHostCity() == null ? getString(R.string.user_field_default_text) : mUser.getHostCity()));
-                sections.add(new ProfileSection(R.drawable.ic_account_settings, mUser.getUserType() == null ? getString(R.string.user_field_default_text) : mUser.getUserType()));
+                sections.add(new Section(R.drawable.nationality_black_24dp, mUser.getNationality() == null ? getString(R.string.user_field_default_text) : mUser.getNationality()));
+                sections.add(new Section(R.drawable.ic_school_black_24dp, mUser.getStudyField() == null ? getString(R.string.user_field_default_text) : mUser.getStudyField()));
+                sections.add(new Section(R.drawable.ic_location_city_black_24dp, mUser.getHostCity() == null ? getString(R.string.user_field_default_text) : mUser.getHostCity()));
+                sections.add(new Section(R.drawable.ic_account_settings, mUser.getUserType() == null ? getString(R.string.user_field_default_text) : mUser.getUserType()));
 
                 adapter.notifyDataSetChanged();
             }

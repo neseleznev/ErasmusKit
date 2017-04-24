@@ -6,7 +6,7 @@
                 android:minHeight="72dp">
 
     <ImageView
-        android:id="@+id/city_icon"
+        android:id="@+id/list_item_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/city_name"
+            android:id="@+id/list_item_title"
             android:fontFamily="sans-serif-black"
             android:textSize="16sp"
             android:text="Liège"/>
@@ -39,7 +39,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/city_country"
+            android:id="@+id/list_item_subtitle"
             android:fontFamily="sans-serif"
             android:textSize="14sp"
             android:text="Country: Belgium"/>
@@ -47,7 +47,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/city_delete_icon"
+        android:id="@+id/list_item_secondary_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

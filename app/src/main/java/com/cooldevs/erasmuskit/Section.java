@@ -1,14 +1,14 @@
 package com.cooldevs.erasmuskit;
 
 /**
- * Created by mario on 19/03/2017
+ * Created by maite on 12/04/17
  */
 
-public class CitySection {
+class Section {
     private int icon;
     private String title;
 
-    public CitySection(int icon, String title) {
+    Section(int icon, String title) {
         this.icon = icon;
         this.title = title;
     }
@@ -21,4 +21,7 @@ public class CitySection {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

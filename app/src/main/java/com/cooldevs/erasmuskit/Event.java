@@ -1,7 +1,7 @@
 package com.cooldevs.erasmuskit;
 
 /**
- * Created by mario on 23/04/2017.
+ * Created by mario on 23/04/2017
  */
 
 public class Event extends Post {

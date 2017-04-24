@@ -44,15 +44,15 @@ public class CityActivity extends AppCompatActivity {
         ctLayout.setTitle(cityName);
 
         // Initializing recyclerView
-        ArrayList<CitySection> sections = new ArrayList<>();
-        sections.add(new CitySection(R.drawable.ic_people_black_24dp, getString(R.string.city_section_1)));
-        sections.add(new CitySection(R.drawable.ic_event_black_24dp, getString(R.string.city_section_2)));
-        sections.add(new CitySection(R.drawable.ic_lightbulb_outline_black_24dp, getString(R.string.city_section_3)));
-        sections.add(new CitySection(R.drawable.ic_place_black_24dp, getString(R.string.city_section_4)));
+        ArrayList<Section> sections = new ArrayList<>();
+        sections.add(new Section(R.drawable.ic_people_black_24dp, getString(R.string.city_section_1)));
+        sections.add(new Section(R.drawable.ic_event_black_24dp, getString(R.string.city_section_2)));
+        sections.add(new Section(R.drawable.ic_lightbulb_outline_black_24dp, getString(R.string.city_section_3)));
+        sections.add(new Section(R.drawable.ic_place_black_24dp, getString(R.string.city_section_4)));
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.city_recView);
         recyclerView.setHasFixedSize(true);
-        CitySectionsAdapter adapter = new CitySectionsAdapter(sections);
+        SectionsAdapter adapter = new SectionsAdapter(sections);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

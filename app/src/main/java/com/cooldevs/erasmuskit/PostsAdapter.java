@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
-    private static final String TAG = "PostsAdapter";
     private ArrayList<Post> postsList;
     private Post.PostType postType;
 
