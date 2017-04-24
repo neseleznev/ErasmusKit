@@ -15,4 +15,9 @@ final class Utils {
         inputMethodManager.hideSoftInputFromWindow(
                 activity.getCurrentFocus().getWindowToken(), 0);
     }
+
+    static String toPossessive(String noun) {
+        String possessive = (noun.charAt(noun.length() - 1) == 's') ? "'" : "'s";
+        return noun + possessive;
+    }
 }
