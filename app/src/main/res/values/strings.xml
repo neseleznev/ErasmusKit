@@ -45,6 +45,12 @@
     <string name="date_title">Select a date</string>
     <string name="location_title">Select a location</string>
 
+    <!-- NewTipActivity.java -->
+    <string name="new_tip_toolbar_title">New tip</string>
+    <string name="tip_title_hint">Title</string>
+    <string name="tip_description_hint">Description</string>
+    <string name="category_title">Select tip category</string>
+
     <!--User Profile-->
     <string name="user_field_default_text">Not specified</string>
     <string name="configure_profile_btn_text">Configure profile</string>
