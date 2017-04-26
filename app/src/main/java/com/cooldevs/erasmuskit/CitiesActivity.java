@@ -203,9 +203,14 @@ public class CitiesActivity extends AppCompatActivity {
                                 String newCityName = cityNameEditText.getText().toString();
                                 String newCityCountry = cityCountryEditText.getText().toString();
 
-                                if (!TextUtils.isEmpty(newCityName)
-                                        && !TextUtils.isEmpty(newCityCountry)) {
-
+                                if (TextUtils.isEmpty(newCityName)
+                                        || TextUtils.isEmpty(newCityCountry)) {
+                                    Toast.makeText(
+                                            CitiesActivity.this,
+                                            R.string.add_city_empty_toast,
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                else {
                                     // Add city to Firebase Database
                                     DatabaseReference ref = FirebaseDatabase.getInstance()
                                             .getReference("cities");
