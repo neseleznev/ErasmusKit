@@ -112,6 +112,9 @@ public class PostsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Getting the list of people registered in this city (from Firebase Realtime Database).
+     */
     private void getPeopleList() {
         users = new ArrayList<>();
         final UsersAdapter adapter = new UsersAdapter(users);
@@ -185,6 +188,10 @@ public class PostsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Getting the list of posts for this city, of the specified type (from Firebase Realtime Database).
+     * @param postType the type of posts. See {@link com.cooldevs.erasmuskit.Post.PostType}
+     */
     private void getPostsList(final Post.PostType postType) {
         posts = new ArrayList<>();
         final PostsAdapter adapter = new PostsAdapter(posts, postType);
