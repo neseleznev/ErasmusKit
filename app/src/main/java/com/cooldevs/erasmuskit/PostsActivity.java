@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -32,7 +31,7 @@ public class PostsActivity extends AppCompatActivity {
     private ChildEventListener usersEventListener;
     private ArrayList<User> users;
 
-    private DatabaseReference postsRef;
+    private Query postsRef;
     private ChildEventListener postsEventListener;
     private ArrayList<Post> posts;
 
@@ -87,7 +86,7 @@ public class PostsActivity extends AppCompatActivity {
 
             case 2:
                 toolbarTitle = cityName + "'s " + getString(R.string.city_section_3);
-                listener = new View.OnClickListener(){
+                listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(PostsActivity.this, NewTipActivity.class);
@@ -136,7 +135,8 @@ public class PostsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         // Get the array of users from Firebase Database (and sort them by name)
-        usersRef = FirebaseDatabase.getInstance().getReference("users").orderByChild("userName");
+        usersRef = FirebaseDatabase.getInstance().getReference("users")
+                .orderByChild("hostCity").equalTo(cityName);
         usersEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -145,13 +145,11 @@ public class PostsActivity extends AppCompatActivity {
 
                 user.setKey(dataSnapshot.getKey());
 
-                if (cityName.equalsIgnoreCase(user.getHostCity())) {
-                    users.add(user);
-                    adapter.notifyDataSetChanged();
+                users.add(user);
+                adapter.notifyDataSetChanged();
 
-                    if (emptyListText.getVisibility() != View.GONE)
-                        emptyListText.setVisibility(View.GONE);
-                }
+                if (emptyListText.getVisibility() != View.GONE)
+                    emptyListText.setVisibility(View.GONE);
 
             }
 
@@ -197,7 +195,8 @@ public class PostsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         // Get the array of posts from Firebase Database
-        postsRef = FirebaseDatabase.getInstance().getReference("posts").child(postType.getDbRef());
+        postsRef = FirebaseDatabase.getInstance().getReference("posts").child(postType.getDbRef())
+                .orderByChild("city").equalTo(cityKey);
         postsEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -208,16 +207,14 @@ public class PostsActivity extends AppCompatActivity {
 
                 //-------------------------------------------------------------
                 // Way to access children fields...
-                //Log.d(TAG, "Event place ID is " + ((Event) post).getPlaceID());
+                // Log.d(TAG, "Event place ID is " + ((Event) post).getPlaceID());
                 //-------------------------------------------------------------
 
-                if (cityKey.equals(post.getCity())) {
-                    posts.add(post);
-                    adapter.notifyDataSetChanged();
+                posts.add(post);
+                adapter.notifyDataSetChanged();
 
-                    if (emptyListText.getVisibility() != View.GONE)
-                        emptyListText.setVisibility(View.GONE);
-                }
+                if (emptyListText.getVisibility() != View.GONE)
+                    emptyListText.setVisibility(View.GONE);
             }
 
             @Override

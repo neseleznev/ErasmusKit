@@ -1,8 +1,7 @@
 package com.cooldevs.erasmuskit;
 
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -16,16 +15,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-
-public class NewTipActivity extends AppCompatActivity  {
+public class NewTipActivity extends AppCompatActivity {
 
     private static final String TAG = "NewTipActivity";
-
-    TextView tipCategoryTextView;
-
-    String tipCategory;
-    ArrayList<String> values;
+    private String tipCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,30 +31,25 @@ public class NewTipActivity extends AppCompatActivity  {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        values = new ArrayList<String>();
-
-        for (Tip.TipCategory tipCategory : Tip.TipCategory.values()){
-            values.add(tipCategory.getTipCategory());
-        }
-
-        tipCategoryTextView = (TextView) findViewById(R.id.tip_category_selector);
-        tipCategoryTextView.setOnClickListener(new View.OnClickListener(){
+        final TextView tipCategoryTextView = (TextView) findViewById(R.id.tip_category_selector);
+        tipCategoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new MaterialDialog.Builder(NewTipActivity.this)
                         .title("Select tip category")
-                        .items(values)
+                        .items(Tip.TipCategory.getAllValues())
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                tipCategory=text.toString();
-                                Log.d(TAG,"Chosen tip category: "+tipCategory);
+                                tipCategory = text.toString();
+                                Log.d(TAG, "Chosen tip category: " + tipCategory);
 
                                 tipCategoryTextView.setText(tipCategory);
 
                             }
 
-                        }).show();
+                        })
+                        .show();
             }
 
         });
@@ -93,7 +81,6 @@ public class NewTipActivity extends AppCompatActivity  {
                 String tipContent = evContentEditText.getText().toString();
 
 
-
                 if (!TextUtils.isEmpty(tipTitle) && !TextUtils.isEmpty(tipContent) && tipCategory != null) {
 
                     String cityKey = getIntent().getStringExtra("cityKey");
@@ -105,13 +92,12 @@ public class NewTipActivity extends AppCompatActivity  {
 
                     Toast.makeText(this, R.string.event_saved, Toast.LENGTH_SHORT).show();
                     finish();
-                } else{
+                } else {
                     Toast.makeText(this, R.string.uncomplete_data, Toast.LENGTH_LONG).show();
                 }
 
-
-
                 return true;
+
             case android.R.id.home:
                 finish();
                 return true;
