@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -34,7 +33,7 @@ public class PostsActivity extends AppCompatActivity {
     private ChildEventListener usersEventListener;
     private ArrayList<User> users;
 
-    private DatabaseReference postsRef;
+    private Query postsRef;
     private ChildEventListener postsEventListener;
     private ArrayList<Post> posts;
 
@@ -65,41 +64,47 @@ public class PostsActivity extends AppCompatActivity {
 
         // FAB functionality
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_post_fab);
-        View.OnClickListener listener = null;
+        Class mClass = null;
 
         switch (citySection) {
             case 0:
                 toolbarTitle += " " + getString(R.string.city_section_1);
+                fab.setVisibility(View.GONE);
                 getPeopleList();
                 break;
 
             case 1:
                 toolbarTitle += " " + getString(R.string.city_section_2);
-                listener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(PostsActivity.this, NewEventActivity.class);
-                        intent.putExtra("cityKey", cityKey);
-                        startActivity(intent);
-                    }
-                };
+                mClass = NewEventActivity.class;
+
                 getPostsList(Post.PostType.EVENT);
                 break;
 
             case 2:
                 toolbarTitle += " " + getString(R.string.city_section_3);
+                mClass = NewTipActivity.class;
 
                 getPostsList(Post.PostType.TIP);
                 break;
 
             case 3:
                 toolbarTitle += " " + getString(R.string.city_section_4);
+                mClass = NewPlaceActivity.class;
 
                 getPostsList(Post.PostType.PLACE);
                 break;
         }
 
-        fab.setOnClickListener(listener);
+        // Set FAB listener (depending on city section)
+        final Class finalMClass = mClass;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostsActivity.this, finalMClass);
+                intent.putExtra("cityKey", cityKey);
+                startActivity(intent);
+            }
+        });
 
         // Finish activity from toolbar
         if (getSupportActionBar() != null) {
@@ -109,6 +114,9 @@ public class PostsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Getting the list of people registered in this city (from Firebase Realtime Database).
+     */
     private void getPeopleList() {
         users = new ArrayList<>();
         final UsersAdapter adapter = new UsersAdapter(users);
@@ -129,8 +137,9 @@ public class PostsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        // Get the array of users from Firebase Database (and sort them by name)
-        usersRef = FirebaseDatabase.getInstance().getReference("users").orderByChild("userName");
+        // Get the array of users from Firebase Database (QUERY BY CITY)
+        usersRef = FirebaseDatabase.getInstance().getReference("users")
+                .orderByChild("hostCity").equalTo(cityName);
         usersEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -139,13 +148,11 @@ public class PostsActivity extends AppCompatActivity {
 
                 user.setKey(dataSnapshot.getKey());
 
-                if (cityName.equalsIgnoreCase(user.getHostCity())) {
-                    users.add(user);
-                    adapter.notifyDataSetChanged();
+                users.add(user);
+                adapter.notifyDataSetChanged();
 
-                    if (emptyListText.getVisibility() != View.GONE)
-                        emptyListText.setVisibility(View.GONE);
-                }
+                if (emptyListText.getVisibility() != View.GONE)
+                    emptyListText.setVisibility(View.GONE);
 
             }
 
@@ -183,6 +190,10 @@ public class PostsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Getting the list of posts for this city, of the specified type (from Firebase Realtime Database).
+     * @param postType the type of posts. See {@link com.cooldevs.erasmuskit.Post.PostType}
+     */
     private void getPostsList(final Post.PostType postType) {
         posts = new ArrayList<>();
         final PostsAdapter adapter = new PostsAdapter(posts, postType);
@@ -190,8 +201,9 @@ public class PostsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        // Get the array of posts from Firebase Database
-        postsRef = FirebaseDatabase.getInstance().getReference("posts").child(postType.getDbRef());
+        // Get the array of posts from Firebase Database (QUERY BY CITY)
+        postsRef = FirebaseDatabase.getInstance().getReference("posts").child(postType.getDbRef())
+                .orderByChild("city").equalTo(cityKey);
         postsEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -202,16 +214,14 @@ public class PostsActivity extends AppCompatActivity {
 
                 //-------------------------------------------------------------
                 // Way to access children fields...
-                Log.d(TAG, "Event place ID is " + ((Event) post).getPlaceID());
+                // Log.d(TAG, "Event place ID is " + ((Event) post).getPlaceID());
                 //-------------------------------------------------------------
 
-                if (cityKey.equals(post.getCity())) {
-                    posts.add(post);
-                    adapter.notifyDataSetChanged();
+                posts.add(post);
+                adapter.notifyDataSetChanged();
 
-                    if (emptyListText.getVisibility() != View.GONE)
-                        emptyListText.setVisibility(View.GONE);
-                }
+                if (emptyListText.getVisibility() != View.GONE)
+                    emptyListText.setVisibility(View.GONE);
             }
 
             @Override

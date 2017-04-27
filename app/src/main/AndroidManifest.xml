@@ -13,14 +13,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDh-vwhUXe6CNHb2b7bOtUFC9eD4-fYSNk"/>
+            android:value="AIzaSyDh-vwhUXe6CNHb2b7bOtUFC9eD4-fYSNk" />
 
         <activity android:name=".CitiesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,6 +36,8 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".VerificationActivity" />
         <activity android:name=".NewEventActivity" />
+        <activity android:name=".NewTipActivity" />
+        <activity android:name=".NewPlaceActivity"></activity>
     </application>
 
 </manifest>

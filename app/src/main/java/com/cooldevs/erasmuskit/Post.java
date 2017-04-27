@@ -24,8 +24,8 @@ public class Post {
 
     public enum PostType {
         EVENT("Event", "events", Event.class),
-        TIP("Tip", "tips", Event.class), //TODO: Create Tip Class and change this!!!
-        PLACE("Place", "places", Event.class); //TODO: Create Place Class and change this!!!
+        TIP("Tip", "tips", Tip.class),
+        PLACE("Place", "places", Place.class);
 
         private String postType;
         private String dbRef;

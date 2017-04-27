@@ -137,6 +137,7 @@ public class ProfileActivity extends AppCompatActivity {
                         items = Arrays.asList(getResources().getStringArray(strId[clickedElement]));
                 }
 
+
                 new MaterialDialog.Builder(ProfileActivity.this)
                         .title(dialogTitle)
                         .items(items)
