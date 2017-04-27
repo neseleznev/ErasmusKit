@@ -68,6 +68,7 @@ public class PostsActivity extends AppCompatActivity {
         switch (citySection) {
             case 0:
                 toolbarTitle = cityName + "'s " + getString(R.string.city_section_1);
+                fab.setVisibility(View.GONE);
                 getPeopleList();
                 break;
 
@@ -86,7 +87,14 @@ public class PostsActivity extends AppCompatActivity {
 
             case 2:
                 toolbarTitle = cityName + "'s " + getString(R.string.city_section_3);
-
+                listener = new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(PostsActivity.this, NewTipActivity.class);
+                        intent.putExtra("cityKey", cityKey);
+                        startActivity(intent);
+                    }
+                };
                 getPostsList(Post.PostType.TIP);
                 break;
 
@@ -200,7 +208,7 @@ public class PostsActivity extends AppCompatActivity {
 
                 //-------------------------------------------------------------
                 // Way to access children fields...
-                Log.d(TAG, "Event place ID is " + ((Event) post).getPlaceID());
+                //Log.d(TAG, "Event place ID is " + ((Event) post).getPlaceID());
                 //-------------------------------------------------------------
 
                 if (cityKey.equals(post.getCity())) {
