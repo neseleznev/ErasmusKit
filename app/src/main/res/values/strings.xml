@@ -51,6 +51,11 @@
     <string name="tip_description_hint">Description</string>
     <string name="category_title">Select tip category</string>
 
+    <!-- NewPlaceActivity -->
+    <string name="new_place_toolbar_title">New place</string>
+    <string name="place_description_hint">Description</string>
+    <string name="place_selector">Select a place here</string>
+
     <!--User Profile-->
     <string name="user_field_default_text">Not specified</string>
     <string name="configure_profile_btn_text">Configure profile</string>
@@ -166,7 +171,7 @@
     <string name="fav_city_remove_snack">Removed from favorites</string>
     <string name="title_activity_login">Sign in</string>
     <string name="email_sent">Email sent</string>
-    <string name="event_saved">Event has been saved</string>
+    <string name="post_saved">Post has been saved</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

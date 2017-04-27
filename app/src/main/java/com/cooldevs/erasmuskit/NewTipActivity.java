@@ -45,7 +45,6 @@ public class NewTipActivity extends AppCompatActivity {
                                 Log.d(TAG, "Chosen tip category: " + tipCategory);
 
                                 tipCategoryTextView.setText(tipCategory);
-
                             }
 
                         })
@@ -90,7 +89,7 @@ public class NewTipActivity extends AppCompatActivity {
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("posts").child("tips");
                     ref.push().setValue(new Tip(tipTitle, tipContent, cityKey, timestamp, tipCategory));
 
-                    Toast.makeText(this, R.string.event_saved, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.post_saved, Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     Toast.makeText(this, R.string.uncomplete_data, Toast.LENGTH_LONG).show();

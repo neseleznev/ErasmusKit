@@ -62,7 +62,7 @@ public class PostsActivity extends AppCompatActivity {
 
         // FAB functionality
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_post_fab);
-        View.OnClickListener listener = null;
+        Class mClass = null;
 
         switch (citySection) {
             case 0:
@@ -73,38 +73,36 @@ public class PostsActivity extends AppCompatActivity {
 
             case 1:
                 toolbarTitle = cityName + "'s " + getString(R.string.city_section_2);
-                listener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(PostsActivity.this, NewEventActivity.class);
-                        intent.putExtra("cityKey", cityKey);
-                        startActivity(intent);
-                    }
-                };
+                mClass = NewEventActivity.class;
+
                 getPostsList(Post.PostType.EVENT);
                 break;
 
             case 2:
                 toolbarTitle = cityName + "'s " + getString(R.string.city_section_3);
-                listener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(PostsActivity.this, NewTipActivity.class);
-                        intent.putExtra("cityKey", cityKey);
-                        startActivity(intent);
-                    }
-                };
+                mClass = NewTipActivity.class;
+
                 getPostsList(Post.PostType.TIP);
                 break;
 
             case 3:
                 toolbarTitle = cityName + "'s " + getString(R.string.city_section_4);
+                mClass = NewPlaceActivity.class;
 
                 getPostsList(Post.PostType.PLACE);
                 break;
         }
 
-        fab.setOnClickListener(listener);
+        // Set FAB listener (depending on city section)
+        final Class finalMClass = mClass;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostsActivity.this, finalMClass);
+                intent.putExtra("cityKey", cityKey);
+                startActivity(intent);
+            }
+        });
 
         // Finish activity from toolbar
         if (getSupportActionBar() != null) {
@@ -134,7 +132,7 @@ public class PostsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        // Get the array of users from Firebase Database (and sort them by name)
+        // Get the array of users from Firebase Database (QUERY BY CITY)
         usersRef = FirebaseDatabase.getInstance().getReference("users")
                 .orderByChild("hostCity").equalTo(cityName);
         usersEventListener = new ChildEventListener() {
@@ -194,7 +192,7 @@ public class PostsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        // Get the array of posts from Firebase Database
+        // Get the array of posts from Firebase Database (QUERY BY CITY)
         postsRef = FirebaseDatabase.getInstance().getReference("posts").child(postType.getDbRef())
                 .orderByChild("city").equalTo(cityKey);
         postsEventListener = new ChildEventListener() {

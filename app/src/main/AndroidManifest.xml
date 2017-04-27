@@ -36,7 +36,8 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".VerificationActivity" />
         <activity android:name=".NewEventActivity" />
-        <activity android:name=".NewTipActivity"></activity>
+        <activity android:name=".NewTipActivity" />
+        <activity android:name=".NewPlaceActivity"></activity>
     </application>
 
 </manifest>
