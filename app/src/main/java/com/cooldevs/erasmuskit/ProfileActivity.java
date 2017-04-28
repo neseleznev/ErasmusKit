@@ -18,6 +18,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -54,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         callbackManager = CallbackManager.Factory.create();
 
-//        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_fb);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_fb);
 //        List<String> permissionNeeds = Arrays.asList("user_photos", "email", "user_birthday");
 //        loginButton.setReadPermissions(permissionNeeds);
 
@@ -88,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             // Get the list of available cities from Firebase Database
             getCitiesList();
+            loginButton.setVisibility(View.VISIBLE);
         }
 
         // ------------- SOMEONE ELSE'S PROFILE ---------------
@@ -109,6 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
                 sections.add(new Section(R.drawable.com_facebook_button_icon_blue,
                         getString(R.string.facebook_profile)));
             }
+            loginButton.setVisibility(View.GONE);
         }
 
         // Set toolbar
