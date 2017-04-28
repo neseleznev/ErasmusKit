@@ -130,6 +130,7 @@ public class PostsActivity extends AppCompatActivity {
                 intent.putExtra("userStudyField", users.get(recyclerView.getChildAdapterPosition(view)).getStudyField());
                 intent.putExtra("userHostCity", users.get(recyclerView.getChildAdapterPosition(view)).getHostCity());
                 intent.putExtra("userType", users.get(recyclerView.getChildAdapterPosition(view)).getUserType());
+                intent.putExtra("userFacebookLink", users.get(recyclerView.getChildAdapterPosition(view)).getUserFacebookLink());
                 startActivity(intent);
             }
         });

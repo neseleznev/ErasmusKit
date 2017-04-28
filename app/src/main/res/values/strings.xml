@@ -62,6 +62,7 @@
     <string name="host_city_hint">Host city</string>
     <string name="nationality_hint">Nationality</string>
     <string name="city_spinner_default">Select your host city</string>
+    <string name="facebook_profile">Facebook profile</string>
 
     <string-array name="dialog_titles">
         <item>Select your nationality</item>

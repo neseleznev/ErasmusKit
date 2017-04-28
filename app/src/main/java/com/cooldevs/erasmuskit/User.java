@@ -12,6 +12,8 @@ public class User {
     private String studyField;
     private String hostCity;
     private String userType;
+    private String userFacebookLink;
+    private String userPicture;
 
     public User() {
 
@@ -63,5 +65,13 @@ public class User {
 
     public String getUserType() {
         return userType;
+    }
+
+    public String getUserFacebookLink() {
+        return userFacebookLink;
+    }
+
+    public String getUserPicture() {
+        return userPicture;
     }
 }
