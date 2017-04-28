@@ -215,7 +215,7 @@ public class PostsActivity extends AppCompatActivity {
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
             if (accessToken != null) {
                 Log.d(TAG, "User is authorized; parsing facebook for events...");
-                getEventsListAsync(accessToken, "ESNULgofficial", posts, adapter);
+                getEventsListAsync(accessToken, "ESNULgofficial", cityKey, posts, adapter);
 
             } else {
                 Toast.makeText(
@@ -226,7 +226,6 @@ public class PostsActivity extends AppCompatActivity {
             }
         }
 
-        Log.d(TAG, String.format("After procedure, len %d", posts.size()));
         // Get the array of posts from Firebase Database (QUERY BY CITY)
         postsRef = FirebaseDatabase.getInstance().getReference("posts").child(postType.getDbRef())
                 .orderByChild("city").equalTo(cityKey);
@@ -244,6 +243,16 @@ public class PostsActivity extends AppCompatActivity {
                 //-------------------------------------------------------------
 
                 posts.add(post);
+
+                // Sort with timestamps. Well, in decreases speed, but let's take a look
+                // sort O(n*log(n)) * [each add] O(n) = O(n*n*log(n))
+                // If we have 128 posts -> 114688 operations or 0.1sec on every modern processor
+                Collections.sort(posts, new Comparator<Post>() {
+                    @Override
+                    public int compare(Post o1, Post o2) {
+                        return (int) (-o1.getTimestamp() + o2.getTimestamp());
+                    }
+                });
                 adapter.notifyDataSetChanged();
 
                 if (emptyListText.getVisibility() != View.GONE)

@@ -21,6 +21,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.cooldevs.erasmuskit.Utils.getTimestamp;
+
 /**
  * Parser class with abstract methods for different purposes. Connection require AccessToken
  */
@@ -36,6 +38,7 @@ public class FacebookParser {
      * @param adapter reference to PostsAdapter to invoke .notifyDataSetChanged()
      */
     static void getEventsListAsync(AccessToken accessToken, String facebookGroupId,
+                                   final String cityKey,
                                     final ArrayList<Post> posts, final PostsAdapter adapter) {
 
         GraphRequest request = new GraphRequest(accessToken,
@@ -46,40 +49,48 @@ public class FacebookParser {
                 {
                     @Override
                     public void onCompleted(GraphResponse response) {
-                        try
-                        {
-                            Log.d(TAG, response.toString());
-                            JSONArray data = response.getJSONObject().getJSONArray("data");
-                            for (int i = 0; i < data.length(); ++i) {
-                                JSONObject object = data.getJSONObject(i);
-                                Post post = new Event(
-                                        object.getString("name"),
-                                        object.getString("description"),
-                                        "dummy",
-                                        0,
-                                        "placeID",
-                                        "placeName",
-                                        0
-                                );
-                                Log.d(TAG, "data[0].name: " + object.getString("start_time"));
+                        Log.d(TAG, response.toString());
+                        JSONArray data = null;
+                        try {
+                            data = response.getJSONObject().getJSONArray("data");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return;
+                        }
 
-                                posts.add(post);
+                        String name, descr, placeName = "Unknown";
+                        long startTime;
+                        for (int i = 0; i < data.length(); ++i) {
+                            try
+                            {
+                                JSONObject object = data.getJSONObject(i);
+                                name = object.getString("name");
+                                descr = object.getString("description");
+                                if (descr.length() > 500) {
+                                    descr = descr.substring(0, 500) + "...";
+                                }
+                                startTime = getTimestamp(object.getString("start_time"));
+                                if (object.has("place")) {
+                                    placeName = object.getJSONObject("place").getString("name");
+                                }
+                                posts.add(new Event(
+                                        name, descr, cityKey, startTime,
+                                        "placeID", placeName, startTime));
                                 adapter.notifyDataSetChanged();
                             }
-                        }
-                        catch (JSONException e)
-                        {
-                            e.printStackTrace();
+                            catch (JSONException e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 },
                 "v2.9");
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "name,start_time,id,description");
+        parameters.putString("fields", "name,start_time,id,description,place{name}");
+        parameters.putString("limit", "10");
         request.setParameters(parameters);
-        Log.d(TAG, String.format("Before execute, len %d", posts.size()));
         request.executeAsync();
-        Log.d(TAG, String.format("After executeAsync, len %d", posts.size()));
     }
 
     static FacebookCallback<LoginResult> getUpdateUserAfterLoginCallback() {
