@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,7 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+import static com.cooldevs.erasmuskit.FacebookParser.getEventsListAsync;
 import static com.cooldevs.erasmuskit.Utils.toPossessive;
 
 public class PostsActivity extends AppCompatActivity {
@@ -35,13 +41,14 @@ public class PostsActivity extends AppCompatActivity {
 
     private Query postsRef;
     private ChildEventListener postsEventListener;
-    private ArrayList<Post> posts;
+    private final ArrayList<Post> posts = new ArrayList<>();
 
     private TextView emptyListText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_posts);
 
         // Initialize views
@@ -197,12 +204,29 @@ public class PostsActivity extends AppCompatActivity {
      * @param postType the type of posts. See {@link com.cooldevs.erasmuskit.Post.PostType}
      */
     private void getPostsList(final Post.PostType postType) {
-        posts = new ArrayList<>();
+        posts.clear();
         final PostsAdapter adapter = new PostsAdapter(posts, postType);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
+        // Add events from facebook
+        if (postType == Post.PostType.EVENT) {
+            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+            if (accessToken != null) {
+                Log.d(TAG, "User is authorized; parsing facebook for events...");
+                getEventsListAsync(accessToken, "ESNULgofficial", posts, adapter);
+
+            } else {
+                Toast.makeText(
+                        PostsActivity.this,
+                        "To get more results, log in\n" +
+                                "Facebook in My profile section",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+
+        Log.d(TAG, String.format("After procedure, len %d", posts.size()));
         // Get the array of posts from Firebase Database (QUERY BY CITY)
         postsRef = FirebaseDatabase.getInstance().getReference("posts").child(postType.getDbRef())
                 .orderByChild("city").equalTo(cityKey);
