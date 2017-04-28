@@ -23,7 +23,7 @@ final class Utils {
     }
 
     static String getDateString(long timestamp) {
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy", Locale.US);
         Date date = new Date(timestamp);
 
         return df.format(date);

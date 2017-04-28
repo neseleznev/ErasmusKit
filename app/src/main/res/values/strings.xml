@@ -37,6 +37,7 @@
 
     <!-- PostActivity.java -->
     <string name="empty_list_text">No content yet</string>
+    <string name="event_facebook_button">More on Facebook</string>
 
     <!-- NewEventActivity.java -->
     <string name="new_event_toolbar_title">New event</string>

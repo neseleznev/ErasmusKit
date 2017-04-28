@@ -58,7 +58,7 @@ public class FacebookParser {
                             return;
                         }
 
-                        String name, descr, placeName = "Unknown";
+                        String name, descr, placeName, facebookLink;
                         long startTime;
                         for (int i = 0; i < data.length(); ++i) {
                             try
@@ -72,10 +72,14 @@ public class FacebookParser {
                                 startTime = getTimestamp(object.getString("start_time"));
                                 if (object.has("place")) {
                                     placeName = object.getJSONObject("place").getString("name");
+                                } else {
+                                    placeName = "Unknown";
                                 }
+                                facebookLink = "https://www.facebook.com/" + object.getString("id");
+
                                 posts.add(new Event(
-                                        name, descr, cityKey, startTime,
-                                        "placeID", placeName, startTime));
+                                        name,facebookLink+ descr, cityKey, System.currentTimeMillis(),
+                                        null, placeName, startTime, facebookLink));
                                 adapter.notifyDataSetChanged();
                             }
                             catch (JSONException e)
@@ -88,7 +92,7 @@ public class FacebookParser {
                 "v2.9");
         Bundle parameters = new Bundle();
         parameters.putString("fields", "name,start_time,id,description,place{name}");
-        parameters.putString("limit", "10");
+        parameters.putString("limit", "100");
         request.setParameters(parameters);
         request.executeAsync();
     }

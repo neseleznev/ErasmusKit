@@ -61,7 +61,8 @@
                     android:text="Location here"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/event_place_icon"
-                    android:layout_toEndOf="@+id/event_place_icon" />
+                    android:layout_toEndOf="@+id/event_place_icon"
+                    android:maxLines="1" />
 
             </RelativeLayout>
 
@@ -104,6 +105,15 @@
                 android:paddingRight="16dp"
                 android:text="@string/random_post_content"
                 android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/event_facebook_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:text="@string/event_facebook_button"
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
 
         </LinearLayout>
 

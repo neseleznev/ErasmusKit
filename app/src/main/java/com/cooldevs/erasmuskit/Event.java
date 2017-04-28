@@ -8,16 +8,18 @@ public class Event extends Post {
     private String placeID;
     private String placeName;
     private long eventTimestamp;
+    private String facebookLink;
 
     public Event() {
 
     }
 
-    public Event(String title, String content, String city, long timestamp, String placeID, String placeName, long eventTimestamp) {
+    public Event(String title, String content, String city, long timestamp, String placeID, String placeName, long eventTimestamp, String facebookLink) {
         super(title, content, city, timestamp);
         this.placeID = placeID;
         this.placeName = placeName;
         this.eventTimestamp = eventTimestamp;
+        this.facebookLink = facebookLink;
     }
 
     public String getPlaceID() {
@@ -30,5 +32,9 @@ public class Event extends Post {
 
     public long getEventTimestamp() {
         return eventTimestamp;
+    }
+
+    public String getFacebookLink() {
+        return facebookLink;
     }
 }

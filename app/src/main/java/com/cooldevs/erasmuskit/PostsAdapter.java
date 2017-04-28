@@ -1,9 +1,12 @@
 package com.cooldevs.erasmuskit;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -91,7 +94,7 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
             switch (viewType) {
                 case POST_EVENT:
-                    Event event = (Event) post;
+                    final Event event = (Event) post;
                     String date = Utils.getDateString(event.getEventTimestamp());
 
                     postTitle = (TextView) itemView.findViewById(R.id.event_title);
@@ -103,6 +106,23 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
                     evLocation.setText(event.getPlaceName());
                     evDate.setText(date);
 
+                    Button button = (Button) itemView.findViewById(R.id.event_facebook_button);
+                    if (event.getFacebookLink() != null) {
+                        button.setVisibility(View.VISIBLE);
+
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final Intent intent = new Intent();
+                                intent.setAction(Intent.ACTION_VIEW);
+                                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                intent.setData(Uri.parse(event.getFacebookLink()));
+                                itemView.getContext().startActivity(intent);
+                            }
+                        });
+                    } else {
+                        button.setVisibility(View.GONE);
+                    }
                     break;
 
                 case POST_TIP:
