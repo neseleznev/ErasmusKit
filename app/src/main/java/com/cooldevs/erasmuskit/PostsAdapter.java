@@ -6,11 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -18,8 +14,6 @@ import java.util.Locale;
  */
 
 class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
-
-    private static final String TAG = "PostsAdapter";
 
     private static final int POST_GENERIC = 0;
     private static final int POST_EVENT = 1;
@@ -96,19 +90,9 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
             TextView postTitle, postContent;
 
             switch (viewType) {
-                case POST_GENERIC:
-                    postTitle = (TextView) itemView.findViewById(R.id.post_title);
-                    postContent = (TextView) itemView.findViewById(R.id.post_content);
-
-                    TextView postSubtitle = (TextView) itemView.findViewById(R.id.post_subtitle);
-                    postSubtitle.setText(postType.getPostType());
-
-                    break;
-
                 case POST_EVENT:
                     Event event = (Event) post;
-                    DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-                    Date date = new Date(new Timestamp(event.getEventTimestamp()).getTime());
+                    String date = Utils.getDateString(event.getEventTimestamp());
 
                     postTitle = (TextView) itemView.findViewById(R.id.event_title);
                     postContent = (TextView) itemView.findViewById(R.id.event_content);
@@ -117,7 +101,7 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
                     TextView evDate = (TextView) itemView.findViewById(R.id.event_date);
 
                     evLocation.setText(event.getPlaceName());
-                    evDate.setText(df.format(date));
+                    evDate.setText(date);
 
                     break;
 
@@ -144,9 +128,9 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
                 default:
                     postTitle = (TextView) itemView.findViewById(R.id.post_title);
-                    postSubtitle = (TextView) itemView.findViewById(R.id.post_subtitle);
                     postContent = (TextView) itemView.findViewById(R.id.post_content);
 
+                    TextView postSubtitle = (TextView) itemView.findViewById(R.id.post_subtitle);
                     postSubtitle.setText(postType.getPostType());
             }
 
