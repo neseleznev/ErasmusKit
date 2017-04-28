@@ -186,12 +186,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.profile_recView);
         adapter = new SectionsAdapter(sections);
-        if (mProfile) {
-            setAdapterListener(userKey, null);
-        }
-        else {
-            setAdapterListener(userKey, userFacebookLink);
-        }
+        setAdapterListener(userKey, userFacebookLink, mProfile);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
@@ -204,10 +199,23 @@ public class ProfileActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setAdapterListener(final String userKey, final String userFacebookLink) {
+    private void setAdapterListener(final String userKey, final String userFacebookLink, final boolean isMyProfile) {
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!isMyProfile) {
+                    final int clickedElement = recyclerView.getChildAdapterPosition(view);
+
+                    if (clickedElement == 4) {
+                        final Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse(userFacebookLink));
+                        view.getContext().startActivity(intent);
+                    }
+                    return;
+                }
+
                 List<String> items;
                 final int clickedElement = recyclerView.getChildAdapterPosition(view);
                 int[] strId = new int[]{R.array.nationalities, R.array.study_fields};
