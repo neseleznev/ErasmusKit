@@ -112,6 +112,8 @@ public class CitiesActivity extends AppCompatActivity {
                         cities.get(recyclerView.getChildAdapterPosition(view)).getName());
                 intent.putExtra("cityKey",
                         cities.get(recyclerView.getChildAdapterPosition(view)).getKey());
+                intent.putExtra("cityPicture",
+                        cities.get(recyclerView.getChildAdapterPosition(view)).getPicture());
                 startActivity(intent);
             }
         });
