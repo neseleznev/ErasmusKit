@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by mario on 23/04/2017
@@ -22,6 +23,8 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
     private ArrayList<Post> postsList;
     private Post.PostType postType;
 
+    private int viewType;
+
     PostsAdapter(ArrayList<Post> posts, Post.PostType postType) {
         this.postsList = posts;
         this.postType = postType;
@@ -31,19 +34,18 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
 
-        // TODO: Create new card layouts and use them!!!
         switch (viewType) {
             case POST_GENERIC:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_post, parent, false);
                 break;
             case POST_EVENT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_post, parent, false); //TODO: Change
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_event, parent, false);
                 break;
             case POST_TIP:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_post, parent, false); //TODO: Change
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_tip, parent, false);
                 break;
             case POST_PLACE:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_post, parent, false); //TODO: Change
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_place, parent, false);
                 break;
             default:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_post, parent, false);
@@ -54,7 +56,7 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        int viewType = POST_GENERIC;
+        viewType = POST_GENERIC;
         Post post = postsList.get(position);
 
         if (post instanceof Event)
@@ -80,21 +82,59 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
     class PostViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView postTitle;
-        private TextView postSubtitle;
-        private TextView postContent;
-
         PostViewHolder(View itemView) {
             super(itemView);
-
-            postTitle = (TextView) itemView.findViewById(R.id.post_title);
-            postSubtitle = (TextView) itemView.findViewById(R.id.post_subtitle);
-            postContent = (TextView) itemView.findViewById(R.id.post_content);
         }
 
         void bindPost(final Post post) {
+            TextView postTitle, postContent;
+
+            switch (viewType) {
+                case POST_EVENT:
+                    Event event = (Event) post;
+                    String date = Utils.getDateString(event.getEventTimestamp());
+
+                    postTitle = (TextView) itemView.findViewById(R.id.event_title);
+                    postContent = (TextView) itemView.findViewById(R.id.event_content);
+
+                    TextView evLocation = (TextView) itemView.findViewById(R.id.event_location);
+                    TextView evDate = (TextView) itemView.findViewById(R.id.event_date);
+
+                    evLocation.setText(event.getPlaceName());
+                    evDate.setText(date);
+
+                    break;
+
+                case POST_TIP:
+                    Tip tip = (Tip) post;
+
+                    postTitle = (TextView) itemView.findViewById(R.id.tip_title);
+                    postContent = (TextView) itemView.findViewById(R.id.tip_content);
+
+                    TextView tipCategory = (TextView) itemView.findViewById(R.id.tip_category);
+                    tipCategory.setText(tip.getTipCategory());
+
+                    break;
+
+                case POST_PLACE:
+                    Place place = (Place) post;
+
+                    postTitle = (TextView) itemView.findViewById(R.id.place_title);
+                    postContent = (TextView) itemView.findViewById(R.id.place_content);
+
+                    TextView placeRating = (TextView) itemView.findViewById(R.id.place_rating_text);
+                    placeRating.setText(String.format(Locale.US, "%1.1f", place.getRating()));
+                    break;
+
+                default:
+                    postTitle = (TextView) itemView.findViewById(R.id.post_title);
+                    postContent = (TextView) itemView.findViewById(R.id.post_content);
+
+                    TextView postSubtitle = (TextView) itemView.findViewById(R.id.post_subtitle);
+                    postSubtitle.setText(postType.getPostType());
+            }
+
             postTitle.setText(post.getTitle());
-            postSubtitle.setText(postType.getPostType());
             postContent.setText(post.getContent());
         }
     }

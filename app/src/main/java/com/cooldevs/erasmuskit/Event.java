@@ -6,20 +6,26 @@ package com.cooldevs.erasmuskit;
 
 public class Event extends Post {
     private String placeID;
+    private String placeName;
     private long eventTimestamp;
 
     public Event() {
 
     }
 
-    public Event(String title, String content, String city, long timestamp, String placeID, long eventTimestamp) {
+    public Event(String title, String content, String city, long timestamp, String placeID, String placeName, long eventTimestamp) {
         super(title, content, city, timestamp);
         this.placeID = placeID;
+        this.placeName = placeName;
         this.eventTimestamp = eventTimestamp;
     }
 
     public String getPlaceID() {
         return placeID;
+    }
+
+    public String getPlaceName() {
+        return placeName;
     }
 
     public long getEventTimestamp() {
