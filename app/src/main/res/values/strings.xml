@@ -186,6 +186,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="facebook_app_id">1965879096977696</string>
 
     <!-- Extras -->
     <string name="random_post_content">I\'m a thing. But like most politicians he promised more than
