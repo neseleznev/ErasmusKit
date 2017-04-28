@@ -131,6 +131,7 @@ public class PostsActivity extends AppCompatActivity {
                 intent.putExtra("userHostCity", users.get(recyclerView.getChildAdapterPosition(view)).getHostCity());
                 intent.putExtra("userType", users.get(recyclerView.getChildAdapterPosition(view)).getUserType());
                 intent.putExtra("userFacebookLink", users.get(recyclerView.getChildAdapterPosition(view)).getUserFacebookLink());
+                intent.putExtra("userPicture", users.get(recyclerView.getChildAdapterPosition(view)).getUserPicture());
                 startActivity(intent);
             }
         });

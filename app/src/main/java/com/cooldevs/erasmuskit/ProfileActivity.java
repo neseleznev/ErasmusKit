@@ -180,6 +180,9 @@ public class ProfileActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        // Set profile picture if exists
+        setBarPictureIfExists(getIntent().getStringExtra("userPicture"));
+
         // Setting the title in the toolbar (actually in the "collapsing toolbar layout")
         CollapsingToolbarLayout ctLayout = (CollapsingToolbarLayout) findViewById(R.id.profile_ctlayout);
         ctLayout.setTitle(toolbarTitle);
@@ -274,11 +277,7 @@ public class ProfileActivity extends AppCompatActivity {
                 User mUser = dataSnapshot.getValue(User.class);
 
                 // Set profile picture if exists
-                ImageView imageView = (ImageView) findViewById(R.id.profile_toolbar_wp);
-                final String userPictureUrl = mUser.getUserPicture();
-                if (userPictureUrl != null && !userPictureUrl.equals("")) {
-                    Picasso.with(getApplicationContext()).load(userPictureUrl).into(imageView);
-                }
+                setBarPictureIfExists(mUser.getUserPicture());
 
                 // Initializing recyclerView
                 sections.clear();
@@ -295,6 +294,14 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.e(TAG, "ValueEventListener:onCancelled method. Something went wrong");
             }
         };
+    }
+
+    private void setBarPictureIfExists(String userPictureUrl) {
+        ImageView imageView = (ImageView) findViewById(R.id.profile_toolbar_wp);
+
+        if (userPictureUrl != null && !userPictureUrl.equals("")) {
+            Picasso.with(getApplicationContext()).load(userPictureUrl).into(imageView);
+        }
     }
 
     private void getCitiesList() {
