@@ -84,7 +84,7 @@ public class NewEventActivity extends AppCompatActivity {
                 Place place = PlacePicker.getPlace(this, data);
                 placeSelector.setText(place.getName());
 
-                // Save the place ID
+                // Save the place ID and name
                 placeID = place.getId();
             }
         }
@@ -118,12 +118,14 @@ public class NewEventActivity extends AppCompatActivity {
                         && placeID != null && calendar != null) {
 
                     String cityKey = getIntent().getStringExtra("cityKey");
+                    String placeName = placeSelector.getText().toString();
                     long timestamp = System.currentTimeMillis();
                     long eventTimestamp = calendar.getTimeInMillis();
 
                     // Add event to Firebase Database
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("posts").child("events");
-                    ref.push().setValue(new Event(eventTitle, eventContent, cityKey, timestamp, placeID, eventTimestamp));
+                    ref.push().setValue(new Event(eventTitle, eventContent,
+                            cityKey, timestamp, placeID, placeName, eventTimestamp));
 
                     Toast.makeText(this, R.string.post_saved, Toast.LENGTH_SHORT).show();
                     finish();
