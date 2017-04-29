@@ -18,6 +18,11 @@ public class Place extends Post {
         this.placeID = placeID;
     }
 
+    @Override
+    public PostType getPostType() {
+        return PostType.PLACE;
+    }
+
     public float getRating() {
         return rating;
     }

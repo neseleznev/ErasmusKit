@@ -15,16 +15,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,13 +29,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.cooldevs.erasmuskit.FacebookParser.getUpdateUserAfterLoginCallback;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -63,61 +55,11 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         callbackManager = CallbackManager.Factory.create();
 
-//        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_fb);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_fb);
 //        List<String> permissionNeeds = Arrays.asList("user_photos", "email", "user_birthday");
 //        loginButton.setReadPermissions(permissionNeeds);
 
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        GraphRequest request = GraphRequest.newMeRequest(
-                                loginResult.getAccessToken(),
-                                new GraphRequest.GraphJSONObjectCallback()
-                                {
-                                    @Override
-                                    public void onCompleted(JSONObject object, GraphResponse response)
-                                    {
-                                        try
-                                        {
-                                            String link = object.getString("link");
-                                            String cover = object.getJSONObject("cover").getString("source");
-                                            Log.d(TAG, "Got fb fields: " + link + ", " + cover);
-
-                                            // Current user
-                                            final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                                            if (firebaseUser == null) {
-                                                throw new IllegalStateException("User should not be null in this activity!");
-                                            }
-                                            final String userKey = firebaseUser.getEmail().replace(".", "");
-                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userKey);
-                                            userRef.child("userFacebookLink").setValue(link);
-                                            userRef.child("userPicture").setValue(cover);
-                                            Log.d(TAG, "Added fields to user's profile");
-                                        }
-                                        catch (JSONException e)
-                                        {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                        Bundle parameters = new Bundle();
-                        parameters.putString("fields", "link,cover"); // id,name,email,gender,
-                        request.setParameters(parameters);
-                        request.executeAsync();
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        Log.d(TAG, "onCancel");
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        Log.d(TAG, "onError");
-                        Log.v(TAG, exception.getCause().toString());
-                    }
-                });
+        LoginManager.getInstance().registerCallback(callbackManager, getUpdateUserAfterLoginCallback());
 
         // Get screen dimensions (width) for the RecyclerView arrangement
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -147,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             // Get the list of available cities from Firebase Database
             getCitiesList();
+            loginButton.setVisibility(View.VISIBLE);
         }
 
         // ------------- SOMEONE ELSE'S PROFILE ---------------
@@ -168,6 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
                 sections.add(new Section(R.drawable.com_facebook_button_icon_blue,
                         getString(R.string.facebook_profile)));
             }
+            loginButton.setVisibility(View.GONE);
         }
 
         // Set toolbar
