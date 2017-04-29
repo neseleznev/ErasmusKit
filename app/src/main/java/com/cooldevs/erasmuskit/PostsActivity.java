@@ -222,7 +222,8 @@ public class PostsActivity extends AppCompatActivity {
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
             if (accessToken != null) {
                 Log.d(TAG, "User is authorized; parsing facebook for events...");
-                getEventsListAsync(accessToken, cityFacebookGroupId, cityKey, posts, adapter);
+                getEventsListAsync(accessToken, cityFacebookGroupId, cityKey, posts,
+                        adapter, emptyListText);
 
             } else {
                 Toast.makeText(

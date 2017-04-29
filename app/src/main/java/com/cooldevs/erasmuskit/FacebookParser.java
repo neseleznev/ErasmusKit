@@ -2,6 +2,8 @@ package com.cooldevs.erasmuskit;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookCallback;
@@ -39,7 +41,8 @@ public class FacebookParser {
      */
     static void getEventsListAsync(AccessToken accessToken, final String facebookGroupId,
                                    final String cityKey,
-                                   final ArrayList<Post> posts, final PostsAdapter adapter) {
+                                   final ArrayList<Post> posts, final PostsAdapter adapter,
+                                   final TextView emptyListText) {
 
         GraphRequest request = new GraphRequest(accessToken,
                 facebookGroupId + "/events",  // TODO v2.0 parse multiple groups (bundle query)
@@ -81,6 +84,9 @@ public class FacebookParser {
                                         name,facebookLink+ descr, cityKey, System.currentTimeMillis(),
                                         null, placeName, startTime, facebookLink));
                                 adapter.notifyDataSetChanged();
+                                if (emptyListText.getVisibility() != View.GONE) {
+                                    emptyListText.setVisibility(View.GONE);
+                                }
                             }
                             catch (JSONException e)
                             {
