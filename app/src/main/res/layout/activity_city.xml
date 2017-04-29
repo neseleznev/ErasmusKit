@@ -49,15 +49,4 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/star_city_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:tint="@android:color/white"
-        app:borderWidth="0dp"
-        app:srcCompat="@drawable/ic_star_border_black_24dp"
-        app:layout_anchor="@id/appbarLayout"
-        app:layout_anchorGravity="bottom|right|end"/>
-
 </android.support.design.widget.CoordinatorLayout>

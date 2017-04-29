@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ErasmusKit</string>
+
+    <!-- WelcomeActivity.java -->
+    <string name="header_text">Connect with the Erasmus World</string>
+    <string name="register_button_text">Register with email</string>
+    <string name="auth_failed_toast">Authentication failed</string>
+    <string name="final_text">Already have an account?\u0020</string>
+    <string name="login_link"><a href="">Login here</a></string>
+
+    <!-- RegistrationActivity.java -->
+    <string name="register_toolbar_title">Register</string>
+    <string name="register_name_hint">Name</string>
+    <string name="register_email_hint">Email</string>
+    <string name="register_pwd_hint">Set a password</string>
+    <string name="register_verification_state">Email verified: %1$s</string>
+    <string name="verification_email_error">There was a problem sending the verification email</string>
+    <string name="uncomplete_data">Please, fill all the required data</string>
+
+    <!-- LoginActivity.java -->
+    <string name="login_toolbar_title">Sign in</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_pwd_hint">Password</string>
+    <string name="login_btn_text">Sign in</string>
+
+    <!-- VerificationActivity.java -->
+    <string name="verification_toolbar_title">Email verification</string>
+    <string name="not_verified_account">Check your inbox and activate your account. Then, tap the refresh icon</string>
+    <string name="verified_account">Your account is now verified!</string>
+    <string name="verify_button">Continue</string>
+
+    <!-- CityActivity.java -->
+    <string name="city_section_1">People</string>
+    <string name="city_section_2">Events</string>
+    <string name="city_section_3">Tips</string>
+    <string name="city_section_4">Places</string>
+
+    <!-- PostActivity.java -->
+    <string name="empty_list_text">No content yet</string>
+    <string name="event_facebook_button">More on Facebook</string>
+
+    <!-- NewEventActivity.java -->
+    <string name="new_event_toolbar_title">New event</string>
+    <string name="event_title_hint">Title</string>
+    <string name="event_description_hint">Description</string>
+    <string name="date_title">Select a date</string>
+    <string name="location_title">Select a location</string>
+
+    <!-- NewTipActivity.java -->
+    <string name="new_tip_toolbar_title">New tip</string>
+    <string name="tip_title_hint">Title</string>
+    <string name="tip_description_hint">Description</string>
+    <string name="category_title">Select tip category</string>
+
+    <!-- NewPlaceActivity -->
+    <string name="new_place_toolbar_title">New place</string>
+    <string name="place_description_hint">Description</string>
+    <string name="place_selector">Select a place here</string>
+
+    <!--User Profile-->
+    <string name="user_field_default_text">Not specified</string>
+    <string name="configure_profile_btn_text">Configure profile</string>
+    <string name="host_city_hint">Host city</string>
+    <string name="nationality_hint">Nationality</string>
+    <string name="city_spinner_default">Select your host city</string>
+    <string name="facebook_profile">Facebook profile</string>
+
+    <string-array name="dialog_titles">
+        <item>Select your nationality</item>
+        <item>Select your study field</item>
+        <item>Select your host city</item>
+        <item>Select your user type</item>
+    </string-array>
+
+    <string-array name="nationalities">
+        <item>Albania</item>
+        <item>Algeria</item>
+        <item>Austria</item>
+        <item>Armenia</item>
+        <item>Azerbaijan</item>
+        <item>Belarus</item>
+        <item>Belgium</item>
+        <item>Bosnia and Herzegovina</item>
+        <item>Bulgaria</item>
+        <item>Croatia</item>
+        <item>Cyprus</item>
+        <item>Czech Republic</item>
+        <item>Denmark</item>
+        <item>Egypt</item>
+        <item>Estonia</item>
+        <item>Finland</item>
+        <item>France</item>
+        <item>Georgia</item>
+        <item>Germany</item>
+        <item>Greece</item>
+        <item>Hungary</item>
+        <item>Iceland</item>
+        <item>Ireland</item>
+        <item>Israel</item>
+        <item>Italy</item>
+        <item>Jordan</item>
+        <item>Kosovo</item>
+        <item>Latvia</item>
+        <item>Lebanon</item>
+        <item>Libya</item>
+        <item>Lienchtenstein</item>
+        <item>Lithuania</item>
+        <item>Luxemburg</item>
+        <item>Macedonia</item>
+        <item>Malta</item>
+        <item>Montenegro</item>
+        <item>Moldova</item>
+        <item>Morocco</item>
+        <item>Netherlands</item>
+        <item>Norway</item>
+        <item>Palestine</item>
+        <item>Poland</item>
+        <item>Portugal</item>
+        <item>Romania</item>
+        <item>Russia</item>
+        <item>Serbia</item>
+        <item>Slovenia</item>
+        <item>Slovakia</item>
+        <item>Spain</item>
+        <item>Sweden</item>
+        <item>Syria</item>
+        <item>Tunisia</item>
+        <item>Turkey</item>
+        <item>Ukaine</item>
+        <item>United Kingdom</item>
+    </string-array>
+
+    <string-array name="study_fields">
+        <item>Architecture</item>
+        <item>Art</item>
+        <item>Business Management</item>
+        <item>Communication</item>
+        <item>Criminology</item>
+        <item>Economics</item>
+        <item>Education</item>
+        <item>Engineering</item>
+        <item>History</item>
+        <item>Languages</item>
+        <item>Law</item>
+        <item>Medical Sciences</item>
+        <item>Philosophy</item>
+        <item>Political Sciences</item>
+        <item>Psychology</item>
+        <item>Sciences</item>
+    </string-array>
+
+    <string name="profile_saved_toast">Profile correctly saved</string>
+
+    <!-- Menu -->
+    <string name="action_profile">My profile</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_email">Resend email</string>
+    <string name="action_save">Save</string>
+
+    <!-- Dialogs -->
+    <string name="new_city_dialog_title">New city</string>
+    <string name="new_city_name_hint">City name</string>
+    <string name="new_city_country_hint">City country</string>
+    <string name="new_city_positive_btn">Add</string>
+
+    <!-- Toasts and Snacks -->
+    <string name="country_city_content">Country: %1$s</string>
+    <string name="delete_city_toast">City deleted from database</string>
+    <string name="add_city_toast">City added to database</string>
+    <string name="add_city_empty_toast">Fields can\'t be empty</string>
+    <string name="error_toast">Oops! There was an error</string>
+    <string name="fav_city_add_snack">Added to favorites!</string>
+    <string name="fav_city_remove_snack">Removed from favorites</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="email_sent">Email sent</string>
+    <string name="post_saved">Post has been saved</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="facebook_app_id">1965879096977696</string>
+
+    <!-- Extras -->
+    <string name="random_post_content">I\'m a thing. But like most politicians he promised more than
+        he could deliver. You won\'t have time for sleeping, soldier, not with all the bed making you\'ll be
+        doing. Then we\'ll go with that data file! Hey, you add one or two zeros to that or we walk! You\'re
+        going to do his laundry? I have to find a way to scape</string>
+    <string name="default_erasmus_facebook_group">EUErasmusPlusProgramme</string>
+</resources>
