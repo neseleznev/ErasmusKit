@@ -62,6 +62,7 @@
     <string name="host_city_hint">Host city</string>
     <string name="nationality_hint">Nationality</string>
     <string name="city_spinner_default">Select your host city</string>
+    <string name="facebook_profile">Facebook profile</string>
 
     <string-array name="dialog_titles">
         <item>Select your nationality</item>
@@ -166,6 +167,7 @@
     <string name="country_city_content">Country: %1$s</string>
     <string name="delete_city_toast">City deleted from database</string>
     <string name="add_city_toast">City added to database</string>
+    <string name="add_city_empty_toast">Fields can\'t be empty</string>
     <string name="error_toast">Oops! There was an error</string>
     <string name="fav_city_add_snack">Added to favorites!</string>
     <string name="fav_city_remove_snack">Removed from favorites</string>
@@ -185,6 +187,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="facebook_app_id">1965879096977696</string>
 
     <!-- Extras -->
     <string name="random_post_content">I\'m a thing. But like most politicians he promised more than

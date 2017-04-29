@@ -112,6 +112,8 @@ public class CitiesActivity extends AppCompatActivity {
                         cities.get(recyclerView.getChildAdapterPosition(view)).getName());
                 intent.putExtra("cityKey",
                         cities.get(recyclerView.getChildAdapterPosition(view)).getKey());
+                intent.putExtra("cityPicture",
+                        cities.get(recyclerView.getChildAdapterPosition(view)).getPicture());
                 startActivity(intent);
             }
         });
@@ -203,9 +205,14 @@ public class CitiesActivity extends AppCompatActivity {
                                 String newCityName = cityNameEditText.getText().toString();
                                 String newCityCountry = cityCountryEditText.getText().toString();
 
-                                if (!TextUtils.isEmpty(newCityName)
-                                        && !TextUtils.isEmpty(newCityCountry)) {
-
+                                if (TextUtils.isEmpty(newCityName)
+                                        || TextUtils.isEmpty(newCityCountry)) {
+                                    Toast.makeText(
+                                            CitiesActivity.this,
+                                            R.string.add_city_empty_toast,
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                else {
                                     // Add city to Firebase Database
                                     DatabaseReference ref = FirebaseDatabase.getInstance()
                                             .getReference("cities");

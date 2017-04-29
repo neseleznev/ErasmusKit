@@ -27,4 +27,9 @@ final class Utils {
 
         return df.format(date);
     }
+
+    static String toPossessive(String noun) {
+        String possessive = (noun.charAt(noun.length() - 1) == 's') ? "'" : "'s";
+        return noun + possessive;
+    }
 }

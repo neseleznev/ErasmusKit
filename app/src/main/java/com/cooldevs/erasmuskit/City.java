@@ -8,6 +8,7 @@ public class City {
     private String key;
     private String name;
     private String country;
+    private String picture;
     private long timestamp;
 
     public City() {
@@ -17,6 +18,13 @@ public class City {
     public City(String name, String country) {
         this.name = name;
         this.country = country;
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    public City(String name, String country, String picture) {
+        this.name = name;
+        this.country = country;
+        this.picture = picture;
         this.timestamp = System.currentTimeMillis();
     }
 
@@ -34,6 +42,10 @@ public class City {
 
     public String getCountry() {
         return country;
+    }
+
+    public String getPicture() {
+        return picture;
     }
 
     public long getTimestamp() {

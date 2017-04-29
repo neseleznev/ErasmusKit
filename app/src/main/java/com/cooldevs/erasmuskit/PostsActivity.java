@@ -19,6 +19,8 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
+import static com.cooldevs.erasmuskit.Utils.toPossessive;
+
 public class PostsActivity extends AppCompatActivity {
 
     private static final String TAG = "PostsActivity";
@@ -58,7 +60,7 @@ public class PostsActivity extends AppCompatActivity {
         citySection = 3 -> PLACES SECTION
         */
 
-        String toolbarTitle = cityName;
+        String toolbarTitle = toPossessive(cityName);
 
         // FAB functionality
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_post_fab);
@@ -66,27 +68,27 @@ public class PostsActivity extends AppCompatActivity {
 
         switch (citySection) {
             case 0:
-                toolbarTitle = cityName + "'s " + getString(R.string.city_section_1);
+                toolbarTitle += " " + getString(R.string.city_section_1);
                 fab.setVisibility(View.GONE);
                 getPeopleList();
                 break;
 
             case 1:
-                toolbarTitle = cityName + "'s " + getString(R.string.city_section_2);
+                toolbarTitle += " " + getString(R.string.city_section_2);
                 mClass = NewEventActivity.class;
 
                 getPostsList(Post.PostType.EVENT);
                 break;
 
             case 2:
-                toolbarTitle = cityName + "'s " + getString(R.string.city_section_3);
+                toolbarTitle += " " + getString(R.string.city_section_3);
                 mClass = NewTipActivity.class;
 
                 getPostsList(Post.PostType.TIP);
                 break;
 
             case 3:
-                toolbarTitle = cityName + "'s " + getString(R.string.city_section_4);
+                toolbarTitle += " " + getString(R.string.city_section_4);
                 mClass = NewPlaceActivity.class;
 
                 getPostsList(Post.PostType.PLACE);
@@ -128,6 +130,8 @@ public class PostsActivity extends AppCompatActivity {
                 intent.putExtra("userStudyField", users.get(recyclerView.getChildAdapterPosition(view)).getStudyField());
                 intent.putExtra("userHostCity", users.get(recyclerView.getChildAdapterPosition(view)).getHostCity());
                 intent.putExtra("userType", users.get(recyclerView.getChildAdapterPosition(view)).getUserType());
+                intent.putExtra("userFacebookLink", users.get(recyclerView.getChildAdapterPosition(view)).getUserFacebookLink());
+                intent.putExtra("userPicture", users.get(recyclerView.getChildAdapterPosition(view)).getUserPicture());
                 startActivity(intent);
             }
         });

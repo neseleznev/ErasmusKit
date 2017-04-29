@@ -57,6 +57,7 @@ class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> imp
         private ImageView userIcon;
         private TextView userName;
         private TextView userNationality;
+        private ImageView userFacebookButton;
 
         UserViewHolder(View itemView) {
             super(itemView);
@@ -64,12 +65,19 @@ class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> imp
             userIcon = (ImageView) itemView.findViewById(R.id.list_item_icon);
             userName = (TextView) itemView.findViewById(R.id.list_item_title);
             userNationality = (TextView) itemView.findViewById(R.id.list_item_subtitle);
+            userFacebookButton = (ImageView) itemView.findViewById(R.id.list_item_secondary_icon);
         }
 
         void bindUser(final User user) {
             userIcon.setImageResource(R.drawable.ic_person_black_24dp);
             userName.setText(user.getUserName());
             userNationality.setText(user.getNationality());
+
+            final String link = user.getUserFacebookLink();
+            if (link != null && !link.equals("")) {
+                userFacebookButton.setImageResource(R.drawable.com_facebook_button_icon_blue);
+                userFacebookButton.setVisibility(View.VISIBLE);
+            }
         }
     }
 

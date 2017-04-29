@@ -13,6 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,6 +45,13 @@ public class CityActivity extends AppCompatActivity {
         final String cityName = getIntent().getStringExtra("cityName");
         final String cityKey = getIntent().getStringExtra("cityKey");
         ctLayout.setTitle(cityName);
+
+        // Setting city picture if exists
+        ImageView imageView = (ImageView) findViewById(R.id.imgToolbar);
+        final String cityPictureUrl = getIntent().getStringExtra("cityPicture");
+        if (cityPictureUrl != null && !cityPictureUrl.equals("")) {
+            Picasso.with(getApplicationContext()).load(cityPictureUrl).into(imageView);
+        }
 
         // Initializing recyclerView
         ArrayList<Section> sections = new ArrayList<>();
