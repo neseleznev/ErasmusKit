@@ -125,7 +125,7 @@ public class NewEventActivity extends AppCompatActivity {
                     // Add event to Firebase Database
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("posts").child("events");
                     ref.push().setValue(new Event(eventTitle, eventContent,
-                            cityKey, timestamp, placeID, placeName, eventTimestamp));
+                            cityKey, timestamp, placeID, placeName, eventTimestamp, null));
 
                     Toast.makeText(this, R.string.post_saved, Toast.LENGTH_SHORT).show();
                     finish();

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.inputmethod.InputMethodManager;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -22,10 +23,21 @@ final class Utils {
     }
 
     static String getDateString(long timestamp) {
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy", Locale.US);
         Date date = new Date(timestamp);
 
         return df.format(date);
+    }
+
+    static long getTimestamp(String dateString) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+        try {
+            Date date = dateFormat.parse(dateString);
+            return date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     static String toPossessive(String noun) {

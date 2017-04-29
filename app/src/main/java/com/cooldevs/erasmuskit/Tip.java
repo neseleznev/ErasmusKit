@@ -17,6 +17,10 @@ public class Tip extends Post {
         this.tipCategory = tipCategory;
     }
 
+    @Override
+    public PostType getPostType() {
+        return PostType.TIP;
+    }
 
     public enum TipCategory {
         ACCOMODATION("Accomodation"),

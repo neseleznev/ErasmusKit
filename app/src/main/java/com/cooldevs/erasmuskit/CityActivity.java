@@ -44,6 +44,7 @@ public class CityActivity extends AppCompatActivity {
         CollapsingToolbarLayout ctLayout = (CollapsingToolbarLayout) findViewById(R.id.city_ctlayout);
         final String cityName = getIntent().getStringExtra("cityName");
         final String cityKey = getIntent().getStringExtra("cityKey");
+        final String cityFacebookGroupId = getIntent().getStringExtra("cityFacebookGroupId");
         ctLayout.setTitle(cityName);
 
         // Setting city picture if exists
@@ -72,6 +73,7 @@ public class CityActivity extends AppCompatActivity {
                 Intent intent = new Intent(CityActivity.this, PostsActivity.class);
                 intent.putExtra("cityName", cityName);
                 intent.putExtra("cityKey", cityKey);
+                intent.putExtra("cityFacebookGroupId", cityFacebookGroupId);
                 intent.putExtra("citySection", recyclerView.getChildAdapterPosition(view));
                 startActivity(intent);
 
