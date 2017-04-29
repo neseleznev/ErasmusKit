@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.posts;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.posts.model.Place;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlacePicker;

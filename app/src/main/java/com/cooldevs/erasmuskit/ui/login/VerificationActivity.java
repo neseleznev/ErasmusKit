@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.cities.CitiesActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

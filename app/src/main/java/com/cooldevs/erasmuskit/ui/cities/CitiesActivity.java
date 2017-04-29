@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.cities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +23,11 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.cities.model.City;
+import com.cooldevs.erasmuskit.ui.login.WelcomeActivity;
+import com.cooldevs.erasmuskit.ui.profile.ProfileActivity;
+import com.cooldevs.erasmuskit.ui.profile.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -35,7 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static com.cooldevs.erasmuskit.Utils.hideSoftKeyboard;
+import static com.cooldevs.erasmuskit.utils.Utils.hideSoftKeyboard;
 
 public class CitiesActivity extends AppCompatActivity {
 

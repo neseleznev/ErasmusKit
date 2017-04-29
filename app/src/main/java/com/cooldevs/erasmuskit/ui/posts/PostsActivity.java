@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.posts;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.posts.model.Post;
+import com.cooldevs.erasmuskit.ui.profile.ProfileActivity;
+import com.cooldevs.erasmuskit.ui.profile.User;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.google.firebase.database.ChildEventListener;
@@ -24,8 +28,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import static com.cooldevs.erasmuskit.FacebookParser.getEventsListAsync;
-import static com.cooldevs.erasmuskit.Utils.toPossessive;
+import static com.cooldevs.erasmuskit.utils.FacebookParser.getEventsListAsync;
+import static com.cooldevs.erasmuskit.utils.Utils.toPossessive;
 
 public class PostsActivity extends AppCompatActivity {
 
@@ -133,7 +137,7 @@ public class PostsActivity extends AppCompatActivity {
      */
     private void getPeopleList() {
         users = new ArrayList<>();
-        final UsersAdapter adapter = new UsersAdapter(users);
+        final PeopleAdapter adapter = new PeopleAdapter(users);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,7 +212,7 @@ public class PostsActivity extends AppCompatActivity {
 
     /**
      * Getting the list of posts for this city, of the specified type (from Firebase Realtime Database).
-     * @param postType the type of posts. See {@link com.cooldevs.erasmuskit.Post.PostType}
+     * @param postType the type of posts. See {@link Post.PostType}
      */
     private void getPostsList(final Post.PostType postType) {
         posts.clear();

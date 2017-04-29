@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.posts;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,19 +9,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.posts.model.Event;
+import com.cooldevs.erasmuskit.ui.posts.model.Place;
+import com.cooldevs.erasmuskit.ui.posts.model.Post;
+import com.cooldevs.erasmuskit.ui.posts.model.Tip;
+import com.cooldevs.erasmuskit.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static com.cooldevs.erasmuskit.Post.PostType.EVENT;
-import static com.cooldevs.erasmuskit.Post.PostType.GENERIC;
-import static com.cooldevs.erasmuskit.Post.PostType.PLACE;
-import static com.cooldevs.erasmuskit.Post.PostType.TIP;
+import static com.cooldevs.erasmuskit.ui.posts.model.Post.PostType.EVENT;
+import static com.cooldevs.erasmuskit.ui.posts.model.Post.PostType.GENERIC;
+import static com.cooldevs.erasmuskit.ui.posts.model.Post.PostType.PLACE;
+import static com.cooldevs.erasmuskit.ui.posts.model.Post.PostType.TIP;
 
 /**
  * Created by mario on 23/04/2017
  */
 
-class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
+public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
     private ArrayList<Post> postsList;
     private Post.PostType postType;

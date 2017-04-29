@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.profile;
 
 /**
  * Created by maite on 7/03/17

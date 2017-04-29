@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.posts.model;
 
 /**
  * Created by mario on 23/04/2017

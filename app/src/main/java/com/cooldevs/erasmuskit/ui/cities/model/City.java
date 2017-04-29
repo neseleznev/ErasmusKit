@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.cities.model;
 
 /**
  * Created by mario on 04/03/2017

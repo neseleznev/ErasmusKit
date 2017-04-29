@@ -1,14 +1,14 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui;
 
 /**
  * Created by maite on 12/04/17
  */
 
-class Section {
+public class Section {
     private int icon;
     private String title;
 
-    Section(int icon, String title) {
+    public Section(int icon, String title) {
         this.icon = icon;
         this.title = title;
     }

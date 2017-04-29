@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.utils;
 
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;

@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.login;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,20 +14,26 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.profile.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class LoginActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "RegistrationActivity";
     private static final int RC_ACCOUNT_VERIFIED = 0;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private EditText inputName;
     private EditText inputEmail;
     private EditText inputPassword;
     private ProgressBar progressBar;
@@ -35,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_registration);
 
         // Login / logout session flow
         mAuth = FirebaseAuth.getInstance();
@@ -47,72 +53,82 @@ public class LoginActivity extends AppCompatActivity {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
-                    if (user.isEmailVerified()) {
-                        progressBar.setVisibility(View.GONE);
+                    user.sendEmailVerification()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG, "Email sent.");
 
-                        startActivity(new Intent(LoginActivity.this, CitiesActivity.class));
-                        setResult(RESULT_OK, new Intent());
-                        finish();
-                    } else {
-                        user.sendEmailVerification()
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d(TAG, "Email sent.");
-
-                                            startActivityForResult(new Intent(LoginActivity.this,
-                                                    VerificationActivity.class), RC_ACCOUNT_VERIFIED);
-                                        }
-
-                                        progressBar.setVisibility(View.GONE);
+                                        startActivityForResult(new Intent(RegistrationActivity.this,
+                                                VerificationActivity.class), RC_ACCOUNT_VERIFIED);
                                     }
-                                });
-                    }
 
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
                 }
             }
         };
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.login_toolbar_title);
+            getSupportActionBar().setTitle(R.string.register_toolbar_title);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        inputEmail = (EditText) findViewById(R.id.login_email);
-        inputPassword = (EditText) findViewById(R.id.login_password);
-        progressBar = (ProgressBar) findViewById(R.id.login_progress_bar);
+        inputName = (EditText) findViewById(R.id.registration_name);
+        inputEmail = (EditText) findViewById(R.id.registration_email);
+        inputPassword = (EditText) findViewById(R.id.registration_password);
+        progressBar = (ProgressBar) findViewById(R.id.register_progress_bar);
 
-        Button loginBtn = (Button) findViewById(R.id.login_button);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+        Button signUpBtn = (Button) findViewById(R.id.signup_button);
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String name = inputName.getText().toString();
                 final String email = inputEmail.getText().toString();
                 final String password = inputPassword.getText().toString();
 
-                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
                     progressBar.setVisibility(View.VISIBLE);
 
-                    mAuth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                                    Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
                                     // If sign in fails, display a message to the user. If sign in succeeds
                                     // the auth state listener will be notified and logic to handle the
                                     // signed in user can be handled in the listener.
                                     if (!task.isSuccessful()) {
-                                        Log.w(TAG, "signInWithEmail:failed", task.getException());
-                                        Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        Log.w(TAG, "createUserWithEmailAndPassword:failed", task.getException());
+                                        Toast.makeText(RegistrationActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                                         progressBar.setVisibility(View.GONE);
+
+                                    } else {
+                                        String key = email.replace(".", ""); // IMPORTANT: We are using the email of the user (deleting the ".") as the user KEY
+
+                                        DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference(("users")).child(key);
+                                        mUserRef.child("userName").setValue(name);
+                                        mUserRef.child("userEmail").setValue(email);
+                                        mUserRef.child("userType").setValue(User.UserType.STUDENT.getUserType());
+
+                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(name)
+                                                .build();
+
+                                        if (mAuth.getCurrentUser() != null)
+                                            mAuth.getCurrentUser().updateProfile(profileUpdates);
+                                        else
+                                            throw new IllegalStateException("Current user is null. Cannot update profile");
                                     }
                                 }
                             });
-                }
-
+                } else
+                    Toast.makeText(RegistrationActivity.this, R.string.uncomplete_data, Toast.LENGTH_SHORT).show();
             }
         });
     }

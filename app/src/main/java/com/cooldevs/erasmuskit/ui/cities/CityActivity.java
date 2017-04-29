@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.cities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.Section;
+import com.cooldevs.erasmuskit.ui.SectionsAdapter;
+import com.cooldevs.erasmuskit.ui.posts.PostsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

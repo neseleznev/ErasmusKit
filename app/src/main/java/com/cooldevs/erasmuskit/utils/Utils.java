@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.utils;
 
 import android.app.Activity;
 import android.view.inputmethod.InputMethodManager;
@@ -12,9 +12,9 @@ import java.util.Locale;
 /**
  * Utility class
  */
-final class Utils {
+public final class Utils {
 
-    static void hideSoftKeyboard(Activity activity) {
+    public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
                         Activity.INPUT_METHOD_SERVICE);
@@ -22,14 +22,14 @@ final class Utils {
                 activity.getCurrentFocus().getWindowToken(), 0);
     }
 
-    static String getDateString(long timestamp) {
+    public static String getDateString(long timestamp) {
         DateFormat df = new SimpleDateFormat("dd MMM yyyy", Locale.US);
         Date date = new Date(timestamp);
 
         return df.format(date);
     }
 
-    static long getTimestamp(String dateString) {
+    public static long getTimestamp(String dateString) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
         try {
             Date date = dateFormat.parse(dateString);
@@ -40,7 +40,7 @@ final class Utils {
         }
     }
 
-    static String toPossessive(String noun) {
+    public static String toPossessive(String noun) {
         String possessive = (noun.charAt(noun.length() - 1) == 's') ? "'" : "'s";
         return noun + possessive;
     }

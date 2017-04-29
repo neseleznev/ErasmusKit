@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,18 +7,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cooldevs.erasmuskit.R;
+
 import java.util.ArrayList;
 
 /**
  * Created by maite on 12/04/17
  */
 
-class SectionsAdapter extends RecyclerView.Adapter<SectionsAdapter.SectionViewHolder> implements View.OnClickListener {
+public class SectionsAdapter extends RecyclerView.Adapter<SectionsAdapter.SectionViewHolder> implements View.OnClickListener {
 
     private ArrayList<Section> sections;
     private View.OnClickListener listener;
 
-    SectionsAdapter(ArrayList<Section> sections) {
+    public SectionsAdapter(ArrayList<Section> sections) {
         this.sections = sections;
     }
 

@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.profile;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.Section;
+import com.cooldevs.erasmuskit.ui.SectionsAdapter;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -33,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.cooldevs.erasmuskit.FacebookParser.getUpdateUserAfterLoginCallback;
+import static com.cooldevs.erasmuskit.utils.FacebookParser.getUpdateUserAfterLoginCallback;
 
 public class ProfileActivity extends AppCompatActivity {
 

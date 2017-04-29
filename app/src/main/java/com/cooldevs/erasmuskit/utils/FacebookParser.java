@@ -1,10 +1,13 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.utils;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.cooldevs.erasmuskit.ui.posts.PostsAdapter;
+import com.cooldevs.erasmuskit.ui.posts.model.Event;
+import com.cooldevs.erasmuskit.ui.posts.model.Post;
 import com.facebook.AccessToken;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -23,8 +26,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.cooldevs.erasmuskit.Utils.getTimestamp;
-
 /**
  * Parser class with abstract methods for different purposes. Connection require AccessToken
  */
@@ -39,10 +40,10 @@ public class FacebookParser {
      * @param posts reference to ArrayList<Post> to put there results
      * @param adapter reference to PostsAdapter to invoke .notifyDataSetChanged()
      */
-    static void getEventsListAsync(AccessToken accessToken, final String facebookGroupId,
-                                   final String cityKey,
-                                   final ArrayList<Post> posts, final PostsAdapter adapter,
-                                   final TextView emptyListText) {
+    public static void getEventsListAsync(AccessToken accessToken, final String facebookGroupId,
+                                          final String cityKey,
+                                          final ArrayList<Post> posts, final PostsAdapter adapter,
+                                          final TextView emptyListText) {
 
         GraphRequest request = new GraphRequest(accessToken,
                 facebookGroupId + "/events",  // TODO v2.0 parse multiple groups (bundle query)
@@ -72,7 +73,7 @@ public class FacebookParser {
                                 if (descr.length() > 500) {
                                     descr = descr.substring(0, 500) + "...";
                                 }
-                                startTime = getTimestamp(object.getString("start_time"));
+                                startTime = Utils.getTimestamp(object.getString("start_time"));
                                 if (object.has("place")) {
                                     placeName = object.getJSONObject("place").getString("name");
                                 } else {
@@ -103,7 +104,7 @@ public class FacebookParser {
         request.executeAsync();
     }
 
-    static FacebookCallback<LoginResult> getUpdateUserAfterLoginCallback() {
+    public static FacebookCallback<LoginResult> getUpdateUserAfterLoginCallback() {
         return new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {

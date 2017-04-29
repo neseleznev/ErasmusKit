@@ -1,4 +1,4 @@
-package com.cooldevs.erasmuskit;
+package com.cooldevs.erasmuskit.ui.posts;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,18 +7,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.profile.User;
+
 import java.util.ArrayList;
 
 /**
  * Created by maite on 11/04/17
  */
 
-class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> implements View.OnClickListener {
+public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHolder> implements View.OnClickListener {
 
     private ArrayList<User> usersList;
     private View.OnClickListener listener;
 
-    UsersAdapter(ArrayList<User> users) {
+    public PeopleAdapter(ArrayList<User> users) {
         this.usersList = users;
     }
 
