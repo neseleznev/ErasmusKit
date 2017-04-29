@@ -22,6 +22,11 @@ public class Event extends Post {
         this.facebookLink = facebookLink;
     }
 
+    @Override
+    public PostType getPostType() {
+        return PostType.EVENT;
+    }
+
     public String getPlaceID() {
         return placeID;
     }

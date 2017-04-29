@@ -12,21 +12,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static com.cooldevs.erasmuskit.Post.PostType.EVENT;
+import static com.cooldevs.erasmuskit.Post.PostType.GENERIC;
+import static com.cooldevs.erasmuskit.Post.PostType.PLACE;
+import static com.cooldevs.erasmuskit.Post.PostType.TIP;
+
 /**
  * Created by mario on 23/04/2017
  */
 
 class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
-    private static final int POST_GENERIC = 0;
-    private static final int POST_EVENT = 1;
-    private static final int POST_TIP = 2;
-    private static final int POST_PLACE = 3;
-
     private ArrayList<Post> postsList;
     private Post.PostType postType;
-
-    private int viewType;
 
     PostsAdapter(ArrayList<Post> posts, Post.PostType postType) {
         this.postsList = posts;
@@ -37,39 +35,34 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
 
-        switch (viewType) {
-            case POST_GENERIC:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_post, parent, false);
-                break;
-            case POST_EVENT:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_event, parent, false);
-                break;
-            case POST_TIP:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_tip, parent, false);
-                break;
-            case POST_PLACE:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_place, parent, false);
-                break;
-            default:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_post, parent, false);
+        if (viewType == GENERIC.ordinal()) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.card_post, parent, false);
         }
-
+        else if (viewType == EVENT.ordinal()) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.card_event, parent, false);
+        }
+        else if (viewType == TIP.ordinal()) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.card_tip, parent, false);
+        }
+        else if (viewType == PLACE.ordinal()) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.card_place, parent, false);
+        } else {
+            throw new IllegalStateException("View type is unknown " +
+                    "(caused by element in ArrayList<Post>)");
+        }
         return new PostViewHolder(itemView);
     }
 
     @Override
     public int getItemViewType(int position) {
-        viewType = POST_GENERIC;
         Post post = postsList.get(position);
+        postType = post.getPostType();
 
-        if (post instanceof Event)
-            viewType = POST_EVENT;
-        else if (post instanceof Tip)
-            viewType = POST_TIP;
-        else if (post instanceof Place)
-            viewType = POST_PLACE;
-
-        return viewType;
+        return postType.ordinal();
     }
 
     @Override
@@ -92,8 +85,8 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
         void bindPost(final Post post) {
             TextView postTitle, postContent;
 
-            switch (viewType) {
-                case POST_EVENT:
+            switch (postType) {
+                case EVENT:
                     final Event event = (Event) post;
                     String date = Utils.getDateString(event.getEventTimestamp());
 
@@ -125,7 +118,7 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
                     }
                     break;
 
-                case POST_TIP:
+                case TIP:
                     Tip tip = (Tip) post;
 
                     postTitle = (TextView) itemView.findViewById(R.id.tip_title);
@@ -136,7 +129,7 @@ class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHolder> {
 
                     break;
 
-                case POST_PLACE:
+                case PLACE:
                     Place place = (Place) post;
 
                     postTitle = (TextView) itemView.findViewById(R.id.place_title);

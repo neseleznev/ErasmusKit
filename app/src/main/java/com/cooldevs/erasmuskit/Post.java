@@ -23,6 +23,7 @@ public class Post {
     }
 
     public enum PostType {
+        GENERIC("Post", "posts", Post.class),
         EVENT("Event", "events", Event.class),
         TIP("Tip", "tips", Tip.class),
         PLACE("Place", "places", Place.class);
@@ -68,6 +69,10 @@ public class Post {
 
     public String getCity() {
         return city;
+    }
+
+    public PostType getPostType() {
+        return PostType.GENERIC;
     }
 
     public long getTimestamp() {
