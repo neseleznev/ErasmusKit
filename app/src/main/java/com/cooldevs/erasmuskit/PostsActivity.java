@@ -33,6 +33,7 @@ public class PostsActivity extends AppCompatActivity {
 
     private String cityName;
     private String cityKey;
+    private String cityFacebookGroupId;
     private RecyclerView recyclerView;
 
     private Query usersRef;
@@ -58,6 +59,12 @@ public class PostsActivity extends AppCompatActivity {
         // Get intent extras
         cityName = getIntent().getStringExtra("cityName");
         cityKey = getIntent().getStringExtra("cityKey");
+        if (!getIntent().hasExtra("cityFacebookGroupId")
+                || getIntent().getStringExtra("cityFacebookGroupId") == null) {
+            cityFacebookGroupId = getString(R.string.default_erasmus_facebook_group);
+        } else {
+            cityFacebookGroupId = getIntent().getStringExtra("cityFacebookGroupId");
+        }
         int citySection = getIntent().getIntExtra("citySection", -1);
         /*
         -------POSSIBLE VALUES-------
@@ -215,7 +222,7 @@ public class PostsActivity extends AppCompatActivity {
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
             if (accessToken != null) {
                 Log.d(TAG, "User is authorized; parsing facebook for events...");
-                getEventsListAsync(accessToken, "ESNULgofficial", cityKey, posts, adapter);
+                getEventsListAsync(accessToken, cityFacebookGroupId, cityKey, posts, adapter);
 
             } else {
                 Toast.makeText(

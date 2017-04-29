@@ -37,9 +37,9 @@ public class FacebookParser {
      * @param posts reference to ArrayList<Post> to put there results
      * @param adapter reference to PostsAdapter to invoke .notifyDataSetChanged()
      */
-    static void getEventsListAsync(AccessToken accessToken, String facebookGroupId,
+    static void getEventsListAsync(AccessToken accessToken, final String facebookGroupId,
                                    final String cityKey,
-                                    final ArrayList<Post> posts, final PostsAdapter adapter) {
+                                   final ArrayList<Post> posts, final PostsAdapter adapter) {
 
         GraphRequest request = new GraphRequest(accessToken,
                 facebookGroupId + "/events",  // TODO v2.0 parse multiple groups (bundle query)
@@ -49,11 +49,11 @@ public class FacebookParser {
                 {
                     @Override
                     public void onCompleted(GraphResponse response) {
-                        Log.d(TAG, response.toString());
+                        Log.d(TAG, facebookGroupId + "/events\t" + response.toString());
                         JSONArray data = null;
                         try {
                             data = response.getJSONObject().getJSONArray("data");
-                        } catch (JSONException e) {
+                        } catch (JSONException | NullPointerException e) {
                             e.printStackTrace();
                             return;
                         }
