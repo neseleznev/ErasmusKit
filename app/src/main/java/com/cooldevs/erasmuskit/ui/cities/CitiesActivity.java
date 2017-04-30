@@ -67,7 +67,7 @@ public class CitiesActivity extends AppCompatActivity {
         // Get screen dimensions (width) for the RecyclerView arrangement
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int numRows = (int) Math.ceil(dpWidth / 520f); // FIXME 520? Maybe 420 or 666?
+        int numRows = (int) Math.ceil(dpWidth / 520f);
 
         // Login / logout session flow (if user is null we go back to WelcomeActivity)
         mAuth = FirebaseAuth.getInstance();

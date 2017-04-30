@@ -3,7 +3,7 @@
     <string name="app_name">ErasmusKit</string>
 
     <!-- WelcomeActivity.java -->
-    <string name="header_text">Se connecter avec le Monde Erasmus</string>
+    <string name="header_text">Connectez avec le Monde Erasmus</string>
     <string name="register_button_text">S\'inscrire avec l\'email</string>
     <string name="auth_failed_toast">Authentificatoin echoué</string>
     <string name="final_text">Avez-vous un compte déjà?</string>
@@ -23,7 +23,7 @@
     <string name="login_btn_text">S\'inscrire</string>
 
     <!-- VerificationActivity.java -->
-    <string name="verified_account">Ta compte est déjà vérifiée!</string>
+    <string name="verified_account">Ta compte est vérifiée!</string>
     <string name="verify_button">Continuer</string>
 
     <!-- CityActivity.java -->
@@ -33,7 +33,7 @@
     <string name="city_section_4">Endroits</string>
 
     <!-- PostActivity.java -->
-    <string name="empty_list_text">Pas du content encore</string>
+    <string name="empty_list_text">Pas de content encore</string>
     <string name="event_facebook_button">Plus sur Facebook</string>
 
     <!-- NewEventActivity.java -->
@@ -67,7 +67,7 @@
     <string-array name="nationalities">
         <item>Albanie</item>
         <item>Algerie</item>
-        <item>Allemgne</item>
+        <item>Allemagne</item>
         <item>Austriche</item>
         <item>Armenie</item>
         <item>Azerbaidjan</item>
@@ -147,19 +147,19 @@
 
     <!-- Dialogs -->
     <string name="new_city_dialog_title">Nouvelle ville</string>
-    <string name="new_city_name_hint">Nom du ville</string>
+    <string name="new_city_name_hint">Nom de la ville</string>
     <string name="new_city_country_hint">Pays</string>
     <string name="new_city_positive_btn">Ajouter</string>
 
     <!-- Toasts and Snacks -->
     <string name="country_city_content">Pays: %1$s</string>
-    <string name="delete_city_toast">La ville a été retiré de la basse de données</string>
-    <string name="add_city_toast">La ville a été ajouté</string>
+    <string name="delete_city_toast">La ville a été retirée de la basse de données</string>
+    <string name="add_city_toast">La ville a été ajoutée</string>
     <string name="add_city_empty_toast">Les champs ne peuvent pas être vides</string>
     <string name="error_toast">Oops! Il y a eu un error</string>
-    <string name="email_sent">L\'email est envoyé</string>
+    <string name="email_sent">L\'email a été envoyé</string>
     <string name="post_saved">Le poste a été enregistré</string>
     <string name="not_verified_account">Vérifiez votre boîte de réception et activez votre compte. Puis, tapez l’icône de rafraîchir</string>
-    <string name="user_field_default_text">"Pas spécifié "</string>
+    <string name="user_field_default_text">Pas spécifié</string>
 
 </resources>
