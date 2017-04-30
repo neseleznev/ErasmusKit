@@ -3,6 +3,7 @@ package com.cooldevs.erasmuskit.ui.posts;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.BaseInternetActivity;
+import com.cooldevs.erasmuskit.ui.cities.CitiesActivity;
 import com.cooldevs.erasmuskit.ui.posts.model.Post;
 import com.cooldevs.erasmuskit.ui.profile.ProfileActivity;
 import com.cooldevs.erasmuskit.ui.profile.User;
@@ -31,18 +34,19 @@ import java.util.Comparator;
 import static com.cooldevs.erasmuskit.utils.FacebookParser.getEventsListAsync;
 import static com.cooldevs.erasmuskit.utils.Utils.toPossessive;
 
-public class PostsActivity extends AppCompatActivity {
+public class PostsActivity extends BaseInternetActivity {
 
     private static final String TAG = "PostsActivity";
 
     private String cityName;
     private String cityKey;
     private String cityFacebookGroupId;
+    private int citySection;
     private RecyclerView recyclerView;
 
     private Query usersRef;
     private ChildEventListener usersEventListener;
-    private ArrayList<User> users;
+    private ArrayList<User> users = new ArrayList<>();
 
     private Query postsRef;
     private ChildEventListener postsEventListener;
@@ -60,16 +64,24 @@ public class PostsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.posts_recView);
         emptyListText = (TextView) findViewById(R.id.empty_list_text);
 
-        // Get intent extras
-        cityName = getIntent().getStringExtra("cityName");
-        cityKey = getIntent().getStringExtra("cityKey");
-        if (!getIntent().hasExtra("cityFacebookGroupId")
-                || getIntent().getStringExtra("cityFacebookGroupId") == null) {
+        getIntentExtras(getIntent());
+        retrieveData();
+        setFabFunctionality();
+    }
+
+    private void getIntentExtras(Intent intent) {
+        cityName = intent.getStringExtra("cityName");
+        cityKey = intent.getStringExtra("cityKey");
+        if (!intent.hasExtra("cityFacebookGroupId")
+                || intent.getStringExtra("cityFacebookGroupId") == null) {
             cityFacebookGroupId = getString(R.string.default_erasmus_facebook_group);
         } else {
-            cityFacebookGroupId = getIntent().getStringExtra("cityFacebookGroupId");
+            cityFacebookGroupId = intent.getStringExtra("cityFacebookGroupId");
         }
-        int citySection = getIntent().getIntExtra("citySection", -1);
+        citySection = intent.getIntExtra("citySection", -1);
+    }
+
+    private void setFabFunctionality() {
         /*
         -------POSSIBLE VALUES-------
         citySection = 0 -> PEOPLE SECTION
@@ -77,39 +89,26 @@ public class PostsActivity extends AppCompatActivity {
         citySection = 2 -> TIPS SECTION
         citySection = 3 -> PLACES SECTION
         */
-
-        String toolbarTitle = toPossessive(cityName);
-
-        // FAB functionality
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_post_fab);
+        String toolbarTitle = toPossessive(cityName);
         Class mClass = null;
 
         switch (citySection) {
             case 0:
                 toolbarTitle += " " + getString(R.string.city_section_1);
                 fab.setVisibility(View.GONE);
-                getPeopleList();
                 break;
-
             case 1:
                 toolbarTitle += " " + getString(R.string.city_section_2);
                 mClass = NewEventActivity.class;
-
-                getPostsList(Post.PostType.EVENT);
                 break;
-
             case 2:
                 toolbarTitle += " " + getString(R.string.city_section_3);
                 mClass = NewTipActivity.class;
-
-                getPostsList(Post.PostType.TIP);
                 break;
-
             case 3:
                 toolbarTitle += " " + getString(R.string.city_section_4);
                 mClass = NewPlaceActivity.class;
-
-                getPostsList(Post.PostType.PLACE);
                 break;
         }
 
@@ -129,6 +128,62 @@ public class PostsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(toolbarTitle);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private void retrieveData() {
+        switch (citySection) {
+            case 0:
+                getPeopleList();
+                break;
+            case 1:
+                getPostsList(Post.PostType.EVENT);
+                break;
+            case 2:
+                getPostsList(Post.PostType.TIP);
+                break;
+            case 3:
+                getPostsList(Post.PostType.PLACE);
+                break;
+        }
+    }
+
+    @Override
+    public void onConnectivityChanged(boolean isConnected) {
+        View noInternet = findViewById(R.id.no_internet_view);
+        users.clear();
+        posts.clear();
+        if (recyclerView.getAdapter() != null) {
+            recyclerView.getAdapter().notifyDataSetChanged();
+        }
+
+        if (isConnected) {
+            Log.d(TAG, "Internet connection established");
+            noInternet.setVisibility(View.GONE);
+//            refLayout.setRefreshing(true);
+//            refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//                @Override
+//                public void onRefresh() {
+//                    refLayout.setRefreshing(false);
+//                }
+//            });
+//
+//            retrieveData();
+        } else {
+            Log.d(TAG, "Internet connection lost");
+            noInternet.setVisibility(View.VISIBLE);
+//            refLayout.setRefreshing(false);
+
+            if (usersRef != null && usersEventListener != null) {
+                usersRef.removeEventListener(usersEventListener);
+                usersRef.addChildEventListener(usersEventListener);
+            }
+            if (postsRef != null && postsEventListener != null) {
+                postsRef.removeEventListener(postsEventListener);
+                postsRef.addChildEventListener(postsEventListener);
+            }
+//            adapter.notifyDataSetChanged();
+            Toast.makeText(PostsActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -313,11 +368,13 @@ public class PostsActivity extends AppCompatActivity {
         super.onStart();
         if (usersRef != null) {
             users.clear();
+            usersRef.removeEventListener(usersEventListener);
             usersRef.addChildEventListener(usersEventListener);
         }
 
         if (postsRef != null) {
             posts.clear();
+            postsRef.removeEventListener(postsEventListener);
             postsRef.addChildEventListener(postsEventListener);
         }
     }
