@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cooldevs.erasmuskit.RegistrationActivity">
+    tools:context="com.cooldevs.erasmuskit.ui.login.RegistrationActivity">
 
     <ImageView
         android:layout_width="85dp"
@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="15dp"
-        android:tint="@color/gray"
+        android:tint="@color/colorGray"
         app:srcCompat="@drawable/ic_account_details" />
 
     <android.support.design.widget.TextInputLayout
