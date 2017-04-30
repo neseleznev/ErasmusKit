@@ -232,7 +232,11 @@ public class CitiesActivity extends BaseInternetActivity {
     @Override
     public void onConnectivityChanged(boolean isConnected) {
         View noInternet = findViewById(R.id.no_internet_view);
+        cities.clear();
+        adapter.notifyDataSetChanged();
+
         if (isConnected) {
+            Log.d(TAG, "Internet connection established");
             noInternet.setVisibility(View.GONE);
             refLayout.setRefreshing(true);
             refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -242,16 +246,14 @@ public class CitiesActivity extends BaseInternetActivity {
                 }
             });
 
-            cities.clear();
         } else {
+            Log.d(TAG, "Internet connection lost");
             noInternet.setVisibility(View.VISIBLE);
             refLayout.setRefreshing(false);
-            cities.clear();
             if (citiesRef != null && childEventListener != null) {
                 citiesRef.removeEventListener(childEventListener);
                 citiesRef.addChildEventListener(childEventListener);
             }
-            adapter.notifyDataSetChanged();
             Toast.makeText(CitiesActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
         }
     }
@@ -274,6 +276,7 @@ public class CitiesActivity extends BaseInternetActivity {
                     setViewsVisibility(visibility);
 
                     cities.clear();
+                    citiesRef.removeEventListener(childEventListener);
                     citiesRef.addChildEventListener(childEventListener);
                 }
 
