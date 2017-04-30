@@ -146,8 +146,9 @@ public class ProfileActivity extends BaseInternetActivity {
         if (isConnected) {
             noInternet.setVisibility(View.GONE);
         } else {
-            noInternet.setVisibility(View.VISIBLE);
-            Toast.makeText(ProfileActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+            if (sections.size() == 0) {  // No data still
+                noInternet.setVisibility(View.VISIBLE);
+            }
         }
     }
 
