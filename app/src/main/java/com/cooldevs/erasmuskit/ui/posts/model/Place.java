@@ -1,7 +1,7 @@
 package com.cooldevs.erasmuskit.ui.posts.model;
 
 /**
- * Created by mario on 27/04/2017.
+ * Created by mario on 27/04/2017
  */
 
 public class Place extends Post {

@@ -11,7 +11,7 @@ import android.view.View;
 import java.util.List;
 
 /**
- * Created by mario on 07/03/2017
+ * Class to set a scrolling behavior to a Floating Action Button
  */
 
 public class ScrollBehavior extends AppBarLayout.ScrollingViewBehavior {

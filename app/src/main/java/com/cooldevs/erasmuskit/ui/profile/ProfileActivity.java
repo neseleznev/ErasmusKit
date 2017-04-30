@@ -216,6 +216,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Gets the user attributes from Firebase Realtime Database and adds them to the views
+     * @param userKey the key of the user to get information from
+     */
     private void getUserInformation(String userKey) {
         usersRef = FirebaseDatabase.getInstance().getReference("users").child(userKey);
         usersEventListener = new ValueEventListener() {
@@ -243,6 +247,10 @@ public class ProfileActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Set the Facebook profile picture as the toolbar ImageView
+     * @param userPictureUrl the profile picture URL for this user
+     */
     private void setBarPictureIfExists(String userPictureUrl) {
         ImageView imageView = (ImageView) findViewById(R.id.profile_toolbar_wp);
 
@@ -251,6 +259,9 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Get the a list of the cities' names from Firebase Realtime Database
+     */
     private void getCitiesList() {
         Query citiesRef = FirebaseDatabase.getInstance().getReference("cities").orderByChild("name");
         citiesRef.addListenerForSingleValueEvent(new ValueEventListener() {

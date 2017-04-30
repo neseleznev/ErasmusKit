@@ -150,6 +150,10 @@ public class WelcomeActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
     }
 
+    /**
+     * Firebase Authentication with Google account
+     * @param acct Google account
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 

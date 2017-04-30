@@ -240,6 +240,9 @@ public class CitiesActivity extends AppCompatActivity {
         setupUI(parentView);
     }
 
+    /**
+     * Sets the appropriate permissions for the current user
+     */
     private void setUserPermissions() {
         if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getEmail() != null) {
             String userKey = mAuth.getCurrentUser().getEmail().replace(".", "");
@@ -266,6 +269,10 @@ public class CitiesActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets this visibility to the Floating Action Button and to the delete icon
+     * @param visibility the visibility to apply
+     */
     private void setViewsVisibility(int visibility) {
         adapter.setIconVisibility(visibility);
         floatingActionButton.setVisibility(visibility);
@@ -353,7 +360,9 @@ public class CitiesActivity extends AppCompatActivity {
     }
 
     /**
-     * http://stackoverflow.com/a/11656129/820410
+     * Tricky method to hide keyboard when user finishes a search
+     * @param view layout container view
+     * @see <a href="http://stackoverflow.com/a/11656129/820410">Reference</a>
      */
     public void setupUI(View view) {
         if(!(view instanceof SearchView)) {

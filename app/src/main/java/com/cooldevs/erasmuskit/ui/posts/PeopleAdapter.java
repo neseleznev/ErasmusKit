@@ -16,12 +16,12 @@ import java.util.ArrayList;
  * Created by maite on 11/04/17
  */
 
-public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHolder> implements View.OnClickListener {
+class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHolder> implements View.OnClickListener {
 
     private ArrayList<User> usersList;
     private View.OnClickListener listener;
 
-    public PeopleAdapter(ArrayList<User> users) {
+    PeopleAdapter(ArrayList<User> users) {
         this.usersList = users;
     }
 
