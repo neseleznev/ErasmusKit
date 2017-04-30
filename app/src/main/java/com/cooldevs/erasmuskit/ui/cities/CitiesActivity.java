@@ -243,13 +243,13 @@ public class CitiesActivity extends BaseInternetActivity {
             });
 
             cities.clear();
-            citiesRef.addChildEventListener(childEventListener);
         } else {
             noInternet.setVisibility(View.VISIBLE);
             refLayout.setRefreshing(false);
             cities.clear();
             if (citiesRef != null && childEventListener != null) {
                 citiesRef.removeEventListener(childEventListener);
+                citiesRef.addChildEventListener(childEventListener);
             }
             adapter.notifyDataSetChanged();
             Toast.makeText(CitiesActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
