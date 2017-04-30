@@ -56,8 +56,9 @@ public class NewEventActivity extends AppCompatActivity {
         dateSelector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment newFragment = new DatePickerFragment(dateSelector);
-                newFragment.show(getSupportFragmentManager(), "datePicker");
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.setTv(dateSelector);
+                datePickerFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
 
@@ -153,7 +154,7 @@ public class NewEventActivity extends AppCompatActivity {
 
         }
 
-        public DatePickerFragment(TextView tv) {
+        public void setTv(TextView tv) {
             this.tv = tv;
         }
 
