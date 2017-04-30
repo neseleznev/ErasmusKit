@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ErasmusKit</string>
+
+    <!-- WelcomeActivity.java -->
+    <string name="header_text">Connectez avec le Monde Erasmus</string>
+    <string name="register_button_text">S\'inscrire avec l\'email</string>
+    <string name="auth_failed_toast">Authentificatoin echoué</string>
+    <string name="final_text">Avez-vous un compte déjà?</string>
+    <string name="login_link"><a href="">Se connecter</a></string>
+
+    <!-- RegistrationActivity.java -->
+    <string name="register_toolbar_title">S\'inscrire</string>
+    <string name="register_name_hint">Prenom</string>
+    <string name="register_email_hint">Email</string>
+    <string name="register_pwd_hint">Mot de passe</string>
+    <string name="uncomplete_data">S\'il vous plaît, remplissez les données nécessaires</string>
+
+    <!-- LoginActivity.java -->
+    <string name="login_toolbar_title">S\'inscrire</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_pwd_hint">Mot de passe</string>
+    <string name="login_btn_text">S\'inscrire</string>
+
+    <!-- VerificationActivity.java -->
+    <string name="verified_account">Ta compte est vérifiée!</string>
+    <string name="verify_button">Continuer</string>
+
+    <!-- CityActivity.java -->
+    <string name="city_section_1">Gens</string>
+    <string name="city_section_2">Événements</string>
+    <string name="city_section_3">Conseils</string>
+    <string name="city_section_4">Endroits</string>
+
+    <!-- PostActivity.java -->
+    <string name="empty_list_text">Pas de content encore</string>
+    <string name="event_facebook_button">Plus sur Facebook</string>
+
+    <!-- NewEventActivity.java -->
+    <string name="new_event_toolbar_title">Nouvel événement</string>
+    <string name="event_title_hint">Titre</string>
+    <string name="event_description_hint">Description</string>
+    <string name="date_title">Sélectionnez la date</string>
+    <string name="location_title">Sélectionnez un endroit</string>
+
+    <!-- NewTipActivity.java -->
+    <string name="new_tip_toolbar_title">Nouvel conseil</string>
+    <string name="tip_title_hint">Titre</string>
+    <string name="tip_description_hint">Description</string>
+    <string name="category_title">Sélectionnez le genre du conseil</string>
+
+    <!-- NewPlaceActivity -->
+    <string name="new_place_toolbar_title">Nouvel endroit</string>
+    <string name="place_description_hint">Description</string>
+    <string name="place_selector">Sélectionnez un endroit</string>
+
+    <!--User Profile-->
+    <string name="facebook_profile">Profil Facebook</string>
+
+    <string-array name="dialog_titles">
+        <item>Sélectionnez votre nationalité</item>
+        <item>Sélectionnez vos études</item>
+        <item>Sélectionnez ta ville Erasmus</item>
+        <item>Sélectionnez le type d\'utilisateur</item>
+    </string-array>
+
+    <string-array name="nationalities">
+        <item>Albanie</item>
+        <item>Algerie</item>
+        <item>Allemagne</item>
+        <item>Austriche</item>
+        <item>Armenie</item>
+        <item>Azerbaidjan</item>
+        <item>Belgique</item>
+        <item>Bielorrussie</item>
+        <item>Bulgarie</item>
+        <item>Croatie</item>
+        <item>Cypre</item>
+        <item>Danemark</item>
+        <item>Egypte</item>
+        <item>Espagne</item>
+        <item>Estonie</item>
+        <item>Finlande</item>
+        <item>France</item>
+        <item>Georgie</item>
+        <item>Grece</item>
+        <item>Hongrie</item>
+        <item>Irlande</item>
+        <item>Islande</item>
+        <item>Israel</item>
+        <item>Italie</item>
+        <item>Jordanie</item>
+        <item>Kosovo</item>
+        <item>Lettonie</item>
+        <item>Liban</item>
+        <item>Libye</item>
+        <item>Lichtenstein</item>
+        <item>Lituanie</item>
+        <item>Luxembourg</item>
+        <item>Macedoine</item>
+        <item>Malte</item>
+        <item>Maroc</item>
+        <item>Moldavie</item>
+        <item>Norvege</item>
+        <item>Pays-Bas</item>
+        <item>Palestine</item>
+        <item>Pologne</item>
+        <item>Portugal</item>
+        <item>Republique tcheque</item>
+        <item>Roumanie</item>
+        <item>Royaume-Uni</item>
+        <item>Russie</item>
+        <item>Slovaquie</item>
+        <item>Slovenie</item>
+        <item>Suede</item>
+        <item>Syrie</item>
+        <item>Tunise</item>
+        <item>Turquie</item>
+        <item>Ukraine</item>
+    </string-array>
+
+    <string-array name="study_fields">
+        <item>Architecture</item>
+        <item>Art</item>
+        <item>Communication</item>
+        <item>Criminologie</item>
+        <item>Droit</item>
+        <item>Economique</item>
+        <item>Education</item>
+        <item>Gestion</item>
+        <item>Histoire</item>
+        <item>Ingenierie</item>
+        <item>Langues</item>
+        <item>Sciances medicales</item>
+        <item>Philosophie</item>
+        <item>Sciences politiques</item>
+        <item>Psychologie</item>
+        <item>Sciences</item>
+    </string-array>
+
+    <!-- Menu -->
+    <string name="action_profile">Mon profil</string>
+    <string name="action_logout">Déconnexion</string>
+    <string name="action_refresh">Actualiser</string>
+    <string name="action_email">Renvoyer email</string>
+    <string name="action_save">Sauver</string>
+
+    <!-- Dialogs -->
+    <string name="new_city_dialog_title">Nouvelle ville</string>
+    <string name="new_city_name_hint">Nom de la ville</string>
+    <string name="new_city_country_hint">Pays</string>
+    <string name="new_city_positive_btn">Ajouter</string>
+
+    <!-- Toasts and Snacks -->
+    <string name="country_city_content">Pays: %1$s</string>
+    <string name="delete_city_toast">La ville a été retirée de la basse de données</string>
+    <string name="add_city_toast">La ville a été ajoutée</string>
+    <string name="add_city_empty_toast">Les champs ne peuvent pas être vides</string>
+    <string name="error_toast">Oops! Il y a eu un error</string>
+    <string name="email_sent">L\'email a été envoyé</string>
+    <string name="post_saved">Le poste a été enregistré</string>
+    <string name="not_verified_account">Vérifiez votre boîte de réception et activez votre compte. Puis, tapez l’icône de rafraîchir</string>
+    <string name="user_field_default_text">Pas spécifié</string>
+
+</resources>

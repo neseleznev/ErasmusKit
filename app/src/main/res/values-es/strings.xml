@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ErasmusKit</string>
+
+    <!-- WelcomeActivity.java -->
+    <string name="header_text">Conecta con el mundo Erasmus</string>
+    <string name="register_button_text">Registrarse con correo</string>
+    <string name="auth_failed_toast">Autentificación fallida</string>
+    <string name="final_text">¿Ya tienes una cuenta?</string>
+    <string name="login_link"><a href="">Inicia sesión</a></string>
+
+    <!-- RegistrationActivity.java -->
+    <string name="register_toolbar_title">Registrarse</string>
+    <string name="register_name_hint">Nombre</string>
+    <string name="register_email_hint">Correo electrónico</string>
+    <string name="register_pwd_hint">Establece una contraseña</string>
+    <string name="uncomplete_data">Por favor, rellena todos los campos</string>
+
+    <!-- LoginActivity.java -->
+    <string name="login_toolbar_title">Registrarse</string>
+    <string name="login_email_hint">Correo electrónico</string>
+    <string name="login_pwd_hint">Contraseña</string>
+    <string name="login_btn_text">Entrar</string>
+
+    <!-- VerificationActivity.java -->
+    <string name="not_verified_account">Comprueba tu bandeja de entrada. Después, pulsa sobre el icono de refrescar</string>
+    <string name="verified_account">¡Tu cuenta está verificada!</string>
+    <string name="verify_button">Continuar</string>
+
+    <!-- CityActivity.java -->
+    <string name="city_section_1">Gente</string>
+    <string name="city_section_2">Eventos</string>
+    <string name="city_section_3">Consejos</string>
+    <string name="city_section_4">Lugares</string>
+
+    <!-- PostActivity.java -->
+    <string name="empty_list_text">No hay contenido aún</string>
+    <string name="event_facebook_button">Más en Facebook</string>
+
+    <!-- NewEventActivity.java -->
+    <string name="new_event_toolbar_title">Nuevo evento</string>
+    <string name="event_title_hint">Título</string>
+    <string name="event_description_hint">Descripción</string>
+    <string name="date_title">Selecciona la fecha</string>
+    <string name="location_title">Selecciona un lugar</string>
+
+    <!-- NewTipActivity.java -->
+    <string name="new_tip_toolbar_title">Nuevo consejo</string>
+    <string name="tip_title_hint">Título</string>
+    <string name="tip_description_hint">Descripción</string>
+    <string name="category_title">Selecciona una categoría</string>
+
+    <!-- NewPlaceActivity -->
+    <string name="new_place_toolbar_title">Nuevo lugar</string>
+    <string name="place_description_hint">Descripción</string>
+    <string name="place_selector">Selecciona un lugar aquí</string>
+
+    <!--User Profile-->
+    <string name="user_field_default_text">Sin especificar</string>
+    <string name="facebook_profile">Perfil de Facebook</string>
+
+    <string-array name="dialog_titles">
+        <item>Selecciona tu nacionalidad</item>
+        <item>Selecciona tu campo de estudios</item>
+        <item>Selecciona tu ciudad Erasmus</item>
+        <item>Selecciona el tipo de usuario</item>
+    </string-array>
+
+    <string-array name="nationalities">
+        <item>Albania</item>
+        <item>Alemania</item>
+        <item>Algeria</item>
+        <item>Austria</item>
+        <item>Armenia</item>
+        <item>Azerbaijan</item>
+        <item>Belgica</item>
+        <item>Bielorrusia</item>
+        <item>Bosnia y Herzegovina</item>
+        <item>Bulgaria</item>
+        <item>Chipre</item>
+        <item>Croacia</item>
+        <item>Dinamarca</item>
+        <item>Egipto</item>
+        <item>Eslovenia</item>
+        <item>Eslovaquia</item>
+        <item>España</item>
+        <item>Estonia</item>
+        <item>Finlandia</item>
+        <item>Francia</item>
+        <item>Georgia</item>
+        <item>Grecia</item>
+        <item>Hungría</item>
+        <item>Irlanda</item>
+        <item>Islandia</item>
+        <item>Israel</item>
+        <item>Italia</item>
+        <item>Jordania</item>
+        <item>Kosovo</item>
+        <item>Letonia</item>
+        <item>Libano</item>
+        <item>Libia</item>
+        <item>Liechtenstein</item>
+        <item>Lituania</item>
+        <item>Luxemburgo</item>
+        <item>Macedonia</item>
+        <item>Malta</item>
+        <item>Marruecos</item>
+        <item>Montenegro</item>
+        <item>Moldavia</item>
+        <item>Noruega</item>
+        <item>Paises Bajos</item>
+        <item>Palestina</item>
+        <item>Polonia</item>
+        <item>Portugal</item>
+        <item>Reino Unido</item>
+        <item>República Checa</item>
+        <item>Rumania</item>
+        <item>Rusia</item>
+        <item>Serbia</item>
+        <item>Siria</item>
+        <item>Suecia</item>
+        <item>Túnez</item>
+        <item>Turquia</item>
+        <item>Ucrania</item>
+    </string-array>
+
+    <string-array name="study_fields">
+        <item>Arquitectura</item>
+        <item>Arte</item>
+        <item>Ciencias</item>
+        <item>Ciencias médicas</item>
+        <item>Ciencias políticas</item>
+        <item>Comunicación</item>
+        <item>Criminología</item>
+        <item>Derecho</item>
+        <item>Dirección de empresas</item>
+        <item>Economía</item>
+        <item>Educación</item>
+        <item>Filosofía</item>
+        <item>Historia</item>
+        <item>Idiomas</item>
+        <item>Ingeniería</item>
+        <item>Psicología</item>
+    </string-array>
+
+    <!-- Menu -->
+    <string name="action_profile">Mi perfil</string>
+    <string name="action_logout">Cerrar sesión</string>
+    <string name="action_refresh">Actualizar</string>
+    <string name="action_email">Reenviar correo</string>
+    <string name="action_save">Guardar</string>
+
+    <!-- Dialogs -->
+    <string name="new_city_dialog_title">Nueva ciudad</string>
+    <string name="new_city_name_hint">Nombre de cuidad</string>
+    <string name="new_city_country_hint">País de la ciudad</string>
+    <string name="new_city_positive_btn">Añadir</string>
+
+    <!-- Toasts and Snacks -->
+    <string name="country_city_content">País: %1$s</string>
+    <string name="delete_city_toast">La cuidad ha sido eliminda de la base de datos</string>
+    <string name="add_city_toast">La ciudad ha sido añadida a la base de datos</string>
+    <string name="add_city_empty_toast">Los campos no pueden estar vacíos</string>
+    <string name="error_toast">Oops! Ha habido un error</string>
+    <string name="email_sent">El correo ha sido enviado</string>
+    <string name="post_saved">La entrada ha sido guardada</string>
+
+</resources>
