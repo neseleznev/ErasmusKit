@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.BaseInternetActivity;
 import com.cooldevs.erasmuskit.ui.cities.model.City;
 import com.cooldevs.erasmuskit.ui.login.WelcomeActivity;
 import com.cooldevs.erasmuskit.ui.profile.ProfileActivity;
@@ -40,9 +40,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static com.cooldevs.erasmuskit.utils.Utils.hideSoftKeyboard;
 
-public class CitiesActivity extends AppCompatActivity {
+public class CitiesActivity extends BaseInternetActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -63,11 +64,6 @@ public class CitiesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cities);
-
-        // Get screen dimensions (width) for the RecyclerView arrangement
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int numRows = (int) Math.ceil(dpWidth / 520f);
 
         // Login / logout session flow (if user is null we go back to WelcomeActivity)
         mAuth = FirebaseAuth.getInstance();
@@ -91,13 +87,6 @@ public class CitiesActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        refLayout.setRefreshing(true);
-        refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refLayout.setRefreshing(false);
-            }
-        });
 
         // Get behavior
         params = (CoordinatorLayout.LayoutParams) refLayout.getLayoutParams();
@@ -125,6 +114,13 @@ public class CitiesActivity extends AppCompatActivity {
             }
         });
 
+        // Get screen dimensions (width) for the RecyclerView arrangement
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int numRows = 1;
+        if (getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
+            float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+            numRows = (int) Math.ceil(dpWidth / 520f);
+        }
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, numRows));
@@ -238,6 +234,33 @@ public class CitiesActivity extends AppCompatActivity {
 
         View parentView = findViewById(R.id.cities_parent);
         setupUI(parentView);
+    }
+
+    @Override
+    public void onConnectivityChanged(boolean isConnected) {
+        View noInternet = findViewById(R.id.no_internet_view);
+        if (isConnected) {
+            noInternet.setVisibility(View.GONE);
+            refLayout.setRefreshing(true);
+            refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    refLayout.setRefreshing(false);
+                }
+            });
+
+            cities.clear();
+            citiesRef.addChildEventListener(childEventListener);
+        } else {
+            noInternet.setVisibility(View.VISIBLE);
+            refLayout.setRefreshing(false);
+            cities.clear();
+            if (citiesRef != null && childEventListener != null) {
+                citiesRef.removeEventListener(childEventListener);
+            }
+            adapter.notifyDataSetChanged();
+            Toast.makeText(CitiesActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
