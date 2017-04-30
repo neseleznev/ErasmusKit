@@ -14,8 +14,6 @@
     <string name="register_name_hint">Name</string>
     <string name="register_email_hint">Email</string>
     <string name="register_pwd_hint">Set a password</string>
-    <string name="register_verification_state">Email verified: %1$s</string>
-    <string name="verification_email_error">There was a problem sending the verification email</string>
     <string name="uncomplete_data">Please, fill all the required data</string>
 
     <!-- LoginActivity.java -->
@@ -25,7 +23,6 @@
     <string name="login_btn_text">Sign in</string>
 
     <!-- VerificationActivity.java -->
-    <string name="verification_toolbar_title">Email verification</string>
     <string name="not_verified_account">Check your inbox and activate your account. Then, tap the refresh icon</string>
     <string name="verified_account">Your account is now verified!</string>
     <string name="verify_button">Continue</string>
@@ -60,10 +57,6 @@
 
     <!--User Profile-->
     <string name="user_field_default_text">Not specified</string>
-    <string name="configure_profile_btn_text">Configure profile</string>
-    <string name="host_city_hint">Host city</string>
-    <string name="nationality_hint">Nationality</string>
-    <string name="city_spinner_default">Select your host city</string>
     <string name="facebook_profile">Facebook profile</string>
 
     <string-array name="dialog_titles">
@@ -150,8 +143,6 @@
         <item>Sciences</item>
     </string-array>
 
-    <string name="profile_saved_toast">Profile correctly saved</string>
-
     <!-- Menu -->
     <string name="action_profile">My profile</string>
     <string name="action_logout">Logout</string>
@@ -171,22 +162,7 @@
     <string name="add_city_toast">City added to database</string>
     <string name="add_city_empty_toast">Fields can\'t be empty</string>
     <string name="error_toast">Oops! There was an error</string>
-    <string name="fav_city_add_snack">Added to favorites!</string>
-    <string name="fav_city_remove_snack">Removed from favorites</string>
-    <string name="title_activity_login">Sign in</string>
     <string name="email_sent">Email sent</string>
     <string name="post_saved">Post has been saved</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
 </resources>
