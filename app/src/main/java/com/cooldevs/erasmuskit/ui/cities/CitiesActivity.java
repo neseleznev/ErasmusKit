@@ -40,7 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static com.cooldevs.erasmuskit.utils.Utils.getNumberOfColumns;
 import static com.cooldevs.erasmuskit.utils.Utils.hideSoftKeyboard;
 
 public class CitiesActivity extends BaseInternetActivity {
@@ -114,16 +114,9 @@ public class CitiesActivity extends BaseInternetActivity {
             }
         });
 
-        // Get screen dimensions (width) for the RecyclerView arrangement
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int numRows = 1;
-        if (getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
-            float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-            numRows = (int) Math.ceil(dpWidth / 520f);
-        }
-
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numRows));
+        recyclerView.setLayoutManager(
+                new GridLayoutManager(this, getNumberOfColumns(getResources())));
 
         // Get the array of cities from Firebase Database (and sort them by name)
         citiesRef = FirebaseDatabase.getInstance().getReference("cities").orderByChild("name");
