@@ -4,18 +4,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.BaseInternetActivity;
 import com.cooldevs.erasmuskit.ui.Section;
 import com.cooldevs.erasmuskit.ui.SectionsAdapter;
 import com.facebook.CallbackManager;
@@ -37,8 +37,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.cooldevs.erasmuskit.utils.FacebookParser.getUpdateUserAfterLoginCallback;
+import static com.cooldevs.erasmuskit.utils.Utils.getNumberOfColumns;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseInternetActivity {
 
     private static final String TAG = "ProfileActivity";
 
@@ -63,11 +64,6 @@ public class ProfileActivity extends AppCompatActivity {
 //        loginButton.setReadPermissions(permissionNeeds);
 
         LoginManager.getInstance().registerCallback(callbackManager, getUpdateUserAfterLoginCallback());
-
-        // Get screen dimensions (width) for the RecyclerView arrangement
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int numRows = ((int) dpWidth) / 520 + 1;
 
         // Current user
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -140,7 +136,20 @@ public class ProfileActivity extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(ProfileActivity.this, numRows));
+        recyclerView.setLayoutManager(
+                new GridLayoutManager(ProfileActivity.this, getNumberOfColumns(getResources())));
+    }
+
+    @Override
+    public void onConnectivityChanged(boolean isConnected) {
+        View noInternet = findViewById(R.id.no_internet_view);
+        if (isConnected) {
+            noInternet.setVisibility(View.GONE);
+        } else {
+            if (sections.size() == 0) {  // No data still
+                noInternet.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override

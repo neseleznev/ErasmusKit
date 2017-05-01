@@ -1,6 +1,8 @@
 package com.cooldevs.erasmuskit.utils;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 import android.view.inputmethod.InputMethodManager;
 
 import java.text.DateFormat;
@@ -8,6 +10,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 /**
  * Utility class
@@ -24,6 +28,22 @@ public final class Utils {
                         Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(
                 activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    /**
+     * Calculate number of columns for the RecyclerView arrangement (Grid Layout)
+     * @param resources Resourses object obtained from Activity
+     * @return int
+     */
+    public static int getNumberOfColumns(Resources resources) {
+        // Get screen dimensions (width) for the RecyclerView arrangement
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        int numColumns = 1;
+        if (resources.getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
+            float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+            numColumns = (int) Math.ceil(dpWidth / 520f);
+        }
+        return numColumns;
     }
 
     /**
