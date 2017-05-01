@@ -3,8 +3,6 @@ package com.cooldevs.erasmuskit.ui.posts;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +13,7 @@ import android.widget.Toast;
 
 import com.cooldevs.erasmuskit.R;
 import com.cooldevs.erasmuskit.ui.BaseInternetActivity;
-import com.cooldevs.erasmuskit.ui.cities.CitiesActivity;
+import com.cooldevs.erasmuskit.ui.posts.model.Event;
 import com.cooldevs.erasmuskit.ui.posts.model.Post;
 import com.cooldevs.erasmuskit.ui.profile.ProfileActivity;
 import com.cooldevs.erasmuskit.ui.profile.User;
@@ -41,7 +39,7 @@ public class PostsActivity extends BaseInternetActivity {
     private String cityName;
     private String cityKey;
     private String cityFacebookGroupId;
-    private int citySection;
+    private int citySection = -1;
     private RecyclerView recyclerView;
 
     private Query usersRef;
@@ -51,8 +49,14 @@ public class PostsActivity extends BaseInternetActivity {
     private Query postsRef;
     private ChildEventListener postsEventListener;
     private final ArrayList<Post> posts = new ArrayList<>();
+    private EventsComparator eventsComparator = new EventsComparator();
 
     private TextView emptyListText;
+
+    private enum FacebookParsingStatus {
+        Ready, InProgress, Finished  // Semaphore
+    }
+    private FacebookParsingStatus facebookParsingStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +69,7 @@ public class PostsActivity extends BaseInternetActivity {
         emptyListText = (TextView) findViewById(R.id.empty_list_text);
 
         getIntentExtras(getIntent());
-        retrieveData();
+        setDataListeners();
         setFabFunctionality();
     }
 
@@ -131,19 +135,19 @@ public class PostsActivity extends BaseInternetActivity {
         }
     }
 
-    private void retrieveData() {
+    private void setDataListeners() {
         switch (citySection) {
             case 0:
-                getPeopleList();
+                setPeopleListeners();
                 break;
             case 1:
-                getPostsList(Post.PostType.EVENT);
+                setPostsListeners(Post.PostType.EVENT);
                 break;
             case 2:
-                getPostsList(Post.PostType.TIP);
+                setPostsListeners(Post.PostType.TIP);
                 break;
             case 3:
-                getPostsList(Post.PostType.PLACE);
+                setPostsListeners(Post.PostType.PLACE);
                 break;
         }
     }
@@ -151,6 +155,9 @@ public class PostsActivity extends BaseInternetActivity {
     @Override
     public void onConnectivityChanged(boolean isConnected) {
         View noInternet = findViewById(R.id.no_internet_view);
+        if (facebookParsingStatus == FacebookParsingStatus.Finished) {
+            facebookParsingStatus = FacebookParsingStatus.Ready;
+        }
         users.clear();
         posts.clear();
         if (recyclerView.getAdapter() != null) {
@@ -160,19 +167,13 @@ public class PostsActivity extends BaseInternetActivity {
         if (isConnected) {
             Log.d(TAG, "Internet connection established");
             noInternet.setVisibility(View.GONE);
-//            refLayout.setRefreshing(true);
-//            refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//                @Override
-//                public void onRefresh() {
-//                    refLayout.setRefreshing(false);
-//                }
-//            });
-//
-//            retrieveData();
+            if (citySection == 1  // EVENTS
+                    && facebookParsingStatus == FacebookParsingStatus.Ready) {
+                addEventsFromFacebook();
+            }
         } else {
             Log.d(TAG, "Internet connection lost");
             noInternet.setVisibility(View.VISIBLE);
-//            refLayout.setRefreshing(false);
 
             if (usersRef != null && usersEventListener != null) {
                 usersRef.removeEventListener(usersEventListener);
@@ -182,15 +183,14 @@ public class PostsActivity extends BaseInternetActivity {
                 postsRef.removeEventListener(postsEventListener);
                 postsRef.addChildEventListener(postsEventListener);
             }
-//            adapter.notifyDataSetChanged();
-            Toast.makeText(PostsActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
         }
     }
 
     /**
-     * Getting the list of people registered in this city (from Firebase Realtime Database).
+     * Setting listener for getting the list of people registered in this city
+     * (from Firebase Realtime Database) and listener to handle click on list item.
      */
-    private void getPeopleList() {
+    private void setPeopleListeners() {
         users = new ArrayList<>();
         final PeopleAdapter adapter = new PeopleAdapter(users);
         adapter.setOnClickListener(new View.OnClickListener() {
@@ -266,32 +266,16 @@ public class PostsActivity extends BaseInternetActivity {
     }
 
     /**
-     * Getting the list of posts for this city, of the specified type (from Firebase Realtime Database).
+     * Setting listener for getting the list of posts for this city, of the specified type
+     * (from Firebase Realtime Database).
      * @param postType the type of posts. See {@link Post.PostType}
      */
-    private void getPostsList(final Post.PostType postType) {
+    private void setPostsListeners(final Post.PostType postType) {
         posts.clear();
         final PostsAdapter adapter = new PostsAdapter(posts, postType);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        // Add events from facebook
-        if (postType == Post.PostType.EVENT) {
-            AccessToken accessToken = AccessToken.getCurrentAccessToken();
-            if (accessToken != null) {
-                Log.d(TAG, "User is authorized; parsing facebook for events...");
-                getEventsListAsync(accessToken, cityFacebookGroupId, cityKey, posts,
-                        adapter, emptyListText);
-
-            } else {
-                Toast.makeText(
-                        PostsActivity.this,
-                        "To get more results, log in\n" +
-                                "Facebook in My profile section",
-                        Toast.LENGTH_LONG).show();
-            }
-        }
 
         // Get the array of posts from Firebase Database (QUERY BY CITY)
         postsRef = FirebaseDatabase.getInstance().getReference("posts").child(postType.getDbRef())
@@ -314,12 +298,7 @@ public class PostsActivity extends BaseInternetActivity {
                 // Sort with timestamps. Well, in decreases speed, but let's take a look
                 // sort O(n*log(n)) * [each add] O(n) = O(n*n*log(n))
                 // If we have 128 posts -> 114688 operations or 0.1sec on every modern processor
-                Collections.sort(posts, new Comparator<Post>() {
-                    @Override
-                    public int compare(Post o1, Post o2) {
-                        return (int) (-o1.getTimestamp() + o2.getTimestamp());
-                    }
-                });
+                Collections.sort(posts, eventsComparator);
                 adapter.notifyDataSetChanged();
 
                 if (emptyListText.getVisibility() != View.GONE)
@@ -362,6 +341,51 @@ public class PostsActivity extends BaseInternetActivity {
         };
     }
 
+    private void addEventsFromFacebook() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null) {
+            Log.d(TAG, "User is authorized; parsing facebook for events...");
+            facebookParsingStatus = FacebookParsingStatus.InProgress;
+
+            getEventsListAsync(accessToken, cityFacebookGroupId, cityKey, posts,
+                    new FacebookParsingFinishedListener() {
+                        @Override
+                        public void onFinish() {
+                            facebookParsingStatus = FacebookParsingStatus.Finished;
+                            if (emptyListText.getVisibility() != View.GONE) {
+                                emptyListText.setVisibility(View.GONE);
+                            }
+                            Collections.sort(posts, eventsComparator);
+                            recyclerView.getAdapter().notifyDataSetChanged();
+                        }
+                    });
+
+        } else {
+            Toast.makeText(
+                    PostsActivity.this,
+                    "To get more results, log in\n" +
+                            "Facebook in My profile section",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class EventsComparator implements Comparator<Post> {
+        @Override
+        public int compare(Post o1, Post o2) {
+            if (o1 instanceof Event && o2 instanceof Event) {
+                long t1 = ((Event) o1).getEventTimestamp() / 10000,
+                        t2 = ((Event) o2).getEventTimestamp() / 10000;
+                if (t1 < t2) {
+                    return 1;
+                }
+                if (t1 == t2) {
+                    return 0;
+                }
+                return -1;
+            }
+            return 0;
+        }
+    }
 
     @Override
     public void onStart() {
@@ -376,6 +400,10 @@ public class PostsActivity extends BaseInternetActivity {
             posts.clear();
             postsRef.removeEventListener(postsEventListener);
             postsRef.addChildEventListener(postsEventListener);
+        }
+        if (citySection == 1) {  // EVENTS
+            facebookParsingStatus = FacebookParsingStatus.Ready;
+            addEventsFromFacebook();
         }
     }
 
@@ -403,5 +431,9 @@ public class PostsActivity extends BaseInternetActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public interface FacebookParsingFinishedListener {
+        void onFinish();
     }
 }

@@ -2,10 +2,8 @@ package com.cooldevs.erasmuskit.utils;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
-import com.cooldevs.erasmuskit.ui.posts.PostsAdapter;
+import com.cooldevs.erasmuskit.ui.posts.PostsActivity;
 import com.cooldevs.erasmuskit.ui.posts.model.Event;
 import com.cooldevs.erasmuskit.ui.posts.model.Post;
 import com.facebook.AccessToken;
@@ -37,13 +35,13 @@ public class FacebookParser {
      * Asyncronoysly get events from facebook's group and put them into posts
      * @param accessToken Valid fresh access token
      * @param facebookGroupId String [0-9a-zA-Z] facebook's group identifier
+     * @param cityKey String [0-9a-zA-Z] key from firebase to create Event object
      * @param posts reference to ArrayList<Post> to put there results
-     * @param adapter reference to PostsAdapter to invoke .notifyDataSetChanged()
+     * @param listener PostsActivity.FacebookParsingFinishedListener implementation
      */
     public static void getEventsListAsync(AccessToken accessToken, final String facebookGroupId,
-                                          final String cityKey,
-                                          final ArrayList<Post> posts, final PostsAdapter adapter,
-                                          final TextView emptyListText) {
+                                          final String cityKey, final ArrayList<Post> posts,
+                                          final PostsActivity.FacebookParsingFinishedListener listener) {
 
         GraphRequest request = new GraphRequest(accessToken,
                 facebookGroupId + "/events",  // TODO v2.0 parse multiple groups (bundle query)
@@ -54,7 +52,7 @@ public class FacebookParser {
                     @Override
                     public void onCompleted(GraphResponse response) {
                         Log.d(TAG, facebookGroupId + "/events\t" + response.toString());
-                        JSONArray data = null;
+                        JSONArray data;
                         try {
                             data = response.getJSONObject().getJSONArray("data");
                         } catch (JSONException | NullPointerException e) {
@@ -84,16 +82,13 @@ public class FacebookParser {
                                 posts.add(new Event(
                                         name,facebookLink+ descr, cityKey, System.currentTimeMillis(),
                                         null, placeName, startTime, facebookLink));
-                                adapter.notifyDataSetChanged();
-                                if (emptyListText.getVisibility() != View.GONE) {
-                                    emptyListText.setVisibility(View.GONE);
-                                }
                             }
                             catch (JSONException e)
                             {
                                 e.printStackTrace();
                             }
                         }
+                        listener.onFinish();
                     }
                 },
                 "v2.9");
