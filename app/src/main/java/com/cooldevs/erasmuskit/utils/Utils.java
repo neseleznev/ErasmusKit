@@ -64,11 +64,12 @@ public final class Utils {
      * @return the corresponding date in timestamp format
      */
     static long getTimestamp(String dateString) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        DateFormat dateFormat;
         try {
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             Date date = dateFormat.parse(dateString);
             return date.getTime();
-        } catch (ParseException e) {
+        } catch (ParseException | IllegalArgumentException e) {
             e.printStackTrace();
             return 0;
         }
