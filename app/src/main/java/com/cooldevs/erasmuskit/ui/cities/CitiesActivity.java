@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cooldevs.erasmuskit.R;
+import com.cooldevs.erasmuskit.ui.BaseInternetActivity;
 import com.cooldevs.erasmuskit.ui.cities.model.City;
 import com.cooldevs.erasmuskit.ui.login.WelcomeActivity;
 import com.cooldevs.erasmuskit.ui.profile.ProfileActivity;
@@ -40,9 +40,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static com.cooldevs.erasmuskit.utils.Utils.getNumberOfColumns;
 import static com.cooldevs.erasmuskit.utils.Utils.hideSoftKeyboard;
 
-public class CitiesActivity extends AppCompatActivity {
+public class CitiesActivity extends BaseInternetActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -63,11 +64,6 @@ public class CitiesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cities);
-
-        // Get screen dimensions (width) for the RecyclerView arrangement
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int numRows = (int) Math.ceil(dpWidth / 520f);
 
         // Login / logout session flow (if user is null we go back to WelcomeActivity)
         mAuth = FirebaseAuth.getInstance();
@@ -91,13 +87,6 @@ public class CitiesActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        refLayout.setRefreshing(true);
-        refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refLayout.setRefreshing(false);
-            }
-        });
 
         // Get behavior
         params = (CoordinatorLayout.LayoutParams) refLayout.getLayoutParams();
@@ -125,9 +114,9 @@ public class CitiesActivity extends AppCompatActivity {
             }
         });
 
-
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numRows));
+        recyclerView.setLayoutManager(
+                new GridLayoutManager(this, getNumberOfColumns(getResources())));
 
         // Get the array of cities from Firebase Database (and sort them by name)
         citiesRef = FirebaseDatabase.getInstance().getReference("cities").orderByChild("name");
@@ -240,6 +229,35 @@ public class CitiesActivity extends AppCompatActivity {
         setupUI(parentView);
     }
 
+    @Override
+    public void onConnectivityChanged(boolean isConnected) {
+        View noInternet = findViewById(R.id.no_internet_view);
+        cities.clear();
+        adapter.notifyDataSetChanged();
+
+        if (isConnected) {
+            Log.d(TAG, "Internet connection established");
+            noInternet.setVisibility(View.GONE);
+            refLayout.setRefreshing(true);
+            refLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    refLayout.setRefreshing(false);
+                }
+            });
+
+        } else {
+            Log.d(TAG, "Internet connection lost");
+            noInternet.setVisibility(View.VISIBLE);
+            refLayout.setRefreshing(false);
+            if (citiesRef != null && childEventListener != null) {
+                citiesRef.removeEventListener(childEventListener);
+                citiesRef.addChildEventListener(childEventListener);
+            }
+            Toast.makeText(CitiesActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+        }
+    }
+
     /**
      * Sets the appropriate permissions for the current user
      */
@@ -258,6 +276,7 @@ public class CitiesActivity extends AppCompatActivity {
                     setViewsVisibility(visibility);
 
                     cities.clear();
+                    citiesRef.removeEventListener(childEventListener);
                     citiesRef.addChildEventListener(childEventListener);
                 }
 

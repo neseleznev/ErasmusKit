@@ -58,4 +58,14 @@
         android:layout_marginBottom="30dp"
         android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/no_internet_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+
+        android:layout_margin="96dp"
+        app:srcCompat="@drawable/no_internet"
+        android:visibility="gone" />
+
 </android.support.design.widget.CoordinatorLayout>
