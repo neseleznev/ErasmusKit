@@ -64,7 +64,7 @@ public final class Utils {
      * @return the corresponding date in timestamp format
      */
     static long getTimestamp(String dateString) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
             Date date = dateFormat.parse(dateString);
             return date.getTime();
